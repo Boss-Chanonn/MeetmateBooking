@@ -162,6 +162,10 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # If user is already logged in, redirect to dashboard
+    if 'user_id' in session:
+        return redirect(url_for('dashboard'))
+        
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -176,6 +180,10 @@ def login():
             flash('Invalid email/username or password', 'error')
             return redirect(url_for('login'))
         
+        # Clear any existing session data
+        session.clear()
+        
+        # Set new session data
         session['user_id'] = user.id
         session['username'] = user.username
         session['role'] = user.role

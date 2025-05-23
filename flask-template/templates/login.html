@@ -9,7 +9,8 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
-<body style="margin: 0; padding: 0; background-color: #233d5a; display: flex; justify-content: center; align-items: center; min-height: 100vh;">    {% with messages = get_flashed_messages(with_categories=true) %}
+<body style="margin: 0; padding: 0; background-color: #233d5a; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-messages-container" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; z-index: 1000;">
                 {% for category, message in messages %}
@@ -231,9 +232,42 @@
         .modern-login-container {
             height: auto;
             margin: 20px auto;
-        }
-    }
+        }    }
 </style>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<script>
+// Handle flash messages and redirects
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for success flash messages and redirect
+    const flashMessages = document.querySelectorAll('.flash-message.success');
+    if (flashMessages.length > 0) {
+        // If there's a success message, redirect to dashboard after a short delay
+        setTimeout(function() {
+            window.location.href = "{{ url_for('dashboard') }}";
+        }, 1500); // 1.5 second delay to show the success message
+    }
+    
+    // Handle flash message close buttons
+    const closeButtons = document.querySelectorAll('.close-btn');
+    closeButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            this.parentElement.style.display = 'none';
+        });
+    });
+    
+    // Auto-hide flash messages after 5 seconds
+    const allFlashMessages = document.querySelectorAll('.flash-message');
+    allFlashMessages.forEach(function(msg) {
+        setTimeout(function() {
+            msg.style.opacity = '0';
+            setTimeout(function() {
+                msg.style.display = 'none';
+            }, 300);
+        }, 5000);
+    });
+});
+</script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
