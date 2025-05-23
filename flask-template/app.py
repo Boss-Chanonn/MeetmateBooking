@@ -8,7 +8,7 @@ from functools import wraps
 
 # Initialize Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'meetmate_secret_key'
+app.config['SECRET_KEY'] = 'meetmate_secret_key_v2_2025'
 
 # Ensure instance directory exists
 instance_dir = os.path.join(app.root_path, 'instance')
@@ -68,6 +68,19 @@ def login_required(f):
         if 'user_id' not in session:
             flash('Please login to access this page', 'error')
             return redirect(url_for('login'))
+        
+        # Validate that the user still exists in database
+        try:
+            user = User.query.get(session['user_id'])
+            if not user:
+                session.clear()
+                flash('Your session has expired. Please login again.', 'warning')
+                return redirect(url_for('login'))
+        except Exception:
+            session.clear()
+            flash('Session error. Please login again.', 'error')
+            return redirect(url_for('login'))
+            
         return f(*args, **kwargs)
     return decorated_function
 
@@ -78,6 +91,19 @@ def admin_required(f):
         if 'user_id' not in session or session.get('role') != 'admin':
             flash('Admin access required', 'error')
             return redirect(url_for('dashboard'))
+        
+        # Validate that the admin user still exists in database
+        try:
+            user = User.query.get(session['user_id'])
+            if not user or user.role != 'admin':
+                session.clear()
+                flash('Admin session expired. Please login again.', 'warning')
+                return redirect(url_for('login'))
+        except Exception:
+            session.clear()
+            flash('Session error. Please login again.', 'error')
+            return redirect(url_for('login'))
+            
         return f(*args, **kwargs)
     return decorated_function
 
