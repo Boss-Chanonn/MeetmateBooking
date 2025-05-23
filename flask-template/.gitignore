@@ -13,5 +13,7 @@ __pycache__/
 .pytest_cache/
 
 # Flask stuff:
-instance/
+instance/*
+!instance/
+!instance/meetmate.db
 .webassets-cache
