@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}About MeetMate{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h1>About MeetMate</h1>
+
+    <section class="about-section">
+        <h2>Our Mission</h2>
+        <p>
+            MeetMate was developed as a student project to simplify the meeting room booking process.
+            Our goal is to provide an easy-to-use platform for scheduling and managing meeting room reservations.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h2>Features</h2>
+        <ul>
+            <li>Simple user registration and login system</li>
+            <li>Easy room booking interface</li>
+            <li>Dashboard to view and manage your bookings</li>
+            <li>Admin panel for managing users and rooms</li>
+            <li>Responsive design that works on all devices</li>
+        </ul>
+    </section>
+
+    <section class="about-section">
+        <h2>Technologies Used</h2>
+        <ul>
+            <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+            <li><strong>Backend:</strong> Python Flask</li>
+            <li><strong>Database:</strong> SQLite</li>
+            <li><strong>Authentication:</strong> Session-based authentication</li>
+        </ul>
+    </section>
+
+    <section class="about-section">
+        <h2>Contact</h2>
+        <p>For any questions or feedback, please contact us at:</p>
+        <p><a href="mailto:support@meetmate.example.com">support@meetmate.example.com</a></p>
+    </section>
+</div>
+
+<style>
+    .about-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .about-section {
+        margin-bottom: 2rem;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+    }
+
+    .about-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .about-section ul {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-section li {
+        margin-bottom: 0.5rem;
+    }
+</style>
+{% endblock %}

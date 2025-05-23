@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetMate - Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #233d5a; display: flex; justify-content: center; align-items: center; min-height: 100vh;">    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages-container" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; z-index: 1000;">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                        <span class="close-btn">&times;</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+<div class="modern-login-container">
+    <div class="login-image-container">
+        <img src="{{ url_for('static', filename='images/meeting-room.jpg') }}" alt="Meeting Room" class="login-image">
+    </div>
+    <div class="login-form-container">
+        <div class="login-logo">
+            <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate Logo">
+            <h2>MeetMate</h2>
+        </div>
+        
+        <form method="POST" action="{{ url_for('login') }}" class="modern-login-form">
+            <div class="form-group">
+                <input type="text" id="username" name="username" placeholder="Email address" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="login-btn">Log in</button>
+        </form>
+        
+        <div class="login-actions">
+            <a href="{{ url_for('register') }}" class="signup-link">Sign up</a>
+            <a href="#" class="forgot-password-link">Forgot password?</a>
+        </div>
+        
+        <div class="social-login">
+            <a href="#" class="social-btn facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-btn google">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="#" class="social-btn apple">
+                <i class="fab fa-apple"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>    /* Modern Login Page Styles */
+    .modern-login-container {
+        display: flex;
+        height: 600px; /* Fixed height instead of 100vh */
+        width: 100%;
+        max-width: 1100px;
+        margin: 50px auto; /* Added top and bottom margins */
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background-color: #b8c2d1;
+        position: relative; /* Added position relative */
+    }
+    
+    .login-image-container {
+        flex: 1;
+        position: relative;
+    }
+    
+    .login-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .login-form-container {
+        flex: 1;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #b8c2d1;
+    }
+    
+    .login-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .login-logo img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        background-color: #2c6ba0;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    
+    .login-logo h2 {
+        color: #2c6ba0;
+        margin-top: 0.5rem;
+    }
+    
+    .modern-login-form {
+        width: 100%;
+        max-width: 350px;
+    }
+    
+    .modern-login-form .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .modern-login-form input {
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .login-btn {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #a5ea9b;
+        color: #333;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+    
+    .login-btn:hover {
+        background-color: #8ed384;
+    }
+    
+    .login-actions {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 350px;
+        margin-top: 1rem;
+    }
+    
+    .login-actions a {
+        color: #2c6ba0;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+    
+    .social-login {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .social-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.2rem;
+        transition: transform 0.3s;
+    }
+    
+    .social-btn:hover {
+        transform: translateY(-3px);
+    }
+    
+    .facebook {
+        background-color: #3b5998;
+    }
+    
+    .google {
+        background-color: white;
+        color: #333;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .apple {
+        background-color: #000;
+    }
+      /* Responsive design */
+    @media (max-width: 768px) {
+        .modern-login-container {
+            flex-direction: column;
+            height: auto;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px auto;
+            width: 90%;
+        }
+        
+        .login-image-container {
+            height: 180px;
+        }
+        
+        .login-form-container {
+            padding: 1.5rem 1rem;
+        }
+        
+        body {
+            align-items: flex-start;
+            padding: 20px 0;
+        }
+    }
+    
+    @media (max-height: 700px) {
+        .modern-login-container {
+            height: auto;
+            margin: 20px auto;
+        }
+    }
+</style>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

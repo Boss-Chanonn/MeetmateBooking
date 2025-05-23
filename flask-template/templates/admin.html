@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+    
+    <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="users-tab">Users</button>
+        <button class="tab-btn" data-tab="rooms-tab">Rooms</button>
+        <button class="tab-btn" data-tab="bookings-tab">Bookings</button>
+    </div>
+    
+    <div class="tab-content">
+        <!-- Users Tab -->
+        <div id="users-tab" class="tab-pane active">
+            <div class="section-header">
+                <h2>Users</h2>
+            </div>
+            
+            <div class="table-responsive">                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.firstname }} {{ user.lastname }}</td>
+                                <td>{{ user.role }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary edit-user-btn" 
+                                            data-id="{{ user.id }}"
+                                            data-username="{{ user.username }}"
+                                            data-email="{{ user.email }}"
+                                            data-firstname="{{ user.firstname }}"
+                                            data-lastname="{{ user.lastname }}"
+                                            data-dob="{{ user.dob }}"
+                                            data-address="{{ user.address }}"
+                                            data-role="{{ user.role }}">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Rooms Tab -->
+        <div id="rooms-tab" class="tab-pane">
+            <div class="section-header">
+                <h2>Meeting Rooms</h2>
+                <button class="btn btn-primary" id="add-room-btn">Add Room</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room in rooms %}
+                            <tr>
+                                <td>{{ room.id }}</td>
+                                <td>{{ room.name }}</td>
+                                <td>{{ room.location }}</td>
+                                <td>{{ room.capacity }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>        </div>
+          <!-- Bookings Tab -->        <div id="bookings-tab" class="tab-pane">
+            <div class="section-header">
+                <h2>All Bookings</h2>
+                <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="admin-table">                    <thead>
+                        <tr>
+                            <th>ID</th>                            
+                            <th>User</th>
+                            <th>Room</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Booked By</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>                                
+                                <td>{{ booking.id }}</td>
+                                <td>{{ booking.username }}</td>
+                                <td>{{ booking.room_name }}</td>                                <td>{{ booking.date }}</td>
+                                <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
+                                <td>{{ booking.booked_by }}</td>
+                                <td>{{ booking.notes|default('-', true) }}</td>
+                                <td>
+                                    <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                        Cancel
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Room Modal -->
+<div id="add-room-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Room</h2>
+        
+        <form method="POST" action="{{ url_for('add_room') }}">
+            <div class="form-group">
+                <label for="name">Room Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="capacity">Capacity</label>
+                <input type="number" id="capacity" name="capacity" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add Room</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="edit-user-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit User</h2>
+          <form method="POST" action="" id="edit-user-form">
+            <div class="form-group">
+                <label for="edit-username">Username</label>
+                <input type="text" id="edit-username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-email">Email</label>
+                <input type="email" id="edit-email" name="email" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="edit-firstname">First Name</label>
+                    <input type="text" id="edit-firstname" name="firstname">
+                </div>
+                <div class="form-group half">
+                    <label for="edit-lastname">Last Name</label>
+                    <input type="text" id="edit-lastname" name="lastname">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-dob">Date of Birth</label>
+                <input type="date" id="edit-dob" name="dob">
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-address">Address</label>
+                <textarea id="edit-address" name="address" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-role">Role</label>
+                <select id="edit-role" name="role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Update User</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tab handling
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and panes
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding pane
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Add Room Modal
+        const addRoomModal = document.getElementById('add-room-modal');
+        const addRoomBtn = document.getElementById('add-room-btn');
+        const closeButtons = document.querySelectorAll('.modal .close');
+        
+        addRoomBtn.addEventListener('click', () => {
+            addRoomModal.style.display = 'block';
+        });
+        
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                addRoomModal.style.display = 'none';
+                editUserModal.style.display = 'none';
+            });
+        });
+        
+        // Edit User Modal
+        const editUserModal = document.getElementById('edit-user-modal');
+        const editUserForm = document.getElementById('edit-user-form');
+        const editUserButtons = document.querySelectorAll('.edit-user-btn');
+        
+        editUserButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const userId = button.dataset.id;
+                const username = button.dataset.username;
+                const email = button.dataset.email;
+                const role = button.dataset.role;
+                
+                // Set form action
+                editUserForm.action = `/admin/edit_user/${userId}`;
+                
+                // Fill form fields
+                document.getElementById('edit-username').value = username;
+                document.getElementById('edit-email').value = email;
+                document.getElementById('edit-role').value = role;
+                
+                // Show modal
+                editUserModal.style.display = 'block';
+            });
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target == addRoomModal) {
+                addRoomModal.style.display = 'none';
+            }
+            if (event.target == editUserModal) {
+                editUserModal.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Room{% endblock %}
+
+{% block content %}
+<div class="booking-page">
+    <h1>Book a Meeting Room</h1>
+    
+    <form method="POST" action="{{ url_for('booking') }}" class="booking-form">
+        <div class="form-group">
+            <label for="room_id">Select Room</label>
+            <select id="room_id" name="room_id" required>
+                <option value="" disabled selected>-- Select a room --</option>
+                {% for room in rooms %}
+                    <option value="{{ room.id }}">{{ room.name }} ({{ room.location }}, Capacity: {{ room.capacity }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
+        </div>        <div class="form-row">
+            <div class="form-group half">
+                <label for="time_start">Start Time</label>
+                <select id="time_start" name="time_start" required>
+                    <option value="" disabled selected>-- Select start time --</option>
+                    {% for hour in range(8, 22) %}
+                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group half">
+                <label for="time_end">End Time</label>
+                <select id="time_end" name="time_end" required>
+                    <option value="" disabled selected>-- Select end time --</option>
+                    {% for hour in range(9, 23) %}
+                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Book Room</button>
+        </div>
+    </form>    <div class="booking-info">
+        <h3>Booking Information</h3>
+        <ul>
+            <li>Rooms are available Monday to Friday, 8:00 AM to 10:00 PM</li>
+            <li>Bookings can only be made on the hour (e.g., 10:00, 11:00)</li>
+            <li>Minimum booking duration is 1 hour</li>
+            <li>Maximum booking duration is 8 hours</li>
+            <li>Bookings must be made at least 1 hour in advance</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set min date to today
+        const dateInput = document.getElementById('date');
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        dateInput.min = formattedDate;
+        
+        // Validate end time is after start time
+        const startTimeSelect = document.getElementById('time_start');
+        const endTimeSelect = document.getElementById('time_end');
+          // Function to update end time options based on start time
+        function updateEndTimeOptions() {
+            const startTime = startTimeSelect.value;
+            if (!startTime) return;
+            
+            const startHour = parseInt(startTime.split(':')[0], 10);
+            
+            // Clear existing options except the first placeholder
+            while (endTimeSelect.options.length > 1) {
+                endTimeSelect.remove(1);
+            }
+            
+            // Add options that are at least 1 hour later than start time
+            // Maximum is start time + 8 hours (for 8-hour booking) or 22 (10 PM), whichever is smaller
+            const maxEndHour = Math.min(startHour + 8, 22);
+            
+            for (let hour = startHour + 1; hour <= maxEndHour; hour++) {
+                const option = document.createElement('option');
+                const timeStr = `${String(hour).padStart(2, '0')}:00`;
+                option.value = timeStr;
+                option.text = timeStr;
+                endTimeSelect.add(option);
+            }
+            
+            // Select the first available option
+            if (endTimeSelect.options.length > 1) {
+                endTimeSelect.selectedIndex = 1;
+            } else {
+                endTimeSelect.selectedIndex = 0;
+            }
+        }
+          // Function to validate maximum booking duration (8 hours)
+        function validateBookingDuration() {
+            if (startTimeSelect.value && endTimeSelect.value) {
+                const startHour = parseInt(startTimeSelect.value.split(':')[0], 10);
+                const endHour = parseInt(endTimeSelect.value.split(':')[0], 10);
+                const duration = endHour - startHour;
+                
+                if (duration > 8) {
+                    endTimeSelect.setCustomValidity('Maximum booking duration is 8 hours');
+                } else {
+                    endTimeSelect.setCustomValidity('');
+                }
+            }
+        }
+        
+        startTimeSelect.addEventListener('change', function() {
+            updateEndTimeOptions();
+            validateBookingDuration();
+        });
+        
+        endTimeSelect.addEventListener('change', validateBookingDuration);
+    });
+</script>
+{% endblock %}

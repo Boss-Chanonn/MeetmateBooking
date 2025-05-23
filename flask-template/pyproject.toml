@@ -1,0 +1,13 @@
+[project]
+name = "meetmate"
+version = "0.1.0"
+description = "MeetMate - Meeting Room Booking Application"
+
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.dependencies]
+dependencies = "requirements.txt"
+
+[project.optional-dependencies]
+dev-requirements = {file = "dev-requirements.txt"}
