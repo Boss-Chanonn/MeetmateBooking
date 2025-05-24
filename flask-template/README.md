@@ -23,12 +23,11 @@ This project demonstrates:
 
 ```
 MeetMate/
-├── app_beginner.py         # Main application (beginner-friendly version)
-├── app.py                  # Original SQLAlchemy version (for comparison)
+├── app_beginner.py         # Main Flask application
 ├── run_beginner.py         # Simple startup script
 ├── start.ps1               # Interactive launcher (Windows)
-├── requirements.txt        # Python dependencies (simplified)
-├── COMPARISON.md           # Technical comparison between versions
+├── requirements.txt        # Python dependencies (flask, werkzeug)
+├── COMPARISON.md           # Technical comparison documentation
 ├── QUICK_START.md          # 3-step setup guide
 ├── templates/              # HTML templates (17 files)
 ├── static/                 # CSS, JS, images
