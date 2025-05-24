@@ -915,6 +915,38 @@ def admin():
     # Get all rooms
     cursor.execute("SELECT * FROM rooms ORDER BY name")
     rooms = [dict(row) for row in cursor.fetchall()]
+      # Get today's date for filtering
+    from datetime import date
+    today = date.today().strftime('%Y-%m-%d')
+    
+    # Get today's bookings with user and room information
+    cursor.execute('''
+        SELECT 
+            b.id,
+            b.date,
+            b.time_start,
+            b.time_end,
+            b.notes,
+            u.username,
+            r.name as room_name,
+            admin.username as admin_name
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        JOIN rooms r ON b.room_id = r.id
+        LEFT JOIN users admin ON b.booking_admin_id = admin.id
+        WHERE b.date = ?
+        ORDER BY b.time_start
+    ''', (today,))
+    
+    today_bookings = []
+    for row in cursor.fetchall():
+        booking = dict(row)
+        # Determine who made the booking
+        if booking['admin_name']:
+            booking['booked_by'] = f"Admin: {booking['admin_name']}"
+        else:
+            booking['booked_by'] = "Self"
+        today_bookings.append(booking)
     
     # Get all bookings with user and room information
     cursor.execute('''
@@ -924,7 +956,7 @@ def admin():
             b.time_start,
             b.time_end,
             b.notes,
-            u.username as user_name,
+            u.username,
             r.name as room_name,
             admin.username as admin_name
         FROM bookings b
@@ -934,7 +966,7 @@ def admin():
         ORDER BY b.date, b.time_start
     ''')
     
-    bookings = []
+    all_bookings = []
     for row in cursor.fetchall():
         booking = dict(row)
         # Determine who made the booking
@@ -942,11 +974,11 @@ def admin():
             booking['booked_by'] = f"Admin: {booking['admin_name']}"
         else:
             booking['booked_by'] = "Self"
-        bookings.append(booking)
+        all_bookings.append(booking)
     
     connection.close()
     
-    return render_template('admin.html', users=users, rooms=rooms, bookings=bookings)
+    return render_template('admin.html', users=users, rooms=rooms, bookings=all_bookings, today_bookings=today_bookings, today_date=today)
 
 @app.route('/admin/add_room', methods=['POST'])
 @login_required
