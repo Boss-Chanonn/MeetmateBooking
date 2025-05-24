@@ -1,4 +1,13 @@
-# Environments
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask instance folder
+instance/*
+!instance/.gitkeep
+
+# Environment variables
 .env
 .venv
 env/
@@ -7,13 +16,21 @@ ENV/
 env.bak/
 venv.bak/
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
 
-.pytest_cache/
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Flask stuff:
-instance/*
-!instance/
-!instance/meetmate.db
+# Flask stuff
 .webassets-cache
+.pytest_cache/
