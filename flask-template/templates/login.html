@@ -31,10 +31,9 @@
             <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate Logo">
             <h2>MeetMate</h2>
         </div>
-        
-        <form method="POST" action="{{ url_for('login') }}" class="modern-login-form">
+          <form method="POST" action="{{ url_for('login') }}" class="modern-login-form">
             <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Email address" required>
+                <input type="email" id="email" name="email" placeholder="Email address" required>
             </div>
             <div class="form-group">
                 <input type="password" id="password" name="password" placeholder="Password" required>

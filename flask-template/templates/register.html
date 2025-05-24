@@ -350,8 +350,7 @@
             <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate Logo">
             <h2>Join MeetMate</h2>
         </div>
-        
-        <form method="POST" action="{{ url_for('register') }}" class="modern-register-form">
+          <form method="POST" action="{{ url_for('register') }}" class="modern-register-form">
             <div class="form-row">
                 <div class="form-group half">
                     <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
@@ -362,16 +361,18 @@
             </div>
             
             <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="email" id="email" name="email" placeholder="Email address" required>
+            </div>
+              
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
             
             <div class="form-group">
-                <input type="email" id="email" name="email" placeholder="Email address" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
             </div>
-              <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-            </div>
-              <div class="form-group">
+              
+            <div class="form-group">
                 <input type="date" id="dob" name="dob" placeholder="DD/MM/YYYY">
             </div>
             

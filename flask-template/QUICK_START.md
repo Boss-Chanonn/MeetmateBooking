@@ -33,10 +33,10 @@ Visit: **http://127.0.0.1:5000**
 
 ## 🔑 Default Login Credentials
 
-| User Type | Username | Password |
-|-----------|----------|----------|
-| **Admin** | `admin` | `admin123` |
-| **Regular User** | `testuser` | `user123` |
+| User Type | Email | Password |
+|-----------|-------|----------|
+| **Admin** | `admin@meetmate.com` | `admin123` |
+| **Regular User** | `user@meetmate.com` | `user123` |
 
 ## 📖 Learn More
 

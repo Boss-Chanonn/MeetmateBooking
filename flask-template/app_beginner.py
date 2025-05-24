@@ -494,23 +494,22 @@ def register():
     # Process the registration form (POST request)
     
     # Get form data from the user
-    username = request.form['username'].strip()
     email = request.form['email'].strip()
     password = request.form['password']
+    confirm_password = request.form['confirm_password']
     firstname = request.form.get('firstname', '').strip()
     lastname = request.form.get('lastname', '').strip()
     dob = request.form.get('dob', '').strip()
     address = request.form.get('address', '').strip()
     
     # Validate that required fields are not empty
-    if not username or not email or not password:
-        flash('Username, email, and password are required', 'error')
+    if not email or not password or not confirm_password:
+        flash('Email, password, and confirm password are required', 'error')
         return redirect(url_for('register'))
     
-    # Check if username is already taken
-    existing_user = get_user_by_username(username)
-    if existing_user:
-        flash('Username already exists. Please choose a different username.', 'error')
+    # Check if passwords match
+    if password != confirm_password:
+        flash('Passwords do not match', 'error')
         return redirect(url_for('register'))
     
     # Check if email is already registered
@@ -518,6 +517,16 @@ def register():
     if existing_email:
         flash('Email already registered. Please use a different email.', 'error')
         return redirect(url_for('register'))
+    
+    # Create username from email (use part before @ symbol)
+    username = email.split('@')[0]
+    
+    # Check if this auto-generated username already exists, if so, add a number
+    base_username = username
+    counter = 1
+    while get_user_by_username(username):
+        username = f"{base_username}{counter}"
+        counter += 1
     
     # Create new user account
     connection = get_database_connection()
@@ -536,7 +545,7 @@ def register():
         # Save changes to database
         connection.commit()
         
-        flash('Registration successful! You can now login with your new account.', 'success')
+        flash('Registration successful! You can now login with your email address.', 'success')
         return redirect(url_for('login'))
         
     except Exception as error:
@@ -567,20 +576,15 @@ def login():
     # Process login form (POST request)
     
     # Get login credentials from form
-    username_or_email = request.form['username'].strip()
+    email = request.form['email'].strip()
     password = request.form['password']
     
-    # Find user by username or email
-    if '@' in username_or_email:
-        # User entered an email address
-        user = get_user_by_email(username_or_email)
-    else:
-        # User entered a username
-        user = get_user_by_username(username_or_email)
+    # Find user by email only
+    user = get_user_by_email(email)
     
     # Check if user exists and password is correct
     if not user or not check_password_hash(user['password'], password):
-        flash('Invalid username/email or password', 'error')
+        flash('Invalid email or password', 'error')
         return redirect(url_for('login'))
     
     # Login successful! Create user session
@@ -1276,9 +1280,9 @@ if __name__ == '__main__':
     print("🎯 MeetMate - Meeting Room Booking System")
     print("=" * 60)
     print("📚 This is the beginner-friendly version using sqlite3")
-    print("🔑 Default login credentials:")
-    print("   Admin: admin / admin123")
-    print("   User:  testuser / user123")
+    print("🔑 Default login credentials (EMAIL ONLY):")
+    print("   Admin: admin@meetmate.com / admin123")
+    print("   User:  user@meetmate.com / user123")
     print("🌐 Starting web server...")
     print("📱 Open your browser to: http://127.0.0.1:5000")
     print("🛑 Press Ctrl+C to stop the server")

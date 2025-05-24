@@ -50,8 +50,8 @@ python run_beginner.py
 Visit: http://127.0.0.1:5000
 
 ### 4. Login with Default Accounts
-- **Admin**: `admin` / `admin123`
-- **User**: `testuser` / `user123`
+- **Admin**: `admin@meetmate.com` / `admin123`
+- **User**: `user@meetmate.com` / `user123`
 
 ## 🗃️ Database Structure
 
