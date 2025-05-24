@@ -17,11 +17,6 @@ db_path = os.path.join(instance_dir, 'meetmate.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Add custom Jinja filter to support {% now %} 
-@app.template_filter('now')
-def _jinja2_filter_now(format_string, timezone=None):
-    return datetime.now().strftime(format_string)
-
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
@@ -41,6 +36,11 @@ class User(db.Model):
     bookings = db.relationship('Booking', foreign_keys='Booking.user_id', backref='user', lazy=True)
     # Bookings made by this user as admin on behalf of others
     admin_bookings = db.relationship('Booking', foreign_keys='Booking.booking_admin_id', backref='admin', lazy=True)
+    
+    @property
+    def is_admin(self):
+        """Check if user has admin role"""
+        return self.role == 'admin'
 
 class Room(db.Model):
     __tablename__ = 'rooms'
