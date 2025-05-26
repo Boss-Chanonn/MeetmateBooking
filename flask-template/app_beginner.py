@@ -611,17 +611,59 @@ def logout():
 @login_required
 def dashboard():
     """
-    User dashboard - shows the user's current bookings.
+    User dashboard - shows the user's current bookings and today's bookings overview.
     Only accessible to logged-in users.
     """
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    
     # Get current user's ID from session
     user_id = session['user_id']
     
     # Get all bookings for this user
     user_bookings = get_user_bookings(user_id)
     
-    # Show the dashboard with user's bookings
-    return render_template('dashboard.html', bookings=user_bookings)
+    # Get today's date for filtering
+    from datetime import date
+    today = date.today().strftime('%Y-%m-%d')
+    today_date = date.today().strftime('%B %d, %Y')
+    
+    # Get today's bookings with user and room information
+    cursor.execute('''
+        SELECT 
+            b.id,
+            b.date,
+            b.time_start,
+            b.time_end,
+            b.notes,
+            u.username,
+            r.name as room_name,
+            admin.username as admin_name
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        JOIN rooms r ON b.room_id = r.id
+        LEFT JOIN users admin ON b.booking_admin_id = admin.id
+        WHERE b.date = ?
+        ORDER BY b.time_start
+    ''', (today,))
+    
+    today_bookings = []
+    for row in cursor.fetchall():
+        booking = dict(row)
+        # Determine who made the booking
+        if booking['admin_name']:
+            booking['booked_by'] = f"Admin: {booking['admin_name']}"
+        else:
+            booking['booked_by'] = "Self"
+        today_bookings.append(booking)
+    
+    connection.close()
+    
+    # Show the dashboard with user's bookings and today's overview
+    return render_template('dashboard.html', 
+                         bookings=user_bookings, 
+                         today_bookings=today_bookings,
+                         today_date=today_date)
 
 @app.route('/booking', methods=['GET', 'POST'])
 @login_required
