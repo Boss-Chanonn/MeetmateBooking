@@ -1,15 +1,15 @@
-# 📅 MeetMate - Beginner-Friendly Flask Application
+# MeetMate - Meeting Room Booking Application
 
-**MeetMate** is a meeting room booking web application specifically designed for students learning Flask and database concepts. This version uses Python's built-in `sqlite3` module, making database operations transparent and easy to understand.
+**MeetMate** is a meeting room booking web application built with Flask and SQLite. This project demonstrates basic web development concepts including user authentication, database operations, and CRUD functionality.
 
-## 🔧 Technologies Used
+## Technologies Used
 
 - **Backend**: Python Flask
 - **Database**: SQLite with raw SQL queries
 - **Frontend**: HTML, CSS, JavaScript (Bootstrap)
 - **Authentication**: Flask sessions with password hashing
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Python Dependencies
 ```bash
@@ -28,7 +28,7 @@ Visit: http://127.0.0.1:5000
 - **Admin**: `admin@meetmate.com` / `admin123`
 - **User**: `user@meetmate.com` / `user123`
 
-## 🗃️ Database Structure
+## Database Structure
 
 The application uses three main tables:
 
@@ -38,12 +38,12 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,           -- Hashed password for security
+    password TEXT NOT NULL,
     firstname TEXT,
     lastname TEXT,
-    dob TEXT,                        -- Date of birth
+    dob TEXT,
     address TEXT,
-    role TEXT DEFAULT 'user'         -- 'user' or 'admin'
+    role TEXT DEFAULT 'user'
 );
 ```
 
@@ -63,10 +63,10 @@ CREATE TABLE bookings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
-    date TEXT NOT NULL,              -- YYYY-MM-DD format
-    time_start TEXT NOT NULL,        -- HH:MM format
-    time_end TEXT NOT NULL,          -- HH:MM format
-    booking_admin_id INTEGER,        -- Admin who made booking (if applicable)
+    date TEXT NOT NULL,
+    time_start TEXT NOT NULL,
+    time_end TEXT NOT NULL,
+    booking_admin_id INTEGER,
     notes TEXT,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (room_id) REFERENCES rooms (id)
@@ -74,20 +74,20 @@ CREATE TABLE bookings (
 ```
 
 
-## 🔑 Main Features
+## Main Features
 
 ### For Regular Users
-- ✅ Register new account
-- ✅ Login/logout
-- ✅ View and book available rooms
-- ✅ Manage personal bookings
-- ✅ Update profile information
+- Register new account
+- Login/logout
+- View and book available rooms
+- Manage personal bookings
+- Update profile information
 
 ### For Admin Users
-- ✅ All user features
-- ✅ View all users and bookings
-- ✅ Add new meeting rooms
-- ✅ Book rooms on behalf of users
-- ✅ Create recurring bookings
-- ✅ Edit user information
+- All user features
+- View all users and bookings
+- Add new meeting rooms
+- Book rooms on behalf of users
+- Create recurring bookings
+- Edit user information
 

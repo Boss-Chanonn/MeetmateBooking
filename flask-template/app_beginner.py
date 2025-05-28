@@ -1,25 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-MeetMate - Meeting Room Booking Application (Beginner-Friendly Version)
-===========================================================================
-
-This is a student-friendly version of the MeetMate Flask application that uses 
-Python's built-in sqlite3 module instead of SQLAlchemy ORM. This approach makes 
-it easier to understand how the database works and how SQL queries are executed.
-
-Key Features:
-- User registration and login
-- Room booking system
-- Admin management features
-- Clear database operations using raw SQL
-
-Author: Student Project
-Date: 2025
+MeetMate - Meeting Room Booking Application
+Flask web application for booking meeting rooms
 """
-
-# ==============================================================================
-# IMPORTS - All the tools we need for our web application
-# ==============================================================================
 
 import os
 import sqlite3
@@ -29,26 +12,12 @@ from datetime import datetime, timedelta
 import calendar
 from functools import wraps
 
-# ==============================================================================
-# APPLICATION SETUP - Initialize Flask and configure basic settings
-# ==============================================================================
-
-# Create our Flask web application
+# Create Flask app
 app = Flask(__name__)
-
-# Secret key used to encrypt session data (cookies)
-# In production, this should be a random, secure string
 app.config['SECRET_KEY'] = 'meetmate_secret_key_v2_2025'
 
-# ==============================================================================
-# DATABASE SETUP - Configure SQLite database connection
-# ==============================================================================
-
 def get_database_path():
-    """
-    Get the path where our SQLite database file will be stored.
-    Creates the 'instance' directory if it doesn't exist.
-    """
+    """Get database file path"""
     # Get the directory where our app.py file is located
     app_directory = app.root_path
     
@@ -62,34 +31,19 @@ def get_database_path():
     return database_path
 
 def get_database_connection():
-    """
-    Create and return a connection to our SQLite database.
-    This function handles opening the database file and configuring it properly.
-    """
-    # Get the path to our database file
+    """Connect to SQLite database"""
     db_path = get_database_path()
-    
-    # Connect to the SQLite database
-    # If the file doesn't exist, SQLite will create it
     connection = sqlite3.connect(db_path)
-    
-    # Configure the connection to return rows as dictionaries
-    # This makes it easier to work with query results
     connection.row_factory = sqlite3.Row
-    
     return connection
 
 def initialize_database():
-    """
-    Create all the tables we need for our application.
-    This function is called when the app starts to ensure our database schema exists.
-    """
-    # Connect to the database
+    """Create database tables"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
     try:
-        # Create USERS table - stores information about registered users
+        # Users table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -104,7 +58,7 @@ def initialize_database():
             )
         ''')
         
-        # Create ROOMS table - stores information about meeting rooms
+        # Rooms table  
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS rooms (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -114,7 +68,7 @@ def initialize_database():
             )
         ''')
         
-        # Create BOOKINGS table - stores room reservations
+        # Bookings table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS bookings (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -131,57 +85,48 @@ def initialize_database():
             )
         ''')
         
-        # Save all changes to the database
         connection.commit()
-        
-        # Check if we need to create default data (admin user and sample rooms)
         create_default_data_if_needed(cursor, connection)
-        
-        print("✅ Database initialized successfully!")
+        print("Database initialized successfully!")
         
     except Exception as error:
-        print(f"❌ Error initializing database: {error}")
-        connection.rollback()  # Undo any changes if there was an error
+        print(f"Error initializing database: {error}")
+        connection.rollback()
     finally:
-        connection.close()  # Always close the database connection
+        connection.close()
 
 def create_default_data_if_needed(cursor, connection):
-    """
-    Create default admin user and sample rooms if the database is empty.
-    This helps new users get started with the application.
-    """
-    # Check if any users exist
-    cursor.execute("SELECT COUNT(*) as count FROM users")
+    """Create default admin user and sample rooms if database is empty"""
+    # Check if users exist    cursor.execute("SELECT COUNT(*) as count FROM users")
     user_count = cursor.fetchone()['count']
     
     if user_count == 0:
-        print("Creating default admin user...")
+        print("Creating default users...")
         
-        # Create default admin user
-        admin_password_hash = generate_password_hash('admin123')
+        # admin user - password is admin123
+        admin_password = generate_password_hash('admin123')
         cursor.execute('''
             INSERT INTO users (username, email, password, firstname, lastname, role)
             VALUES (?, ?, ?, ?, ?, ?)
-        ''', ('admin', 'admin@meetmate.com', admin_password_hash, 'Admin', 'User', 'admin'))
+        ''', ('admin', 'admin@meetmate.com', admin_password, 'Admin', 'User', 'admin'))
         
-        # Create sample regular user
-        user_password_hash = generate_password_hash('user123')
+        # regular test user
+        user_password = generate_password_hash('user123')
         cursor.execute('''
             INSERT INTO users (username, email, password, firstname, lastname, role)
             VALUES (?, ?, ?, ?, ?, ?)
-        ''', ('testuser', 'user@meetmate.com', user_password_hash, 'Test', 'User', 'user'))
+        ''', ('testuser', 'user@meetmate.com', user_password, 'Test', 'User', 'user'))
         
-        print("✅ Default users created: admin/admin123 and testuser/user123")
+        print("Default users created")
     
-    # Check if any rooms exist
+    # Check if rooms exist
     cursor.execute("SELECT COUNT(*) as count FROM rooms")
     room_count = cursor.fetchone()['count']
     
     if room_count == 0:
-        print("Creating sample meeting rooms...")
+        print("Creating sample rooms...")
         
-        # Create sample meeting rooms
-        sample_rooms = [
+        rooms = [
             ('Conference Room A', 'Floor 1, Building A', 10),
             ('Conference Room B', 'Floor 2, Building A', 8),
             ('Board Room', 'Floor 3, Building A', 15),
@@ -189,45 +134,31 @@ def create_default_data_if_needed(cursor, connection):
             ('Video Conference Room', 'Floor 2, Building B', 6)
         ]
         
-        for room_name, location, capacity in sample_rooms:
+        for name, location, capacity in rooms:
             cursor.execute('''
                 INSERT INTO rooms (name, location, capacity)
                 VALUES (?, ?, ?)
-            ''', (room_name, location, capacity))
+            ''', (name, location, capacity))
         
-        print("✅ Sample meeting rooms created!")
+        print("Sample rooms created")
     
-    # Save all changes
     connection.commit()
 
-# ==============================================================================
-# HELPER FUNCTIONS - Reusable functions for common database operations
-# ==============================================================================
-
+# Helper functions
 def get_user_by_id(user_id):
-    """
-    Find a user in the database by their ID number.
-    Returns the user data as a dictionary, or None if not found.
-    """
+    """Get user by ID"""
     connection = get_database_connection()
     cursor = connection.cursor()
-    
-    # Execute SQL query to find user by ID
     cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-    user = cursor.fetchone()  # Get the first (and only) result
-    
+    user = cursor.fetchone()
     connection.close()
     
-    # Convert sqlite3.Row to regular dictionary if user exists
     if user:
         return dict(user)
     return None
 
 def get_user_by_username(username):
-    """
-    Find a user in the database by their username.
-    Returns the user data as a dictionary, or None if not found.
-    """
+    """Get user by username"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
@@ -241,16 +172,11 @@ def get_user_by_username(username):
     return None
 
 def get_user_by_email(email):
-    """
-    Find a user in the database by their email address.
-    Returns the user data as a dictionary, or None if not found.
-    """
+    """Get user by email"""
     connection = get_database_connection()
     cursor = connection.cursor()
-    
     cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
     user = cursor.fetchone()
-    
     connection.close()
     
     if user:
@@ -258,47 +184,29 @@ def get_user_by_email(email):
     return None
 
 def get_all_rooms():
-    """
-    Get all meeting rooms from the database.
-    Returns a list of room dictionaries.
-    """
-    connection = get_database_connection()
-    cursor = connection.cursor()
-    
+    """Get all meeting rooms"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM rooms ORDER BY name")
     rooms = cursor.fetchall()
-    
-    connection.close()
-    
-    # Convert each sqlite3.Row to a regular dictionary
+    conn.close()
     return [dict(room) for room in rooms]
 
 def get_room_by_id(room_id):
-    """
-    Find a specific room by its ID number.
-    Returns the room data as a dictionary, or None if not found.
-    """
+    """Get room by ID"""
     connection = get_database_connection()
     cursor = connection.cursor()
-    
     cursor.execute("SELECT * FROM rooms WHERE id = ?", (room_id,))
     room = cursor.fetchone()
-    
     connection.close()
-    
     if room:
         return dict(room)
     return None
 
 def get_user_bookings(user_id):
-    """
-    Get all bookings for a specific user.
-    Returns a list of booking dictionaries with room information included.
-    """
+    """Get all bookings for a user"""
     connection = get_database_connection()
     cursor = connection.cursor()
-    
-    # Join bookings with rooms to get room details
     cursor.execute('''
         SELECT 
             b.id,
@@ -313,30 +221,15 @@ def get_user_bookings(user_id):
         WHERE b.user_id = ?
         ORDER BY b.date, b.time_start
     ''', (user_id,))
-    
     bookings = cursor.fetchall()
     connection.close()
-    
     return [dict(booking) for booking in bookings]
 
 def check_room_availability(room_id, date, time_start, time_end, exclude_booking_id=None):
-    """
-    Check if a room is available for booking at a specific date and time.
-    
-    Parameters:
-    - room_id: ID of the room to check
-    - date: Date in YYYY-MM-DD format
-    - time_start: Start time in HH:MM format
-    - time_end: End time in HH:MM format
-    - exclude_booking_id: Optional booking ID to exclude from the check (for editing existing bookings)
-    
-    Returns:
-    - True if room is available, False if already booked
-    """
+    """Check if room is available for booking"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
-    # Build the SQL query
     query = '''
         SELECT COUNT(*) as count
         FROM bookings 
@@ -351,7 +244,6 @@ def check_room_availability(room_id, date, time_start, time_end, exclude_booking
     
     params = [room_id, date, time_start, time_start, time_end, time_end, time_start, time_end]
     
-    # If we're checking for editing an existing booking, exclude it from the check
     if exclude_booking_id:
         query += " AND id != ?"
         params.append(exclude_booking_id)
@@ -360,25 +252,10 @@ def check_room_availability(room_id, date, time_start, time_end, exclude_booking
     result = cursor.fetchone()
     connection.close()
     
-    # Room is available if there are no conflicting bookings
     return result['count'] == 0
 
 def create_booking(user_id, room_id, date, time_start, time_end, admin_id=None, notes=None):
-    """
-    Create a new booking in the database.
-    
-    Parameters:
-    - user_id: ID of the user making the booking
-    - room_id: ID of the room being booked
-    - date: Date in YYYY-MM-DD format
-    - time_start: Start time in HH:MM format
-    - time_end: End time in HH:MM format
-    - admin_id: Optional ID of admin making booking on behalf of user
-    - notes: Optional notes about the booking
-    
-    Returns:
-    - ID of the newly created booking, or None if creation failed
-    """
+    """Create a new booking"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
@@ -388,12 +265,9 @@ def create_booking(user_id, room_id, date, time_start, time_end, admin_id=None, 
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (user_id, room_id, date, time_start, time_end, admin_id, notes))
         
-        # Get the ID of the newly created booking
         booking_id = cursor.lastrowid
-        
         connection.commit()
         connection.close()
-        
         return booking_id
         
     except Exception as error:
@@ -402,98 +276,61 @@ def create_booking(user_id, room_id, date, time_start, time_end, admin_id=None, 
         connection.close()
         return None
 
-# ==============================================================================
-# AUTHENTICATION DECORATORS - Functions to protect routes that require login
-# ==============================================================================
-
+# Authentication decorators
 def login_required(f):
-    """
-    Decorator to ensure user is logged in before accessing a route.
-    If not logged in, redirects to login page.
-    """
+    """Decorator to ensure user is logged in"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Check if user is logged in (user_id exists in session)
         if 'user_id' not in session:
             flash('Please login to access this page', 'error')
             return redirect(url_for('login'))
         
-        # Verify that the user still exists in the database
         user = get_user_by_id(session['user_id'])
         if not user:
-            # User was deleted from database, clear session
             session.clear()
             flash('Your account is no longer valid. Please login again.', 'warning')
             return redirect(url_for('login'))
         
-        # User is valid, continue to the requested page
         return f(*args, **kwargs)
-    
     return decorated_function
 
 def admin_required(f):
-    """
-    Decorator to ensure user is an admin before accessing a route.
-    Must be used together with @login_required.
-    """
+    """Decorator to ensure user is admin"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Check if user is logged in and has admin role
         if 'user_id' not in session or session.get('role') != 'admin':
             flash('Admin access required for this page', 'error')
             return redirect(url_for('dashboard'))
         
-        # Verify that the admin user still exists and is still an admin
-        user = get_user_by_id(session['user_id'])
+        user=get_user_by_id(session['user_id'])
         if not user or user['role'] != 'admin':
             session.clear()
             flash('Admin session expired. Please login again.', 'warning')
             return redirect(url_for('login'))
         
-        # User is a valid admin, continue to the requested page
         return f(*args, **kwargs)
-    
     return decorated_function
 
-# ==============================================================================
-# MAIN ROUTES - The web pages that users can visit
-# ==============================================================================
-
+# Routes
 @app.route('/')
 def index():
-    """
-    Home page - the first page users see when they visit our website.
-    If user is already logged in, redirect them to their dashboard.
-    """
-    # Check if user is already logged in
+    """Home page"""
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
-    
-    # Show the home page for visitors who aren't logged in
     return render_template('home.html')
 
 @app.route('/about')
 def about():
-    """
-    About page - information about the MeetMate application.
-    This page is accessible to everyone (no login required).
-    """
+    """About page"""
     return render_template('about.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """
-    User registration page.
-    GET: Show the registration form
-    POST: Process the registration form and create new user account
-    """
+    """User registration"""
     if request.method == 'GET':
-        # Show the registration form
         return render_template('register.html')
     
-    # Process the registration form (POST request)
-    
-    # Get form data from the user
+    # Get form data
     email = request.form['email'].strip()
     password = request.form['password']
     confirm_password = request.form['confirm_password']
@@ -502,93 +339,72 @@ def register():
     dob = request.form.get('dob', '').strip()
     address = request.form.get('address', '').strip()
     
-    # Validate that required fields are not empty
+    # Basic validation
     if not email or not password or not confirm_password:
         flash('Email, password, and confirm password are required', 'error')
         return redirect(url_for('register'))
     
-    # Check if passwords match
     if password != confirm_password:
         flash('Passwords do not match', 'error')
         return redirect(url_for('register'))
     
-    # Check if email is already registered
-    existing_email = get_user_by_email(email)
-    if existing_email:
+    # Check if email already exists
+    if get_user_by_email(email):
         flash('Email already registered. Please use a different email.', 'error')
         return redirect(url_for('register'))
     
-    # Create username from email (use part before @ symbol)
+    # Create username from email
     username = email.split('@')[0]
-    
-    # Check if this auto-generated username already exists, if so, add a number
     base_username = username
     counter = 1
     while get_user_by_username(username):
         username = f"{base_username}{counter}"
         counter += 1
     
-    # Create new user account
+    # Create user account
     connection = get_database_connection()
     cursor = connection.cursor()
     
     try:
-        # Hash the password for security (never store plain text passwords!)
         password_hash = generate_password_hash(password)
-        
-        # Insert new user into database
         cursor.execute('''
             INSERT INTO users (username, email, password, firstname, lastname, dob, address, role)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (username, email, password_hash, firstname, lastname, dob, address, 'user'))
         
-        # Save changes to database
         connection.commit()
-        
         flash('Registration successful! You can now login with your email address.', 'success')
         return redirect(url_for('login'))
         
     except Exception as error:
-        # Something went wrong, undo any changes
         connection.rollback()
         flash(f'Registration failed: {error}', 'error')
         return redirect(url_for('register'))
         
     finally:
-        # Always close the database connection
         connection.close()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    User login page.
-    GET: Show the login form
-    POST: Process login credentials and start user session
-    """
-    # If user is already logged in, redirect to dashboard
+    """User login"""
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
     
     if request.method == 'GET':
-        # Show the login form
         return render_template('login.html')
     
-    # Process login form (POST request)
-    
-    # Get login credentials from form
+    # Process login
     email = request.form['email'].strip()
     password = request.form['password']
     
-    # Find user by email only
     user = get_user_by_email(email)
     
-    # Check if user exists and password is correct
     if not user or not check_password_hash(user['password'], password):
         flash('Invalid email or password', 'error')
         return redirect(url_for('login'))
     
-    # Login successful! Create user session
-    session.clear()  # Clear any existing session data
+    # Login successful
+    session.clear()
     session['user_id'] = user['id']
     session['username'] = user['username']
     session['role'] = user['role']
@@ -598,22 +414,15 @@ def login():
 
 @app.route('/logout')
 def logout():
-    """
-    Log out the current user by clearing their session.
-    """
-    # Clear all session data
+    """Log out user"""
     session.clear()
-    
     flash('You have been logged out successfully', 'info')
     return redirect(url_for('login'))
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    """
-    User dashboard - shows the user's current bookings and today's bookings overview.
-    Only accessible to logged-in users.
-    """
+    """User dashboard page"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
@@ -668,11 +477,7 @@ def dashboard():
 @app.route('/booking', methods=['GET', 'POST'])
 @login_required
 def booking():
-    """
-    Room booking page for regular users.
-    GET: Show booking form with available rooms
-    POST: Process booking request and redirect to confirmation
-    """
+    """Room booking page"""
     # If user is admin, redirect to admin booking page
     if session.get('role') == 'admin':
         return redirect(url_for('admin_book'))
@@ -690,12 +495,11 @@ def booking():
     date = request.form['date']
     time_start = request.form['time_start']
     time_end = request.form['time_end']
-    
-    # Validate booking duration (must be 1-8 hours)
+      # Validate booking duration (must be 1-8 hours)
     try:
-        start_hour = int(time_start.split(':')[0])
-        end_hour = int(time_end.split(':')[0])
-        duration = end_hour - start_hour
+        start_hr = int(time_start.split(':')[0])
+        end_hr = int(time_end.split(':')[0])
+        duration = end_hr - start_hr
         
         if duration < 1 or duration > 8:
             flash(f'Booking duration must be between 1 and 8 hours (you selected {duration} hours)', 'error')
@@ -733,10 +537,7 @@ def booking():
 @app.route('/confirm_booking', methods=['POST'])
 @login_required
 def confirm_booking():
-    """
-    Process booking confirmation from user.
-    User can either confirm the booking (go to payment) or cancel it.
-    """
+    """Process booking confirmation"""
     # Check if booking data exists in session
     if 'booking_data' not in session:
         flash('Booking information not found. Please try again.', 'error')
@@ -773,18 +574,13 @@ def confirm_booking():
 @app.route('/process_payment', methods=['POST'])
 @login_required
 def process_payment():
-    """
-    Process payment and create the final booking.
-    In a real application, this would integrate with a payment gateway.
-    For this demo, we just simulate successful payment.
-    """
+    """Process payment and create booking"""
     # Check if booking data exists in session
     if 'booking_data' not in session:
         flash('Booking information not found. Please try again.', 'error')
         return redirect(url_for('booking'))
-    
-    # Get payment details from form
-    # In a real app, you would validate and process payment here
+      # Get payment details from form
+    # TODO: in real app would validate and process payment here
     card_holder = request.form['card_holder']
     card_number = request.form['card_number']
     expiry_date = request.form['expiry_date']
@@ -833,10 +629,7 @@ def process_payment():
 @app.route('/cancel_booking/<int:booking_id>')
 @login_required
 def cancel_booking(booking_id):
-    """
-    Cancel an existing booking.
-    Users can only cancel their own bookings, admins can cancel any booking.
-    """
+    """Cancel a booking"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
@@ -871,9 +664,7 @@ def cancel_booking(booking_id):
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    """
-    User profile page where users can view and edit their account information.
-    """
+    """User profile page"""
     # Get current user information
     user = get_user_by_id(session['user_id'])
     
@@ -935,18 +726,12 @@ def profile():
     
     return redirect(url_for('profile'))
 
-# ==============================================================================
-# ADMIN ROUTES - Special pages only accessible to admin users
-# ==============================================================================
-
+# Admin routes
 @app.route('/admin')
 @login_required
 @admin_required
 def admin():
-    """
-    Admin dashboard showing all users, rooms, and bookings.
-    Only accessible to admin users.
-    """
+    """Admin dashboard"""
     connection = get_database_connection()
     cursor = connection.cursor()
     
@@ -1026,10 +811,7 @@ def admin():
 @login_required
 @admin_required
 def add_room():
-    """
-    Add a new meeting room to the system.
-    Only accessible to admin users.
-    """
+    """Add new room"""
     # Get room details from form
     name = request.form['name'].strip()
     location = request.form['location'].strip()
@@ -1074,10 +856,7 @@ def add_room():
 @login_required
 @admin_required
 def edit_user(user_id):
-    """
-    Edit user information (admin only).
-    Allows admins to change user details and roles.
-    """
+    """Edit user information"""
     # Get updated user information from form
     username = request.form['username'].strip()
     email = request.form['email'].strip()
@@ -1118,10 +897,7 @@ def edit_user(user_id):
 @login_required
 @admin_required
 def admin_book():
-    """
-    Admin booking page - allows admins to make bookings on behalf of users.
-    Includes support for recurring bookings.
-    """
+    """Admin booking page"""
     if request.method == 'GET':
         # Show admin booking form
         rooms = get_all_rooms()
@@ -1205,10 +981,7 @@ def admin_book():
 @login_required
 @admin_required
 def admin_confirm_booking():
-    """
-    Process admin booking confirmation.
-    Creates the booking(s) in the database, including recurring bookings if specified.
-    """
+    """Process admin booking confirmation"""
     # Get user's choice (confirm or cancel)
     action = request.form.get('action')
     
@@ -1330,37 +1103,22 @@ def admin_confirm_booking():
         created_bookings_count=len(created_bookings)
     )
 
-# ==============================================================================
-# ERROR HANDLERS - Custom pages for common errors
-# ==============================================================================
-
+# Error handlers
 @app.errorhandler(404)
 def page_not_found(error):
-    """
-    Custom 404 (Page Not Found) error page.
-    """
+    """404 error page"""
     return render_template('error404.html'), 404
 
-# ==============================================================================
-# APPLICATION STARTUP - Initialize database and run the app
-# ==============================================================================
-
+# Main execution
 if __name__ == '__main__':
-    # Initialize the database when the application starts
     print("Initializing MeetMate application...")
     initialize_database()
     
-    print("=" * 60)
-    print("🎯 MeetMate - Meeting Room Booking System")
-    print("=" * 60)
-    print("📚 This is the beginner-friendly version using sqlite3")
-    print("🔑 Default login credentials (EMAIL ONLY):")
+    print("MeetMate - Meeting Room Booking System")
+    print("Default login credentials:")
     print("   Admin: admin@meetmate.com / admin123")
     print("   User:  user@meetmate.com / user123")
-    print("🌐 Starting web server...")
-    print("📱 Open your browser to: http://127.0.0.1:5000")
-    print("🛑 Press Ctrl+C to stop the server")
-    print("=" * 60)
+    print("Starting web server at http://127.0.0.1:5000")
+    print("Press Ctrl+C to stop the server")
     
-    # Start the Flask web server
     app.run(debug=True, host='127.0.0.1', port=5000)

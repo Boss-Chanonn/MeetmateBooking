@@ -37,7 +37,7 @@ function Show-Documentation {
     if (Test-Path "README.md") {
         Get-Content "README.md" | Select-Object -First 30
         Write-Host ""
-        Write-Host "📖 Available Documentation:" -ForegroundColor Cyan
+        Write-Host "Available Documentation:" -ForegroundColor Cyan
         Write-Host "  - README.md          - Main application guide" -ForegroundColor White
         Write-Host "  - QUICK_START.md     - 3-step setup guide" -ForegroundColor White
         Write-Host "  - COMPARISON.md      - Technical comparison" -ForegroundColor White

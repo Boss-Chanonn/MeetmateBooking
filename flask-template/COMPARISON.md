@@ -1,8 +1,8 @@
-# 🔄 MeetMate Code Comparison: SQLAlchemy vs SQLite3
+# MeetMate Code Comparison: SQLAlchemy vs SQLite3
 
 This document shows the key differences between the original SQLAlchemy version and the beginner-friendly SQLite3 version of MeetMate.
 
-## 📊 Quick Comparison
+## Quick Comparison
 
 | Aspect | Original (SQLAlchemy) | Beginner-Friendly (SQLite3) |
 |--------|----------------------|----------------------------|
@@ -12,7 +12,7 @@ This document shows the key differences between the original SQLAlchemy version 
 | **Code Visibility** | Abstracted | Explicit |
 | **File Size** | 791 lines | 1,100+ lines (with comments) |
 
-## 🔍 Key Differences
+## Key Differences
 
 ### 1. Database Models vs Raw SQL
 
@@ -150,7 +150,7 @@ finally:
     connection.close()
 ```
 
-## 📚 Educational Benefits
+## Educational Benefits
 
 ### Original Version (SQLAlchemy) Teaches:
 - **ORM Concepts**: Object-relational mapping
@@ -164,7 +164,7 @@ finally:
 - **Transaction Handling**: Manual commit/rollback
 - **Debugging Skills**: Visible query execution
 
-## 🎯 When to Use Each Version
+## When to Use Each Version
 
 ### Use SQLAlchemy Version When:
 - Building production applications
@@ -178,7 +178,7 @@ finally:
 - Teaching database operations
 - Need maximum code transparency
 
-## 🔄 Migration Path
+## Migration Path
 
 Students can progress from the beginner version to the advanced version:
 
@@ -187,7 +187,7 @@ Students can progress from the beginner version to the advanced version:
 3. **Learn SQLAlchemy** - Understand the benefits of ORM
 4. **Choose appropriate tool** - Based on project requirements
 
-## 📋 Code Structure Comparison
+## Code Structure Comparison
 
 ### Function Organization
 
@@ -208,7 +208,7 @@ Both versions organize code similarly:
 - **Beginner version** shows explicit database operations
 - **Original version** is more concise due to ORM abstraction
 
-## 🧪 Testing Both Versions
+## Testing Both Versions
 
 You can run both versions side by side:
 
@@ -222,7 +222,7 @@ python app_beginner.py
 
 Both use the same templates and static files, so the user experience is identical.
 
-## 🎓 Learning Recommendation
+## Learning Recommendation
 
 For students new to web development:
 

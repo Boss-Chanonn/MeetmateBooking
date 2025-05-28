@@ -1,10 +1,10 @@
-# 🚀 MeetMate Quick Start Guide
+# MeetMate Quick Start Guide
 
-## 🎯 About MeetMate
+## About MeetMate
 
-MeetMate is a beginner-friendly Flask application for booking meeting rooms. It uses Python's built-in `sqlite3` module with raw SQL queries, making it perfect for students learning web development and database fundamentals.
+MeetMate is a Flask application for booking meeting rooms. It uses Python's built-in `sqlite3` module with raw SQL queries, making it good for learning web development and database fundamentals.
 
-## ⚡ Quick Start (3 Steps)
+## Quick Start (3 Steps)
 
 ### Step 1: Install Dependencies
 ```powershell
@@ -31,19 +31,19 @@ python run_beginner.py
 ### Step 3: Open Your Browser
 Visit: **http://127.0.0.1:5000**
 
-## 🔑 Default Login Credentials
+## Default Login Credentials
 
 | User Type | Email | Password |
 |-----------|-------|----------|
 | **Admin** | `admin@meetmate.com` | `admin123` |
 | **Regular User** | `user@meetmate.com` | `user123` |
 
-## 📖 Learn More
+## Learn More
 
 - **`README.md`** - Complete application guide
 - **`COMPARISON.md`** - Technical comparison documentation
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Database Issues?
 Delete the `instance/meetmate.db` file and restart the application - it will recreate the database with default data.
@@ -52,7 +52,3 @@ Delete the `instance/meetmate.db` file and restart the application - it will rec
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
-
----
-
-**Ready to learn Flask? Start coding! 🎉**

@@ -21,19 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    // Validate booking form if it exists
+      // Validate booking form if it exists
     const bookingForm = document.querySelector('.booking-form');
     if (bookingForm) {
-        const startTimeInput = document.getElementById('time_start');
-        const endTimeInput = document.getElementById('time_end');
+        const startTime = document.getElementById('time_start');
+        const endTime = document.getElementById('time_end');
         
         bookingForm.addEventListener('submit', function(event) {
-            if (startTimeInput && endTimeInput) {
-                const startTime = startTimeInput.value;
-                const endTime = endTimeInput.value;
-                
-                if (startTime >= endTime) {
+            if (startTime && endTime) {
+                const startTimeValue = startTime.value;
+                const endTimeValue = endTime.value;
+                  if (startTimeValue >= endTimeValue) {
                     event.preventDefault();
                     alert('End time must be after start time.');
                     return false;
