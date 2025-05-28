@@ -18,11 +18,11 @@
                     </a>
                 </div>
                 <nav>
-                    <ul>
-                        {% if session.user_id %}
+                    <ul>                        {% if session.user_id %}
                             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                             {% if session.role != 'admin' %}
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
+                                <li><a href="{{ url_for('history') }}">History</a></li>
                             {% endif %}
                             <li><a href="{{ url_for('profile') }}">Profile</a></li>
                             {% if session.role == 'admin' %}

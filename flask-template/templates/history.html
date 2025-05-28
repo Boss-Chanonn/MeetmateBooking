@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}Booking History{% endblock %}
+
+{% block content %}
+<div class="history-page">
+    <h1>Your Booking History</h1>
+    <p>View all your past and upcoming bookings</p>
+    
+    <div class="history-summary">
+        <div class="summary-card">
+            <div class="summary-header">
+                <h2><i class="fas fa-history"></i> All Your Bookings</h2>
+                <span class="summary-subtitle">Complete booking history</span>
+            </div>
+            
+            {% if bookings %}
+                <div class="history-bookings-list">
+                    {% for booking in bookings %}
+                        <div class="history-booking-item">
+                            <div class="booking-info">
+                                <div class="booking-date-time">
+                                    <div class="booking-date">
+                                        <i class="fas fa-calendar"></i> {{ booking.date }}
+                                    </div>
+                                    <div class="booking-time">
+                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                    </div>
+                                </div>
+                                <div class="booking-details">
+                                    <strong>{{ booking.room_name }}</strong>
+                                    <div class="booking-location">
+                                        <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
+                                    </div>
+                                    {% if booking.notes %}
+                                        <div class="booking-note">{{ booking.notes }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="booking-actions-mini">
+                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-history-bookings">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>You don't have any bookings yet</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book Your First Room</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="history-actions">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a New Room</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .history-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .history-page h1 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .history-page p {
+        color: var(--light-text);
+        margin-bottom: 2rem;
+    }
+    
+    .history-summary {
+        margin-bottom: 2rem;
+    }
+    
+    .summary-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+    }
+    
+    .summary-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .summary-header h2 {
+        color: var(--primary-color);
+        margin: 0;
+        font-size: 1.25rem;
+    }
+    
+    .summary-subtitle {
+        color: var(--light-text);
+        font-size: 0.9rem;
+    }
+    
+    .history-bookings-list {
+        display: grid;
+        gap: 1rem;
+    }
+    
+    .history-booking-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: #f9f9f9;
+        transition: background-color 0.2s;
+    }
+    
+    .history-booking-item:hover {
+        background: #f0f0f0;
+    }
+    
+    .booking-info {
+        flex: 1;
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    
+    .booking-date-time {
+        min-width: 200px;
+    }
+    
+    .booking-date, .booking-time {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .booking-date {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .booking-time {
+        color: var(--dark-text);
+    }
+    
+    .booking-details {
+        flex: 1;
+    }
+    
+    .booking-details strong {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    
+    .booking-location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--light-text);
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .booking-note {
+        color: var(--dark-text);
+        font-style: italic;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background: #fff;
+        border-radius: 4px;
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .booking-actions-mini {
+        min-width: 80px;
+        text-align: right;
+    }
+    
+    .no-history-bookings {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--light-text);
+    }
+    
+    .no-history-bookings i {
+        font-size: 3rem;
+        color: var(--border-color);
+        margin-bottom: 1rem;
+    }
+    
+    .no-history-bookings p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .history-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .history-page {
+            padding: 1rem;
+        }
+        
+        .history-booking-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .booking-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        
+        .booking-date-time {
+            min-width: auto;
+        }
+        
+        .booking-actions-mini {
+            min-width: auto;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .history-actions {
+            flex-direction: column;
+        }
+        
+        .summary-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

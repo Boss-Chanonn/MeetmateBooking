@@ -425,15 +425,15 @@ def dashboard():
     """User dashboard page"""
     connection = get_database_connection()
     cursor = connection.cursor()
+      # Get current user's ID from session
+    user_id = session['user_id']
     
-    # Get current user's ID from session
-    user_id = session['user_id']    # Get all bookings for this user
-    user_bookings = get_user_bookings(user_id)
-    
-    # Initialize variables for today's and upcoming bookings (only needed for admin)
+    # Initialize variables for today's and upcoming bookings
     today_bookings = []
     upcoming_bookings = []
     today_date = ''
+    user_today_bookings = []
+    user_upcoming_bookings = []
     
     # Only fetch today's and upcoming bookings if user is admin
     if session.get('role') == 'admin':
@@ -504,19 +504,76 @@ def dashboard():
                 booking['booked_by'] = f"Admin: {booking['admin_name']}"
             else:
                 booking['booked_by'] = "Self"
-            
-            # Format the date for display
+              # Format the date for display
             booking_date = date.fromisoformat(booking['date'])
             booking['formatted_date'] = booking_date.strftime('%a, %b %d')
             upcoming_bookings.append(booking)
+    else:
+        # For regular users, get their today's and upcoming bookings
+        from datetime import date, timedelta
+        today = date.today()
+        today_str = today.strftime('%Y-%m-%d')
+        today_date = today.strftime('%B %d, %Y')
+        
+        # Calculate date range for upcoming bookings (next 7 days excluding today)
+        tomorrow = today + timedelta(days=1)
+        next_week = today + timedelta(days=7)
+        tomorrow_str = tomorrow.strftime('%Y-%m-%d')
+        next_week_str = next_week.strftime('%Y-%m-%d')
+        
+        # Get user's today's bookings
+        cursor.execute('''
+            SELECT 
+                b.id,
+                b.date,
+                b.time_start,
+                b.time_end,
+                b.notes,
+                r.name as room_name,
+                r.location as room_location
+            FROM bookings b
+            JOIN rooms r ON b.room_id = r.id
+            WHERE b.user_id = ? AND b.date = ?
+            ORDER BY b.time_start
+        ''', (user_id, today_str))
+        
+        for row in cursor.fetchall():
+            booking = dict(row)
+            user_today_bookings.append(booking)
+        
+        # Get user's upcoming bookings (next 7 days)
+        cursor.execute('''
+            SELECT 
+                b.id,
+                b.date,
+                b.time_start,
+                b.time_end,
+                b.notes,
+                r.name as room_name,
+                r.location as room_location
+            FROM bookings b
+            JOIN rooms r ON b.room_id = r.id
+            WHERE b.user_id = ? AND b.date >= ? AND b.date <= ?
+            ORDER BY b.date, b.time_start
+            LIMIT 10
+        ''', (user_id, tomorrow_str, next_week_str))
+        
+        for row in cursor.fetchall():
+            booking = dict(row)
+            # Format the date for display
+            booking_date = date.fromisoformat(booking['date'])
+            booking['formatted_date'] = booking_date.strftime('%a, %b %d')
+            user_upcoming_bookings.append(booking)
     
     connection.close()
-      # Show the dashboard with user's bookings and today's overview
-    return render_template('dashboard.html', 
-                         bookings=user_bookings, 
+    
+    # Show the dashboard with user's bookings and today's overview
+    return render_template('dashboard.html',
                          today_bookings=today_bookings,
                          today_date=today_date,
-                         upcoming_bookings=upcoming_bookings)
+                         upcoming_bookings=upcoming_bookings,
+                         user_today_bookings=user_today_bookings,
+                         user_upcoming_bookings=user_upcoming_bookings)
 
 @app.route('/booking', methods=['GET', 'POST'])
 @login_required
@@ -769,6 +826,17 @@ def profile():
         connection.close()
     
     return redirect(url_for('profile'))
+
+@app.route('/history')
+@login_required
+def history():
+    """User booking history page"""
+    user_id = session['user_id']
+    
+    # Get all bookings for this user
+    user_bookings = get_user_bookings(user_id)
+    
+    return render_template('history.html', bookings=user_bookings)
 
 # Admin routes
 @app.route('/admin')
