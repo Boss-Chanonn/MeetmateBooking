@@ -428,43 +428,47 @@ def dashboard():
     
     # Get current user's ID from session
     user_id = session['user_id']
-    
-    # Get all bookings for this user
+      # Get all bookings for this user
     user_bookings = get_user_bookings(user_id)
     
-    # Get today's date for filtering
-    from datetime import date
-    today = date.today().strftime('%Y-%m-%d')
-    today_date = date.today().strftime('%B %d, %Y')
-    
-    # Get today's bookings with user and room information
-    cursor.execute('''
-        SELECT 
-            b.id,
-            b.date,
-            b.time_start,
-            b.time_end,
-            b.notes,
-            u.username,
-            r.name as room_name,
-            admin.username as admin_name
-        FROM bookings b
-        JOIN users u ON b.user_id = u.id
-        JOIN rooms r ON b.room_id = r.id
-        LEFT JOIN users admin ON b.booking_admin_id = admin.id
-        WHERE b.date = ?
-        ORDER BY b.time_start
-    ''', (today,))
-    
+    # Initialize variables for today's bookings (only needed for admin)
     today_bookings = []
-    for row in cursor.fetchall():
-        booking = dict(row)
-        # Determine who made the booking
-        if booking['admin_name']:
-            booking['booked_by'] = f"Admin: {booking['admin_name']}"
-        else:
-            booking['booked_by'] = "Self"
-        today_bookings.append(booking)
+    today_date = ''
+    
+    # Only fetch today's bookings if user is admin
+    if session.get('role') == 'admin':
+        # Get today's date for filtering
+        from datetime import date
+        today = date.today().strftime('%Y-%m-%d')
+        today_date = date.today().strftime('%B %d, %Y')
+        
+        # Get today's bookings with user and room information
+        cursor.execute('''
+            SELECT 
+                b.id,
+                b.date,
+                b.time_start,
+                b.time_end,
+                b.notes,
+                u.username,
+                r.name as room_name,
+                admin.username as admin_name
+            FROM bookings b
+            JOIN users u ON b.user_id = u.id
+            JOIN rooms r ON b.room_id = r.id
+            LEFT JOIN users admin ON b.booking_admin_id = admin.id
+            WHERE b.date = ?
+            ORDER BY b.time_start
+        ''', (today,))
+        
+        for row in cursor.fetchall():
+            booking = dict(row)
+            # Determine who made the booking
+            if booking['admin_name']:
+                booking['booked_by'] = f"Admin: {booking['admin_name']}"
+            else:
+                booking['booked_by'] = "Self"
+            today_bookings.append(booking)
     
     connection.close()
     
