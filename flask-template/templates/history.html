@@ -35,14 +35,19 @@
                                     {% if booking.notes %}
                                         <div class="booking-note">{{ booking.notes }}</div>
                                     {% endif %}
-                                </div>
-                            </div>
+                                </div>                            </div>
                             <div class="booking-actions-mini">
-                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                   class="btn btn-sm btn-danger"
-                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i> Cancel
-                                </a>
+                                {% if booking.can_cancel %}
+                                    <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </a>
+                                {% else %}
+                                    <span class="booking-status-started">
+                                        <i class="fas fa-play-circle"></i> Started/Completed
+                                    </span>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -191,10 +196,26 @@
         border-radius: 4px;
         border-left: 3px solid var(--primary-color);
     }
-    
-    .booking-actions-mini {
+      .booking-actions-mini {
         min-width: 80px;
         text-align: right;
+    }
+    
+    .booking-status-started {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background-color: var(--light-color);
+        color: var(--light-text);
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: 1px solid var(--border-color);
+    }
+    
+    .booking-status-started i {
+        color: var(--secondary-color);
     }
     
     .no-history-bookings {
@@ -244,11 +265,14 @@
         .booking-date-time {
             min-width: auto;
         }
-        
-        .booking-actions-mini {
+          .booking-actions-mini {
             min-width: auto;
             text-align: left;
             width: 100%;
+        }
+        
+        .booking-status-started {
+            justify-content: flex-start;
         }
         
         .history-actions {

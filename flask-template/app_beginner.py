@@ -836,6 +836,27 @@ def history():
     # Get all bookings for this user
     user_bookings = get_user_bookings(user_id)
     
+    # Get current date and time for comparison
+    from datetime import datetime, date, time
+    now = datetime.now()
+    current_date = now.date()
+    current_time = now.time()
+    
+    # Add cancellation eligibility to each booking
+    for booking in user_bookings:
+        booking_date = date.fromisoformat(booking['date'])
+        booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
+        
+        # Booking can be cancelled if:
+        # 1. It's a future date, OR
+        # 2. It's today but hasn't started yet
+        if booking_date > current_date:
+            booking['can_cancel'] = True
+        elif booking_date == current_date:
+            booking['can_cancel'] = current_time < booking_start_time
+        else:
+            booking['can_cancel'] = False
+    
     return render_template('history.html', bookings=user_bookings)
 
 # Admin routes
