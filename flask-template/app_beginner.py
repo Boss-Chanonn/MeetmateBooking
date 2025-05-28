@@ -427,20 +427,27 @@ def dashboard():
     cursor = connection.cursor()
     
     # Get current user's ID from session
-    user_id = session['user_id']
-      # Get all bookings for this user
+    user_id = session['user_id']    # Get all bookings for this user
     user_bookings = get_user_bookings(user_id)
     
-    # Initialize variables for today's bookings (only needed for admin)
+    # Initialize variables for today's and upcoming bookings (only needed for admin)
     today_bookings = []
+    upcoming_bookings = []
     today_date = ''
     
-    # Only fetch today's bookings if user is admin
+    # Only fetch today's and upcoming bookings if user is admin
     if session.get('role') == 'admin':
         # Get today's date for filtering
-        from datetime import date
-        today = date.today().strftime('%Y-%m-%d')
-        today_date = date.today().strftime('%B %d, %Y')
+        from datetime import date, timedelta
+        today = date.today()
+        today_str = today.strftime('%Y-%m-%d')
+        today_date = today.strftime('%B %d, %Y')
+        
+        # Calculate date range for upcoming bookings (next 7 days excluding today)
+        tomorrow = today + timedelta(days=1)
+        next_week = today + timedelta(days=7)
+        tomorrow_str = tomorrow.strftime('%Y-%m-%d')
+        next_week_str = next_week.strftime('%Y-%m-%d')
         
         # Get today's bookings with user and room information
         cursor.execute('''
@@ -459,7 +466,7 @@ def dashboard():
             LEFT JOIN users admin ON b.booking_admin_id = admin.id
             WHERE b.date = ?
             ORDER BY b.time_start
-        ''', (today,))
+        ''', (today_str,))
         
         for row in cursor.fetchall():
             booking = dict(row)
@@ -469,14 +476,47 @@ def dashboard():
             else:
                 booking['booked_by'] = "Self"
             today_bookings.append(booking)
+        
+        # Get upcoming bookings (next 7 days)
+        cursor.execute('''
+            SELECT 
+                b.id,
+                b.date,
+                b.time_start,
+                b.time_end,
+                b.notes,
+                u.username,
+                r.name as room_name,
+                admin.username as admin_name
+            FROM bookings b
+            JOIN users u ON b.user_id = u.id
+            JOIN rooms r ON b.room_id = r.id
+            LEFT JOIN users admin ON b.booking_admin_id = admin.id
+            WHERE b.date >= ? AND b.date <= ?
+            ORDER BY b.date, b.time_start
+            LIMIT 10
+        ''', (tomorrow_str, next_week_str))
+        
+        for row in cursor.fetchall():
+            booking = dict(row)
+            # Determine who made the booking
+            if booking['admin_name']:
+                booking['booked_by'] = f"Admin: {booking['admin_name']}"
+            else:
+                booking['booked_by'] = "Self"
+            
+            # Format the date for display
+            booking_date = date.fromisoformat(booking['date'])
+            booking['formatted_date'] = booking_date.strftime('%a, %b %d')
+            upcoming_bookings.append(booking)
     
     connection.close()
-    
-    # Show the dashboard with user's bookings and today's overview
+      # Show the dashboard with user's bookings and today's overview
     return render_template('dashboard.html', 
                          bookings=user_bookings, 
                          today_bookings=today_bookings,
-                         today_date=today_date)
+                         today_date=today_date,
+                         upcoming_bookings=upcoming_bookings)
 
 @app.route('/booking', methods=['GET', 'POST'])
 @login_required

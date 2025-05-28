@@ -4,8 +4,7 @@
 
 {% block content %}
 <div class="dashboard">    <h1>Welcome, {{ session.username }}!</h1>
-    
-    {% if session.role == 'admin' %}
+      {% if session.role == 'admin' %}
     <!-- Today's Bookings Overview -->
     <div class="today-summary">
         <div class="summary-card">
@@ -46,7 +45,56 @@
                     <a href="{{ url_for('admin_book') }}" class="btn btn-primary btn-sm">Book for Client</a>
                 </div>
             {% endif %}
-        </div>    </div>
+        </div>
+    </div>
+    
+    <!-- Upcoming Bookings Overview -->
+    <div class="upcoming-summary">
+        <div class="summary-card">
+            <div class="summary-header">
+                <h2><i class="fas fa-calendar-alt"></i> Upcoming Bookings</h2>
+                <span class="summary-subtitle">Next 7 days</span>
+            </div>
+            
+            {% if upcoming_bookings %}
+                <div class="upcoming-bookings-list">
+                    {% for booking in upcoming_bookings %}
+                        <div class="upcoming-booking-item">
+                            <div class="booking-info">
+                                <div class="booking-date-time">
+                                    <div class="booking-date">
+                                        <i class="fas fa-calendar"></i> {{ booking.formatted_date }}
+                                    </div>
+                                    <div class="booking-time">
+                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                    </div>
+                                </div>
+                                <div class="booking-details">
+                                    <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
+                                    {% if booking.notes %}
+                                        <div class="booking-note">{{ booking.notes }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="booking-actions-mini">
+                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-upcoming-bookings">
+                    <i class="fas fa-calendar-check"></i>
+                    <p>No upcoming bookings in the next 7 days</p>
+                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary btn-sm">Book for Client</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
     {% endif %}
     
     {% if session.role != 'admin' %}
