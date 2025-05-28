@@ -96,68 +96,56 @@
         </div>
     </div>
     {% endif %}
-    
-    {% if session.role != 'admin' %}
-    <div class="dashboard-section">
-        <div class="section-header">
-            <h2>Your Bookings</h2>
+      {% if session.role != 'admin' %}
+    <!-- Your Bookings -->
+    <div class="user-bookings-summary">
+        <div class="summary-card">
+            <div class="summary-header">
+                <h2><i class="fas fa-calendar-check"></i> Your Bookings</h2>
+                <span class="summary-subtitle">All your reservations</span>
+            </div>
+            
+            {% if bookings %}
+                <div class="user-bookings-list">
+                    {% for booking in bookings %}
+                        <div class="user-booking-item">
+                            <div class="booking-info">
+                                <div class="booking-date-time">
+                                    <div class="booking-date">
+                                        <i class="fas fa-calendar"></i> {{ booking.date }}
+                                    </div>
+                                    <div class="booking-time">
+                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                    </div>
+                                </div>
+                                <div class="booking-details">
+                                    <strong>{{ booking.room_name }}</strong>
+                                    <div class="booking-location">
+                                        <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
+                                    </div>
+                                    {% if booking.notes %}
+                                        <div class="booking-note">{{ booking.notes }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="booking-actions-mini">
+                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-user-bookings">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>You don't have any bookings yet</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary btn-sm">Book a Room Now</a>
+                </div>
+            {% endif %}
         </div>
-        
-        {% if bookings %}
-            <div class="bookings-list">
-                {% for booking in bookings %}
-                    <div class="booking-card">
-                        <div class="booking-header">
-                            <h3>{{ booking.room_name }}</h3>
-                            <span class="booking-location">{{ booking.room_location }}</span>
-                        </div>
-                        <div class="booking-details">
-                            <div class="booking-date">
-                                <i class="fas fa-calendar"></i> {{ booking.date }}
-                            </div>                            <div class="booking-time">
-                                <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
-                            </div>
-                            {% if booking.notes %}
-                            <div class="booking-notes">
-                                <i class="fas fa-sticky-note"></i> {{ booking.notes }}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="booking-actions">
-                            <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" class="btn btn-danger btn-sm" 
-                               onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                <i class="fas fa-times"></i> Cancel
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <i class="fas fa-calendar-times empty-icon"></i>
-                <p>You don't have any bookings yet.</p>
-                <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
-            </div>
-        {% endif %}    </div>
-    {% endif %}
+    </div>    {% endif %}
 </div>
-
-<style>
-    .booking-notes {
-        margin-top: 0.5rem;
-        color: #666;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        font-style: italic;
-        background-color: #f9f9f9;
-        padding: 0.5rem;
-        border-radius: 4px;
-        border-left: 3px solid var(--primary-color);
-    }
-    
-    .booking-notes i {
-        color: var(--primary-color);
-        margin-right: 0.25rem;
-    }
-</style>
 {% endblock %}
