@@ -16,38 +16,42 @@
             
             {% if bookings %}
                 <div class="history-bookings-list">
-                    {% for booking in bookings %}
-                        <div class="history-booking-item">
-                            <div class="booking-info">
-                                <div class="booking-date-time">
-                                    <div class="booking-date">
-                                        <i class="fas fa-calendar"></i> {{ booking.date }}
+                    {% for booking in bookings %}                        <div class="history-booking-item">
+                            <div class="booking-content">
+                                <div class="booking-info">
+                                    <div class="booking-date-time">
+                                        <div class="booking-date">
+                                            <i class="fas fa-calendar"></i> {{ booking.date }}
+                                        </div>
+                                        <div class="booking-time">
+                                            <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                        </div>
                                     </div>
-                                    <div class="booking-time">
-                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                    <div class="booking-details">
+                                        <strong>{{ booking.room_name }}</strong>
+                                        <div class="booking-location">
+                                            <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
+                                        </div>
+                                        {% if booking.notes %}
+                                            <div class="booking-note">{{ booking.notes }}</div>
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong>
-                                    <div class="booking-location">
-                                        <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
-                                    </div>
-                                    {% if booking.notes %}
-                                        <div class="booking-note">{{ booking.notes }}</div>
+                                <div class="booking-actions">
+                                    {% if booking.can_cancel %}
+                                        <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                           class="btn btn-cancel"
+                                           onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </a>
+                                    {% else %}
+                                        <div class="booking-status">
+                                            <span class="status-badge status-completed">
+                                                <i class="fas fa-check-circle"></i> Completed
+                                            </span>
+                                        </div>
                                     {% endif %}
-                                </div>                            </div>
-                            <div class="booking-actions-mini">
-                                {% if booking.can_cancel %}
-                                    <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </a>
-                                {% else %}
-                                    <span class="booking-status-started">
-                                        <i class="fas fa-play-circle"></i> Started/Completed
-                                    </span>
-                                {% endif %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -122,26 +126,32 @@
         display: grid;
         gap: 1rem;
     }
-    
-    .history-booking-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
+      .history-booking-item {
+        background: white;
         border: 1px solid var(--border-color);
-        border-radius: 6px;
-        background: #f9f9f9;
-        transition: background-color 0.2s;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+        overflow: hidden;
     }
     
     .history-booking-item:hover {
-        background: #f0f0f0;
+        border-color: var(--primary-color);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .booking-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
     }
     
     .booking-info {
         flex: 1;
         display: flex;
-        gap: 1.5rem;
+        gap: 2rem;
         align-items: center;
     }
     
@@ -195,27 +205,62 @@
         background: #fff;
         border-radius: 4px;
         border-left: 3px solid var(--primary-color);
-    }
-      .booking-actions-mini {
-        min-width: 80px;
+    }      .booking-actions {
+        min-width: 150px;
         text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
     
-    .booking-status-started {
+    .booking-actions .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    
+    .btn-cancel {
+        background-color: #dc3545;
+        color: white;
+        border: 1px solid #dc3545;
+    }
+    
+    .btn-cancel:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
+    
+    .booking-status {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .status-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.25rem 0.75rem;
-        background-color: var(--light-color);
-        color: var(--light-text);
-        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 500;
-        border: 1px solid var(--border-color);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
-    .booking-status-started i {
-        color: var(--secondary-color);
+    .status-completed {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+    
+    .status-badge i {
+        font-size: 0.9rem;
     }
     
     .no-history-bookings {
@@ -248,11 +293,17 @@
         .history-page {
             padding: 1rem;
         }
-        
-        .history-booking-item {
+          .history-booking-item {
             flex-direction: column;
             align-items: flex-start;
             gap: 1rem;
+        }
+        
+        .booking-content {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            width: 100%;
         }
         
         .booking-info {
@@ -264,14 +315,13 @@
         
         .booking-date-time {
             min-width: auto;
-        }
-          .booking-actions-mini {
+        }          .booking-actions {
             min-width: auto;
             text-align: left;
             width: 100%;
         }
         
-        .booking-status-started {
+        .booking-status {
             justify-content: flex-start;
         }
         
