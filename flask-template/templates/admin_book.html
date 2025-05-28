@@ -4,7 +4,9 @@
 
 {% block content %}
 <div class="booking-page">
-    <h1>Book a Room for Client</h1>      <form method="POST" action="{{ url_for('admin_book') }}" class="booking-form">
+    <h1>Book a Room for Client</h1>
+    
+    <form method="POST" action="{{ url_for('admin_book') }}" class="form">
         <div class="form-group">
             <label for="client_id">Select Client</label>
             <select id="client_id" name="client_id" required>
@@ -30,25 +32,24 @@
             <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
         </div>
         
-        <div class="form-row">
-            <div class="form-group half">
-                <label for="time_start">Start Time</label>
-                <select id="time_start" name="time_start" required>
-                    <option value="" disabled selected>-- Select start time --</option>
-                    {% for hour in range(8, 22) %}
-                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="form-group half">
-                <label for="time_end">End Time</label>
-                <select id="time_end" name="time_end" required>
-                    <option value="" disabled selected>-- Select end time --</option>
-                    {% for hour in range(9, 23) %}
-                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                    {% endfor %}
-                </select>            </div>
+        <div class="form-group">
+            <label for="time_start">Start Time</label>
+            <select id="time_start" name="time_start" required>
+                <option value="" disabled selected>-- Select start time --</option>
+                {% for hour in range(8, 22) %}
+                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="time_end">End Time</label>
+            <select id="time_end" name="time_end" required>
+                <option value="" disabled selected>-- Select end time --</option>
+                {% for hour in range(9, 23) %}
+                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                {% endfor %}
+            </select>
         </div>
         
         <div class="form-group">
@@ -57,13 +58,13 @@
         </div>
         
         <div class="form-group">
-            <label class="checkbox-container">
+            <label>
                 <input type="checkbox" id="is_recurring" name="is_recurring" value="1">
-                <span class="checkbox-label">Make this a recurring booking</span>
+                Make this a recurring booking
             </label>
         </div>
         
-        <div id="recurring-options" class="form-group hidden">
+        <div id="recurring-options" class="form-group" style="display: none;">
             <label for="recurrence_type">Recurrence Pattern</label>
             <select id="recurrence_type" name="recurrence_type">
                 <option value="weekly">Weekly</option>
@@ -71,11 +72,9 @@
                 <option value="monthly">Monthly</option>
             </select>
             
-            <div class="form-row">
-                <div class="form-group half">
-                    <label for="recurrence_count">Number of occurrences</label>
-                    <input type="number" id="recurrence_count" name="recurrence_count" min="2" max="12" value="4">
-                </div>
+            <div class="form-group">
+                <label for="recurrence_count">Number of occurrences</label>
+                <input type="number" id="recurrence_count" name="recurrence_count" min="2" max="12" value="4">
             </div>
         </div>
         
@@ -102,37 +101,37 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Recurring booking toggle
-        const isRecurringCheckbox = document.getElementById('is_recurring');
-        const recurringOptions = document.getElementById('recurring-options');
+        var isRecurringCheckbox = document.getElementById('is_recurring');
+        var recurringOptions = document.getElementById('recurring-options');
         
-        isRecurringCheckbox.addEventListener('change', function() {
+        isRecurringCheckbox.onchange = function() {
             if (this.checked) {
-                recurringOptions.classList.remove('hidden');
+                recurringOptions.style.display = 'block';
             } else {
-                recurringOptions.classList.add('hidden');
+                recurringOptions.style.display = 'none';
             }
-        });
+        };
         
         // Set min date to today
-        const dateInput = document.getElementById('date');
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
+        var dateInput = document.getElementById('date');
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
         
-        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        var formattedDate = yyyy + '-' + mm + '-' + dd;
         dateInput.min = formattedDate;
         
         // Validate end time is after start time
-        const startTimeSelect = document.getElementById('time_start');
-        const endTimeSelect = document.getElementById('time_end');
+        var startTimeSelect = document.getElementById('time_start');
+        var endTimeSelect = document.getElementById('time_end');
         
         // Function to update end time options based on start time
         function updateEndTimeOptions() {
-            const startTime = startTimeSelect.value;
+            var startTime = startTimeSelect.value;
             if (!startTime) return;
             
-            const startHour = parseInt(startTime.split(':')[0], 10);
+            var startHour = parseInt(startTime.split(':')[0], 10);
             
             // Clear existing options except the first placeholder
             while (endTimeSelect.options.length > 1) {
@@ -141,12 +140,12 @@
             
             // Add options that are at least 1 hour later than start time
             // Maximum is start time + 8 hours (for 8-hour booking) or 22 (10 PM), whichever is smaller
-            const maxEndHour = Math.min(startHour + 8, 22);
+            var maxEndHour = Math.min(startHour + 8, 22);
             
-            for (let hour = startHour + 1; hour <= maxEndHour; hour++) {
-                const option = document.createElement('option');
-                option.value = `${String(hour).padStart(2, '0')}:00`;
-                option.text = `${String(hour).padStart(2, '0')}:00`;
+            for (var hour = startHour + 1; hour <= maxEndHour; hour++) {
+                var option = document.createElement('option');
+                option.value = String(hour).padStart(2, '0') + ':00';
+                option.text = String(hour).padStart(2, '0') + ':00';
                 endTimeSelect.add(option);
             }
             
@@ -156,12 +155,12 @@
         
         // Function to validate booking duration
         function validateBookingDuration() {
-            const startTime = startTimeSelect.value;
-            const endTime = endTimeSelect.value;
+            var startTime = startTimeSelect.value;
+            var endTime = endTimeSelect.value;
             
             if (startTime && endTime) {
-                const startHour = parseInt(startTime.split(':')[0], 10);
-                const endHour = parseInt(endTime.split(':')[0], 10);
+                var startHour = parseInt(startTime.split(':')[0], 10);
+                var endHour = parseInt(endTime.split(':')[0], 10);
                 
                 if (endHour - startHour < 1 || endHour - startHour > 8) {
                     alert('Booking duration must be between 1 and 8 hours.');
@@ -171,38 +170,8 @@
         }
         
         // Add event listeners
-        startTimeSelect.addEventListener('change', updateEndTimeOptions);
-        endTimeSelect.addEventListener('change', validateBookingDuration);
+        startTimeSelect.onchange = updateEndTimeOptions;
+        endTimeSelect.onchange = validateBookingDuration;
     });
 </script>
-
-<style>
-    .hidden {
-        display: none;
-    }
-    
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        margin: 0.5rem 0;
-    }
-    
-    .checkbox-container input {
-        margin-right: 0.5rem;
-    }
-    
-    .checkbox-label {
-        font-weight: normal;
-    }
-    
-    textarea {
-        width: 100%;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        padding: 0.5rem;
-        font-family: inherit;
-        font-size: 0.9rem;
-    }
-</style>
 {% endblock %}

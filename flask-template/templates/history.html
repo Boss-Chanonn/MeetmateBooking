@@ -7,58 +7,54 @@
     <h1>Your Booking History</h1>
     <p>View all your past and upcoming bookings</p>
     
-    <div class="history-summary">
-        <div class="summary-card">
-            <div class="summary-header">
-                <h2><i class="fas fa-history"></i> All Your Bookings</h2>
-                <span class="summary-subtitle">Complete booking history</span>
+    <div class="history-section">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>All Your Bookings</h2>
+                <span class="subtitle">Complete booking history</span>
             </div>
             
             {% if bookings %}
-                <div class="history-bookings-list">
-                    {% for booking in bookings %}                        <div class="history-booking-item">
-                            <div class="booking-content">
-                                <div class="booking-info">
-                                    <div class="booking-date-time">
-                                        <div class="booking-date">
-                                            <i class="fas fa-calendar"></i> {{ booking.date }}
-                                        </div>
-                                        <div class="booking-time">
-                                            <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
-                                        </div>
-                                    </div>
-                                    <div class="booking-details">
-                                        <strong>{{ booking.room_name }}</strong>
-                                        <div class="booking-location">
-                                            <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
-                                        </div>
-                                        {% if booking.notes %}
-                                            <div class="booking-note">{{ booking.notes }}</div>
-                                        {% endif %}
-                                    </div>
+                <div class="bookings-list">
+                    {% for booking in bookings %}
+                        <div class="booking-item">
+                            <div class="booking-info">
+                                <div class="booking-date">
+                                    {{ booking.date }}
                                 </div>
-                                <div class="booking-actions">
-                                    {% if booking.can_cancel %}
-                                        <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                           class="btn btn-cancel"
-                                           onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                            <i class="fas fa-times"></i> Cancel
-                                        </a>
-                                    {% else %}
-                                        <div class="booking-status">
-                                            <span class="status-badge status-completed">
-                                                <i class="fas fa-check-circle"></i> Completed
-                                            </span>
-                                        </div>
+                                <div class="booking-time">
+                                    {{ booking.time_start }} - {{ booking.time_end }}
+                                </div>
+                                <div class="booking-details">
+                                    <strong>{{ booking.room_name }}</strong>
+                                    <div class="booking-location">
+                                        {{ booking.room_location }}
+                                    </div>
+                                    {% if booking.notes %}
+                                        <div class="booking-notes">{{ booking.notes }}</div>
                                     {% endif %}
                                 </div>
+                            </div>
+                            <div class="booking-actions">
+                                {% if booking.can_cancel %}
+                                    <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                       class="btn btn-danger btn-small"
+                                       onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                        Cancel
+                                    </a>
+                                {% else %}
+                                    <div class="booking-status">
+                                        <span class="status-completed">
+                                            Completed
+                                        </span>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="no-history-bookings">
-                    <i class="fas fa-calendar-times"></i>
+                <div class="no-bookings">
                     <p>You don't have any bookings yet</p>
                     <a href="{{ url_for('booking') }}" class="btn btn-primary">Book Your First Room</a>
                 </div>
@@ -66,7 +62,7 @@
         </div>
     </div>
     
-    <div class="history-actions">
+    <div class="page-actions">
         <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
         <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a New Room</a>
     </div>
@@ -76,7 +72,7 @@
 {% block styles %}
 <style>
     .history-page {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 2rem;
     }
@@ -84,95 +80,72 @@
     .history-page h1 {
         color: var(--primary-color);
         margin-bottom: 0.5rem;
+        font-size: 1.75rem;
     }
     
     .history-page p {
         color: var(--light-text);
         margin-bottom: 2rem;
+        font-size: 1rem;
     }
     
-    .history-summary {
+    .history-section {
         margin-bottom: 2rem;
     }
     
-    .summary-card {
+    .section-card {
         background: white;
         border-radius: 8px;
         box-shadow: var(--shadow);
         padding: 1.5rem;
     }
     
-    .summary-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .section-header {
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
         border-bottom: 1px solid var(--border-color);
     }
     
-    .summary-header h2 {
+    .section-header h2 {
         color: var(--primary-color);
         margin: 0;
         font-size: 1.25rem;
     }
     
-    .summary-subtitle {
+    .subtitle {
         color: var(--light-text);
         font-size: 0.9rem;
     }
     
-    .history-bookings-list {
+    .bookings-list {
         display: grid;
         gap: 1rem;
     }
-      .history-booking-item {
-        background: white;
+    
+    .booking-item {
+        background: #f9f9f9;
         border: 1px solid var(--border-color);
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        transition: all 0.2s ease;
-        overflow: hidden;
-    }
-    
-    .history-booking-item:hover {
-        border-color: var(--primary-color);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    .booking-content {
+        padding: 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .booking-item:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
     .booking-info {
         flex: 1;
         display: flex;
-        gap: 2rem;
-        align-items: center;
-    }
-    
-    .booking-date-time {
-        min-width: 200px;
+        flex-direction: column;
+        gap: 0.5rem;
     }
     
     .booking-date, .booking-time {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.25rem;
         font-size: 0.9rem;
-    }
-    
-    .booking-date {
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-    
-    .booking-time {
         color: var(--dark-text);
     }
     
@@ -188,15 +161,11 @@
     }
     
     .booking-location {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
         color: var(--light-text);
         font-size: 0.9rem;
-        margin-bottom: 0.25rem;
     }
     
-    .booking-note {
+    .booking-notes {
         color: var(--dark-text);
         font-style: italic;
         font-size: 0.9rem;
@@ -205,7 +174,9 @@
         background: #fff;
         border-radius: 4px;
         border-left: 3px solid var(--primary-color);
-    }      .booking-actions {
+    }
+    
+    .booking-actions {
         min-width: 150px;
         text-align: right;
         display: flex;
@@ -213,7 +184,7 @@
         align-items: center;
     }
     
-    .booking-actions .btn {
+    .btn {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
         font-weight: 500;
@@ -223,17 +194,15 @@
         white-space: nowrap;
     }
     
-    .btn-cancel {
+    .btn-danger {
         background-color: #dc3545;
         color: white;
         border: 1px solid #dc3545;
     }
     
-    .btn-cancel:hover {
+    .btn-danger:hover {
         background-color: #c82333;
         border-color: #bd2130;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
     }
     
     .booking-status {
@@ -241,46 +210,28 @@
         justify-content: flex-end;
     }
     
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+    .status-completed {
+        background: #10b981;
+        color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
     
-    .status-completed {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-    }
-    
-    .status-badge i {
-        font-size: 0.9rem;
-    }
-    
-    .no-history-bookings {
+    .no-bookings {
         text-align: center;
         padding: 3rem 1rem;
         color: var(--light-text);
     }
     
-    .no-history-bookings i {
-        font-size: 3rem;
-        color: var(--border-color);
-        margin-bottom: 1rem;
-    }
-    
-    .no-history-bookings p {
+    .no-bookings p {
         margin-bottom: 1.5rem;
         font-size: 1.1rem;
     }
     
-    .history-actions {
+    .page-actions {
         display: flex;
         gap: 1rem;
         justify-content: center;
@@ -293,17 +244,11 @@
         .history-page {
             padding: 1rem;
         }
-          .history-booking-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-        }
         
-        .booking-content {
+        .booking-item {
             flex-direction: column;
             align-items: flex-start;
             gap: 1rem;
-            width: 100%;
         }
         
         .booking-info {
@@ -313,9 +258,7 @@
             width: 100%;
         }
         
-        .booking-date-time {
-            min-width: auto;
-        }          .booking-actions {
+        .booking-actions {
             min-width: auto;
             text-align: left;
             width: 100%;
@@ -325,11 +268,11 @@
             justify-content: flex-start;
         }
         
-        .history-actions {
+        .page-actions {
             flex-direction: column;
         }
         
-        .summary-header {
+        .section-header {
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5rem;

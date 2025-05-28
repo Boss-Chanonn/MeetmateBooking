@@ -3,194 +3,188 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="dashboard">    <h1>Welcome, {{ session.username }}!</h1>
-      {% if session.role == 'admin' %}
-    <!-- Today's Bookings Overview -->
-    <div class="today-summary">
-        <div class="summary-card">
-            <div class="summary-header">
-                <h2><i class="fas fa-calendar-day"></i> Today's Bookings Overview</h2>
-                <span class="summary-date">{{ today_date }}</span>
+<div class="dashboard">
+    <h1>Welcome, {{ session.username }}!</h1>
+    
+    {% if session.role == 'admin' %}
+    <!-- Admin Dashboard -->
+    <div class="dashboard-section">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Today's Bookings</h2>
+                <span class="date">{{ today_date }}</span>
             </div>
             
             {% if today_bookings %}
-                <div class="today-bookings-list">
+                <div class="bookings-list">
                     {% for booking in today_bookings %}
-                        <div class="today-booking-item">
+                        <div class="booking-item">
                             <div class="booking-info">
                                 <div class="booking-time">
-                                    <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
+                                    {{ booking.time_start }} - {{ booking.time_end }}
                                 </div>
                                 <div class="booking-details">
                                     <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
                                     {% if booking.notes %}
-                                        <div class="booking-note">{{ booking.notes }}</div>
+                                        <div class="booking-notes">{{ booking.notes }}</div>
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="booking-actions-mini">
+                            <div class="booking-actions">
                                 <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                   class="btn btn-sm btn-danger"
+                                   class="btn btn-danger btn-small"
                                    onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i>
+                                    Cancel
                                 </a>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="no-bookings-today">
-                    <i class="fas fa-calendar-times"></i>
+                <div class="no-bookings">
                     <p>No bookings scheduled for today</p>
-                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary btn-sm">Book for Client</a>
+                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
                 </div>
             {% endif %}
         </div>
     </div>
     
-    <!-- Upcoming Bookings Overview -->
-    <div class="upcoming-summary">
-        <div class="summary-card">
-            <div class="summary-header">
-                <h2><i class="fas fa-calendar-alt"></i> Upcoming Bookings</h2>
-                <span class="summary-subtitle">Next 7 days</span>
+    <div class="dashboard-section">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Upcoming Bookings</h2>
+                <span class="subtitle">Next 7 days</span>
             </div>
             
             {% if upcoming_bookings %}
-                <div class="upcoming-bookings-list">
+                <div class="bookings-list">
                     {% for booking in upcoming_bookings %}
-                        <div class="upcoming-booking-item">
+                        <div class="booking-item">
                             <div class="booking-info">
-                                <div class="booking-date-time">
-                                    <div class="booking-date">
-                                        <i class="fas fa-calendar"></i> {{ booking.formatted_date }}
-                                    </div>
-                                    <div class="booking-time">
-                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
-                                    </div>
+                                <div class="booking-date">
+                                    {{ booking.formatted_date }}
+                                </div>
+                                <div class="booking-time">
+                                    {{ booking.time_start }} - {{ booking.time_end }}
                                 </div>
                                 <div class="booking-details">
                                     <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
                                     {% if booking.notes %}
-                                        <div class="booking-note">{{ booking.notes }}</div>
+                                        <div class="booking-notes">{{ booking.notes }}</div>
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="booking-actions-mini">
+                            <div class="booking-actions">
                                 <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                   class="btn btn-sm btn-danger"
+                                   class="btn btn-danger btn-small"
                                    onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i>
+                                    Cancel
                                 </a>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="no-upcoming-bookings">
-                    <i class="fas fa-calendar-check"></i>
+                <div class="no-bookings">
                     <p>No upcoming bookings in the next 7 days</p>
-                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary btn-sm">Book for Client</a>
-                </div>
-            {% endif %}
-        </div>    </div>
-    {% endif %}
-      {% if session.role != 'admin' %}
-    <!-- Today's Bookings for User -->
-    <div class="user-today-summary">
-        <div class="summary-card">
-            <div class="summary-header">
-                <h2><i class="fas fa-calendar-day"></i> Today's Bookings</h2>
-                <span class="summary-date">{{ today_date }}</span>
-            </div>
-            
-            {% if user_today_bookings %}
-                <div class="user-today-bookings-list">
-                    {% for booking in user_today_bookings %}
-                        <div class="user-today-booking-item">
-                            <div class="booking-info">
-                                <div class="booking-time">
-                                    <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
-                                </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong>
-                                    <div class="booking-location">
-                                        <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
-                                    </div>
-                                    {% if booking.notes %}
-                                        <div class="booking-note">{{ booking.notes }}</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="booking-actions-mini">
-                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                   class="btn btn-sm btn-danger"
-                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="no-user-today-bookings">
-                    <i class="fas fa-calendar-times"></i>
-                    <p>No bookings scheduled for today</p>
-                    <a href="{{ url_for('booking') }}" class="btn btn-primary btn-sm">Book a Room Now</a>
+                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
                 </div>
             {% endif %}
         </div>
     </div>
     
-    <!-- Upcoming Bookings for User -->
-    <div class="user-upcoming-summary">
-        <div class="summary-card">
-            <div class="summary-header">
-                <h2><i class="fas fa-calendar-alt"></i> Upcoming Bookings</h2>
-                <span class="summary-subtitle">Next 7 days</span>
+    {% else %}
+    <!-- User Dashboard -->
+    <div class="dashboard-section">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Today's Bookings</h2>
+                <span class="date">{{ today_date }}</span>
             </div>
             
-            {% if user_upcoming_bookings %}
-                <div class="user-upcoming-bookings-list">
-                    {% for booking in user_upcoming_bookings %}
-                        <div class="user-upcoming-booking-item">
+            {% if user_today_bookings %}
+                <div class="bookings-list">
+                    {% for booking in user_today_bookings %}
+                        <div class="booking-item">
                             <div class="booking-info">
-                                <div class="booking-date-time">
-                                    <div class="booking-date">
-                                        <i class="fas fa-calendar"></i> {{ booking.formatted_date }}
-                                    </div>
-                                    <div class="booking-time">
-                                        <i class="fas fa-clock"></i> {{ booking.time_start }} - {{ booking.time_end }}
-                                    </div>
+                                <div class="booking-time">
+                                    {{ booking.time_start }} - {{ booking.time_end }}
                                 </div>
                                 <div class="booking-details">
                                     <strong>{{ booking.room_name }}</strong>
                                     <div class="booking-location">
-                                        <i class="fas fa-map-marker-alt"></i> {{ booking.room_location }}
+                                        {{ booking.room_location }}
                                     </div>
                                     {% if booking.notes %}
-                                        <div class="booking-note">{{ booking.notes }}</div>
+                                        <div class="booking-notes">{{ booking.notes }}</div>
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="booking-actions-mini">
+                            <div class="booking-actions">
                                 <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                   class="btn btn-sm btn-danger"
+                                   class="btn btn-danger btn-small"
                                    onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i>
+                                    Cancel
                                 </a>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="no-user-upcoming-bookings">
-                    <i class="fas fa-calendar-check"></i>
-                    <p>No upcoming bookings in the next 7 days</p>
-                    <a href="{{ url_for('booking') }}" class="btn btn-primary btn-sm">Book a Room Now</a>
+                <div class="no-bookings">
+                    <p>No bookings scheduled for today</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
                 </div>
             {% endif %}
         </div>
-    </div>{% endif %}
+    </div>
+    
+    <div class="dashboard-section">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Upcoming Bookings</h2>
+                <span class="subtitle">Next 7 days</span>
+            </div>
+            
+            {% if user_upcoming_bookings %}
+                <div class="bookings-list">
+                    {% for booking in user_upcoming_bookings %}
+                        <div class="booking-item">
+                            <div class="booking-info">
+                                <div class="booking-date">
+                                    {{ booking.formatted_date }}
+                                </div>
+                                <div class="booking-time">
+                                    {{ booking.time_start }} - {{ booking.time_end }}
+                                </div>
+                                <div class="booking-details">
+                                    <strong>{{ booking.room_name }}</strong>
+                                    <div class="booking-location">
+                                        {{ booking.room_location }}
+                                    </div>
+                                    {% if booking.notes %}
+                                        <div class="booking-notes">{{ booking.notes }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="booking-actions">
+                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                   class="btn btn-danger btn-small"
+                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-bookings">
+                    <p>No upcoming bookings in the next 7 days</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

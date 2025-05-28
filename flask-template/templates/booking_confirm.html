@@ -6,44 +6,44 @@
 <div class="booking-page">
     <h1>Confirm Your Booking</h1>
     
-    <div class="confirmation-card">
-        <div class="confirmation-header">
+    <div class="confirm-card">
+        <div class="confirm-header">
             <h2>Booking Details</h2>
         </div>
         
-        <div class="confirmation-details">
-            <div class="detail-row">
-                <span class="detail-label">Room:</span>
-                <span class="detail-value">{{ room.name }}</span>
+        <div class="confirm-details">
+            <div class="detail-item">
+                <span class="label">Room:</span>
+                <span class="value">{{ room.name }}</span>
             </div>
             
-            <div class="detail-row">
-                <span class="detail-label">Location:</span>
-                <span class="detail-value">{{ room.location }}</span>
+            <div class="detail-item">
+                <span class="label">Location:</span>
+                <span class="value">{{ room.location }}</span>
             </div>
             
-            <div class="detail-row">
-                <span class="detail-label">Capacity:</span>
-                <span class="detail-value">{{ room.capacity }} people</span>
+            <div class="detail-item">
+                <span class="label">Capacity:</span>
+                <span class="value">{{ room.capacity }} people</span>
             </div>
             
-            <div class="detail-row">
-                <span class="detail-label">Date:</span>
-                <span class="detail-value">{{ booking_date }}</span>
+            <div class="detail-item">
+                <span class="label">Date:</span>
+                <span class="value">{{ booking_date }}</span>
             </div>
             
-            <div class="detail-row">
-                <span class="detail-label">Time:</span>
-                <span class="detail-value">{{ time_start }} - {{ time_end }}</span>
+            <div class="detail-item">
+                <span class="label">Time:</span>
+                <span class="value">{{ time_start }} - {{ time_end }}</span>
             </div>
             
-            <div class="detail-row">
-                <span class="detail-label">Duration:</span>
-                <span class="detail-value">{{ duration }} hour(s)</span>
+            <div class="detail-item">
+                <span class="label">Duration:</span>
+                <span class="value">{{ duration }} hour(s)</span>
             </div>
         </div>
         
-        <div class="confirmation-actions">
+        <div class="confirm-actions">
             <form method="POST" action="{{ url_for('confirm_booking') }}">
                 <input type="hidden" name="room_id" value="{{ room.id }}">
                 <input type="hidden" name="date" value="{{ booking_date }}">
@@ -58,66 +58,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    .confirmation-card {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: var(--shadow);
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    .confirmation-header {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .confirmation-header h2 {
-        color: var(--primary-color);
-        margin-bottom: 0;
-    }
-    
-    .confirmation-details {
-        margin-bottom: 2rem;
-    }
-    
-    .detail-row {
-        display: flex;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .detail-row:last-child {
-        border-bottom: none;
-    }
-    
-    .detail-label {
-        font-weight: 600;
-        width: 100px;
-        color: var(--dark-text);
-    }
-    
-    .detail-value {
-        flex: 1;
-    }
-    
-    .confirmation-actions {
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-color);
-    }
-    
-    .action-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    @media (max-width: 576px) {
-        .action-buttons {
-            flex-direction: column;
-        }
-    }
-</style>
 {% endblock %}

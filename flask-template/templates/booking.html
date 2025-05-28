@@ -6,7 +6,7 @@
 <div class="booking-page">
     <h1>Book a Meeting Room</h1>
     
-    <form method="POST" action="{{ url_for('booking') }}" class="booking-form">
+    <form method="POST" action="{{ url_for('booking') }}" class="form">
         <div class="form-group">
             <label for="room_id">Select Room</label>
             <select id="room_id" name="room_id" required>
@@ -20,32 +20,34 @@
         <div class="form-group">
             <label for="date">Date</label>
             <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
-        </div>        <div class="form-row">
-            <div class="form-group half">
-                <label for="time_start">Start Time</label>
-                <select id="time_start" name="time_start" required>
-                    <option value="" disabled selected>-- Select start time --</option>
-                    {% for hour in range(8, 22) %}
-                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="form-group half">
-                <label for="time_end">End Time</label>
-                <select id="time_end" name="time_end" required>
-                    <option value="" disabled selected>-- Select end time --</option>
-                    {% for hour in range(9, 23) %}
-                        <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                    {% endfor %}
-                </select>
-            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="time_start">Start Time</label>
+            <select id="time_start" name="time_start" required>
+                <option value="" disabled selected>-- Select start time --</option>
+                {% for hour in range(8, 22) %}
+                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="time_end">End Time</label>
+            <select id="time_end" name="time_end" required>
+                <option value="" disabled selected>-- Select end time --</option>
+                {% for hour in range(9, 23) %}
+                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                {% endfor %}
+            </select>
         </div>
         
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Book Room</button>
         </div>
-    </form>    <div class="booking-info">
+    </form>
+    
+    <div class="booking-info">
         <h3>Booking Information</h3>
         <ul>
             <li>Rooms are available Monday to Friday, 8:00 AM to 10:00 PM</li>
@@ -62,23 +64,24 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Set min date to today
-        const dateInput = document.getElementById('date');
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        var dateInput = document.getElementById('date');
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        var formattedDate = yyyy + '-' + mm + '-' + dd;
         dateInput.min = formattedDate;
         
         // Validate end time is after start time
-        const startTimeSelect = document.getElementById('time_start');
-        const endTimeSelect = document.getElementById('time_end');
-          // Function to update end time options based on start time
+        var startTimeSelect = document.getElementById('time_start');
+        var endTimeSelect = document.getElementById('time_end');
+        
+        // Function to update end time options based on start time
         function updateEndTimeOptions() {
-            const startTime = startTimeSelect.value;
+            var startTime = startTimeSelect.value;
             if (!startTime) return;
             
-            const startHour = parseInt(startTime.split(':')[0], 10);
+            var startHour = parseInt(startTime.split(':')[0], 10);
             
             // Clear existing options except the first placeholder
             while (endTimeSelect.options.length > 1) {
@@ -87,11 +90,11 @@
             
             // Add options that are at least 1 hour later than start time
             // Maximum is start time + 8 hours (for 8-hour booking) or 22 (10 PM), whichever is smaller
-            const maxEndHour = Math.min(startHour + 8, 22);
+            var maxEndHour = Math.min(startHour + 8, 22);
             
-            for (let hour = startHour + 1; hour <= maxEndHour; hour++) {
-                const option = document.createElement('option');
-                const timeStr = `${String(hour).padStart(2, '0')}:00`;
+            for (var hour = startHour + 1; hour <= maxEndHour; hour++) {
+                var option = document.createElement('option');
+                var timeStr = String(hour).padStart(2, '0') + ':00';
                 option.value = timeStr;
                 option.text = timeStr;
                 endTimeSelect.add(option);
@@ -104,12 +107,13 @@
                 endTimeSelect.selectedIndex = 0;
             }
         }
-          // Function to validate maximum booking duration (8 hours)
+        
+        // Function to validate maximum booking duration (8 hours)
         function validateBookingDuration() {
             if (startTimeSelect.value && endTimeSelect.value) {
-                const startHour = parseInt(startTimeSelect.value.split(':')[0], 10);
-                const endHour = parseInt(endTimeSelect.value.split(':')[0], 10);
-                const duration = endHour - startHour;
+                var startHour = parseInt(startTimeSelect.value.split(':')[0], 10);
+                var endHour = parseInt(endTimeSelect.value.split(':')[0], 10);
+                var duration = endHour - startHour;
                 
                 if (duration > 8) {
                     endTimeSelect.setCustomValidity('Maximum booking duration is 8 hours');
@@ -119,12 +123,12 @@
             }
         }
         
-        startTimeSelect.addEventListener('change', function() {
+        startTimeSelect.onchange = function() {
             updateEndTimeOptions();
             validateBookingDuration();
-        });
+        };
         
-        endTimeSelect.addEventListener('change', validateBookingDuration);
+        endTimeSelect.onchange = validateBookingDuration;
     });
 </script>
 {% endblock %}

@@ -2,23 +2,22 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin-additions.css')}}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
     </head>
-
+    
     <body>
         <header>
-            <div class="navbar">
+            <div class="header-content">
                 <div class="logo">
-                    <a href="{{ url_for('index') }}">
-                        <i class="fas fa-calendar-check"></i>MeetMate
-                    </a>
+                    <a href="{{ url_for('index') }}">MeetMate</a>
                 </div>
                 <nav>
-                    <ul>                        {% if session.user_id %}
+                    <ul>
+                        {% if session.user_id %}
                             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                             {% if session.role != 'admin' %}
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
@@ -27,7 +26,7 @@
                             <li><a href="{{ url_for('profile') }}">Profile</a></li>
                             {% if session.role == 'admin' %}
                                 <li><a href="{{ url_for('admin') }}">Admin</a></li>
-                                <li><a href="{{ url_for('admin_book') }}" class="book-for-client">Book for Client</a></li>
+                                <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
                             {% endif %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                         {% else %}
@@ -42,7 +41,7 @@
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-messages-container">
+                <div class="flash-messages">
                     {% for category, message in messages %}
                         <div class="flash-message {{ category }}">
                             {{ message }}
@@ -54,9 +53,10 @@
         {% endwith %}
 
         <div class="container">
-            {% block content %}
-            {% endblock %}
-        </div>        <footer>
+            {% block content %}{% endblock %}
+        </div>
+
+        <footer>
             <p>&copy; 2025 MeetMate. All rights reserved.</p>
         </footer>
 

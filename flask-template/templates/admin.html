@@ -19,7 +19,8 @@
                 <h2>Users</h2>
             </div>
             
-            <div class="table-responsive">                <table class="admin-table">
+            <div class="table-responsive">
+                <table class="admin-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -86,15 +87,19 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>        </div>
-          <!-- Bookings Tab -->        <div id="bookings-tab" class="tab-pane">
+            </div>
+        </div>
+        
+        <!-- Bookings Tab -->
+        <div id="bookings-tab" class="tab-pane">
             <div class="section-header">
                 <h2>All Bookings</h2>
                 <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
             </div>
             
             <div class="table-responsive">
-                <table class="admin-table">                    <thead>
+                <table class="admin-table">
+                    <thead>
                         <tr>
                             <th>ID</th>                            
                             <th>User</th>
@@ -111,7 +116,8 @@
                             <tr>                                
                                 <td>{{ booking.id }}</td>
                                 <td>{{ booking.username }}</td>
-                                <td>{{ booking.room_name }}</td>                                <td>{{ booking.date }}</td>
+                                <td>{{ booking.room_name }}</td>                                
+                                <td>{{ booking.date }}</td>
                                 <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
                                 <td>{{ booking.booked_by }}</td>
                                 <td>{{ booking.notes|default('-', true) }}</td>
@@ -137,7 +143,7 @@
         <span class="close">&times;</span>
         <h2>Add New Room</h2>
         
-        <form method="POST" action="{{ url_for('add_room') }}">
+        <form method="POST" action="{{ url_for('add_room') }}" class="booking-form">
             <div class="form-group">
                 <label for="name">Room Name</label>
                 <input type="text" id="name" name="name" required>
@@ -165,7 +171,8 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Edit User</h2>
-          <form method="POST" action="" id="edit-user-form">
+        
+        <form method="POST" action="" id="edit-user-form" class="booking-form">
             <div class="form-group">
                 <label for="edit-username">Username</label>
                 <input type="text" id="edit-username" name="username" required>
@@ -217,71 +224,85 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Tab handling
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+        var tabButtons = document.querySelectorAll('.tab-btn');
+        var tabPanes = document.querySelectorAll('.tab-pane');
         
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
+        for (var i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].onclick = function() {
+                var targetTab = this.getAttribute('data-tab');
+                
                 // Remove active class from all buttons and panes
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.remove('active'));
+                for (var j = 0; j < tabButtons.length; j++) {
+                    tabButtons[j].classList.remove('active');
+                }
+                for (var k = 0; k < tabPanes.length; k++) {
+                    tabPanes[k].classList.remove('active');
+                }
                 
                 // Add active class to clicked button and corresponding pane
-                button.classList.add('active');
-                document.getElementById(button.dataset.tab).classList.add('active');
-            });
-        });
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+            };
+        }
         
         // Add Room Modal
-        const addRoomModal = document.getElementById('add-room-modal');
-        const addRoomBtn = document.getElementById('add-room-btn');
-        const closeButtons = document.querySelectorAll('.modal .close');
+        var addRoomModal = document.getElementById('add-room-modal');
+        var addRoomBtn = document.getElementById('add-room-btn');
+        var closeButtons = document.querySelectorAll('.modal .close');
         
-        addRoomBtn.addEventListener('click', () => {
+        addRoomBtn.onclick = function() {
             addRoomModal.style.display = 'block';
-        });
+        };
         
-        closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
+        for (var i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].onclick = function() {
                 addRoomModal.style.display = 'none';
                 editUserModal.style.display = 'none';
-            });
-        });
+            };
+        }
         
         // Edit User Modal
-        const editUserModal = document.getElementById('edit-user-modal');
-        const editUserForm = document.getElementById('edit-user-form');
-        const editUserButtons = document.querySelectorAll('.edit-user-btn');
+        var editUserModal = document.getElementById('edit-user-modal');
+        var editUserForm = document.getElementById('edit-user-form');
+        var editUserButtons = document.querySelectorAll('.edit-user-btn');
         
-        editUserButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const userId = button.dataset.id;
-                const username = button.dataset.username;
-                const email = button.dataset.email;
-                const role = button.dataset.role;
+        for (var i = 0; i < editUserButtons.length; i++) {
+            editUserButtons[i].onclick = function() {
+                var userId = this.getAttribute('data-id');
+                var username = this.getAttribute('data-username');
+                var email = this.getAttribute('data-email');
+                var firstname = this.getAttribute('data-firstname');
+                var lastname = this.getAttribute('data-lastname');
+                var dob = this.getAttribute('data-dob');
+                var address = this.getAttribute('data-address');
+                var role = this.getAttribute('data-role');
                 
                 // Set form action
-                editUserForm.action = `/admin/edit_user/${userId}`;
+                editUserForm.action = '/admin/edit_user/' + userId;
                 
                 // Fill form fields
                 document.getElementById('edit-username').value = username;
                 document.getElementById('edit-email').value = email;
+                document.getElementById('edit-firstname').value = firstname || '';
+                document.getElementById('edit-lastname').value = lastname || '';
+                document.getElementById('edit-dob').value = dob || '';
+                document.getElementById('edit-address').value = address || '';
                 document.getElementById('edit-role').value = role;
                 
                 // Show modal
                 editUserModal.style.display = 'block';
-            });
-        });
+            };
+        }
         
         // Close modals when clicking outside
-        window.addEventListener('click', (event) => {
+        window.onclick = function(event) {
             if (event.target == addRoomModal) {
                 addRoomModal.style.display = 'none';
             }
             if (event.target == editUserModal) {
                 editUserModal.style.display = 'none';
             }
-        });
+        };
     });
 </script>
 {% endblock %}
