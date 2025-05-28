@@ -184,16 +184,23 @@ footer {
 .auth-container {
     text-align: center;
     padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f9f9f9; /* Matches the body background */
+    margin: 0; /* Remove any default margin */
 }
 
 .auth-form {
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for better visibility */
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
+    border: 1px solid #ddd; /* Subtle border for contrast */
 }
 
 .auth-form h1 {
@@ -309,10 +316,6 @@ footer {
 .section-header h2 {
     color: #4a6fa5;
     margin: 0;
-}
-
-.bookings-list {
-    /* Simple layout instead of grid */
 }
 
 .booking-card {
@@ -725,10 +728,6 @@ footer {
     margin-bottom: 2rem;
 }
 
-.history-bookings-list {
-    /* Simple list layout */
-}
-
 .history-booking-item {
     background: white;
     border: 1px solid #ddd;
@@ -739,10 +738,6 @@ footer {
 
 .history-booking-item:hover {
     border-color: #4a6fa5;
-}
-
-.booking-content {
-    /* Simple content layout */
 }
 
 .booking-date-time {
