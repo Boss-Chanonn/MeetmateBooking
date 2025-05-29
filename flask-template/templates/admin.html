@@ -120,13 +120,16 @@
                                 <td>{{ booking.date }}</td>
                                 <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
                                 <td>{{ booking.booked_by }}</td>
-                                <td>{{ booking.notes|default('-', true) }}</td>
-                                <td>
-                                    <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                        Cancel
-                                    </a>
+                                <td>{{ booking.notes|default('-', true) }}</td>                                <td>
+                                    {% if booking.can_cancel %}
+                                        <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                            Cancel
+                                        </a>
+                                    {% elif booking.status == 'Complete' %}
+                                        <span class="status-completed">Complete</span>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
