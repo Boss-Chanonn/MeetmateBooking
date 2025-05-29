@@ -568,8 +568,11 @@ footer {
 .modal-content {
     position: relative;
     background-color: white;
-    margin: 10% auto;
-    padding: 2rem;
+    margin: auto;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     max-width: 500px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
