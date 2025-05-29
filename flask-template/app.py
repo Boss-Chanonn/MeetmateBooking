@@ -97,7 +97,8 @@ def initialize_database():
 
 def create_default_data_if_needed(cursor, connection):
     """Create default admin user and sample rooms if database is empty"""
-    # Check if users exist    cursor.execute("SELECT COUNT(*) as count FROM users")
+    # Check if users exist
+    cursor.execute("SELECT COUNT(*) as count FROM users")
     user_count = cursor.fetchone()['count']
     
     if user_count == 0:
