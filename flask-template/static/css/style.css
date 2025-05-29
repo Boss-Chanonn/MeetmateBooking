@@ -572,7 +572,7 @@ footer {
     padding-left: 3rem;
     padding-right: 3rem;
     padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
     max-width: 500px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
