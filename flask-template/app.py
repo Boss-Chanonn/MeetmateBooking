@@ -8,7 +8,7 @@ import os
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timedelta, date, time
+from datetime import datetime, timedelta
 import calendar
 from functools import wraps
 
@@ -429,11 +429,6 @@ def dashboard():
       # Get current user's ID from session
     user_id = session['user_id']
     
-    # Get current date and time for comparison
-    now = datetime.now()
-    current_date = now.date()
-    current_time = now.time()
-    
     # Initialize variables for today's and upcoming bookings
     today_bookings = []
     upcoming_bookings = []
@@ -481,18 +476,6 @@ def dashboard():
                 booking['booked_by'] = f"Admin: {booking['admin_name']}"
             else:
                 booking['booked_by'] = "Self"
-            
-            # Add time-based logic for today's bookings
-            booking_date = date.fromisoformat(booking['date'])
-            booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
-            
-            if booking_date == current_date:
-                booking['can_cancel'] = current_time < booking_start_time
-                booking['status'] = 'Complete' if current_time >= booking_start_time else None
-            else:
-                booking['can_cancel'] = True
-                booking['status'] = None
-                
             today_bookings.append(booking)
         
         # Get upcoming bookings (next 7 days)
@@ -525,11 +508,6 @@ def dashboard():
               # Format the date for display
             booking_date = date.fromisoformat(booking['date'])
             booking['formatted_date'] = booking_date.strftime('%a, %b %d')
-            
-            # Add time-based logic for upcoming bookings (all future bookings can be cancelled)
-            booking['can_cancel'] = True
-            booking['status'] = None
-            
             upcoming_bookings.append(booking)
     else:
         # For regular users, get their today's and upcoming bookings
@@ -562,18 +540,6 @@ def dashboard():
         
         for row in cursor.fetchall():
             booking = dict(row)
-            
-            # Add time-based logic for today's bookings
-            booking_date = date.fromisoformat(booking['date'])
-            booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
-            
-            if booking_date == current_date:
-                booking['can_cancel'] = current_time < booking_start_time
-                booking['status'] = 'Complete' if current_time >= booking_start_time else None
-            else:
-                booking['can_cancel'] = True
-                booking['status'] = None
-                
             user_today_bookings.append(booking)
         
         # Get user's upcoming bookings (next 7 days)
@@ -598,11 +564,6 @@ def dashboard():
             # Format the date for display
             booking_date = date.fromisoformat(booking['date'])
             booking['formatted_date'] = booking_date.strftime('%a, %b %d')
-            
-            # Add time-based logic for upcoming bookings (all future bookings can be cancelled)
-            booking['can_cancel'] = True
-            booking['status'] = None
-            
             user_upcoming_bookings.append(booking)
     
     connection.close()
@@ -877,25 +838,26 @@ def history():
     user_bookings = get_user_bookings(user_id)
     
     # Get current date and time for comparison
+    from datetime import datetime, date, time
     now = datetime.now()
     current_date = now.date()
     current_time = now.time()
     
-    # Add cancellation eligibility and completion status to each booking
+    # Add cancellation eligibility to each booking
     for booking in user_bookings:
         booking_date = date.fromisoformat(booking['date'])
         booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
         
+        # Booking can be cancelled if:
+        # 1. It's a future date, OR
+        # 2. It's today but hasn't started yet
         if booking_date > current_date:
             booking['can_cancel'] = True
-            booking['status'] = None
         elif booking_date == current_date:
             booking['can_cancel'] = current_time < booking_start_time
-            booking['status'] = 'Complete' if current_time >= booking_start_time else None
         else:
             booking['can_cancel'] = False
-            booking['status'] = 'Complete'
-
+    
     return render_template('history.html', bookings=user_bookings)
 
 # Admin routes
@@ -914,12 +876,7 @@ def admin():
     # Get all rooms
     cursor.execute("SELECT * FROM rooms ORDER BY name")
     rooms = [dict(row) for row in cursor.fetchall()]
-      # Get current date and time for comparison
-    now = datetime.now()
-    current_date = now.date()
-    current_time = now.time()
-    
-    # Get today's date for filtering
+      # Get today's date for filtering
     from datetime import date
     today = date.today().strftime('%Y-%m-%d')
     
@@ -950,18 +907,6 @@ def admin():
             booking['booked_by'] = f"Admin: {booking['admin_name']}"
         else:
             booking['booked_by'] = "Self"
-        
-        # Add time-based logic for today's bookings
-        booking_date = date.fromisoformat(booking['date'])
-        booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
-        
-        if booking_date == current_date:
-            booking['can_cancel'] = current_time < booking_start_time
-            booking['status'] = 'Complete' if current_time >= booking_start_time else None
-        else:
-            booking['can_cancel'] = True
-            booking['status'] = None
-            
         today_bookings.append(booking)
     
     # Get all bookings with user and room information
@@ -990,21 +935,6 @@ def admin():
             booking['booked_by'] = f"Admin: {booking['admin_name']}"
         else:
             booking['booked_by'] = "Self"
-        
-        # Add time-based logic for all bookings
-        booking_date = date.fromisoformat(booking['date'])
-        booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
-        
-        if booking_date > current_date:
-            booking['can_cancel'] = True
-            booking['status'] = None
-        elif booking_date == current_date:
-            booking['can_cancel'] = current_time < booking_start_time
-            booking['status'] = 'Complete' if current_time >= booking_start_time else None
-        else:
-            booking['can_cancel'] = False
-            booking['status'] = 'Complete'
-            
         all_bookings.append(booking)
     
     connection.close()

@@ -131,52 +131,6 @@ footer {
     font-size: 0.875rem;
 }
 
-/* Small button for dashboard and inline actions */
-.btn-small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.btn-danger.btn-small {
-    background-color: #dc3545;
-    color: white;
-    border: 1px solid #dc3545;
-}
-
-.btn-danger.btn-small:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-    transform: translateY(-1px);
-}
-
-/* Small button for dashboard and inline actions */
-.btn-small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.btn-danger.btn-small {
-    background-color: #dc3545;
-    color: white;
-    border: 1px solid #dc3545;
-}
-
-.btn-danger.btn-small:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-    transform: translateY(-1px);
-}
-
 /* Forms */
 .form-group {
     margin-bottom: 1.5rem;
@@ -408,10 +362,6 @@ footer {
     padding: 1rem;
     border-top: 1px solid #ddd;
     text-align: right;
-    min-width: 120px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 }
 
 .empty-state {
@@ -461,7 +411,9 @@ footer {
     margin-top: 0.5rem;
 }
 
-/* Booking lists - removed empty ruleset */
+.today-bookings-list, .upcoming-bookings-list, .user-today-bookings-list, .user-upcoming-bookings-list {
+    /* Simple list styling */
+}
 
 .today-booking-item, .upcoming-booking-item, .user-today-booking-item, .user-upcoming-booking-item {
     padding: 0.75rem;
@@ -873,12 +825,6 @@ footer {
 .status-completed {
     background: #10b981;
     color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .no-history-bookings {
