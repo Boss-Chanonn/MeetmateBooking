@@ -18,7 +18,7 @@ pip install flask werkzeug
 
 ### 2. Run the Application
 ```bash
-python run_beginner.py
+python app.py
 ```
 
 ### 3. Open Your Browser
