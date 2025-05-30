@@ -4,39 +4,9 @@
 
 {% block content %}
 <div class="payment-page">
-    <h1>Complete Your Booking</h1>
+    <h1>Payment Information</h1>
     
     <div class="payment-card">
-        <div class="payment-summary">
-            <h2>Booking Summary</h2>
-            <div class="summary-details">
-                <div class="detail-item">
-                    <span class="label">Room:</span>
-                    <span class="value">{{ room.name }}</span>
-                </div>
-                
-                <div class="detail-item">
-                    <span class="label">Location:</span>
-                    <span class="value">{{ room.location }}</span>
-                </div>
-                
-                <div class="detail-item">
-                    <span class="label">Date:</span>
-                    <span class="value">{{ booking_date }}</span>
-                </div>
-                
-                <div class="detail-item">
-                    <span class="label">Time:</span>
-                    <span class="value">{{ time_start }} - {{ time_end }}</span>
-                </div>
-                
-                <div class="detail-item">
-                    <span class="label">Duration:</span>
-                    <span class="value">{{ duration }} hour(s)</span>
-                </div>
-            </div>
-        </div>
-        
         <form method="POST" action="{{ url_for('process_payment') }}" class="form">
             <h2>Payment Details</h2>
             
@@ -59,9 +29,8 @@
                 <label for="cvv">CVV</label>
                 <input type="text" id="cvv" name="cvv" pattern="[0-9]{3,4}" maxlength="4" placeholder="3-4 digits" required>
             </div>
-            
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Pay and Complete Booking</button>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Complete Payment</button>
                 <a href="{{ url_for('booking') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
