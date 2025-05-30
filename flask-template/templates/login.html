@@ -6,9 +6,10 @@
     <title>MeetMate - Login</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="login-body">
+<body class="modern-login-body">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-messages">
@@ -22,27 +23,40 @@
         {% endif %}
     {% endwith %}
 
-    <div class="login-container">
-        <div class="login-form">
-            <div class="login-header">
-                <h2>MeetMate</h2>
-                <p>Please sign in to your account</p>
+    <div class="modern-login-container">
+        <div class="login-card">
+            <div class="login-image-side">
+                <img src="{{ url_for('static', filename='images/meeting-room.jpg') }}" alt="Meeting Room" class="meeting-room-image">
             </div>
             
-            <form method="POST" action="{{ url_for('login') }}" class="form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+            <div class="login-form-side">
+                <div class="meetmate-logo">
+                    <div class="logo-container">
+                        <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate Logo">
+                    </div>
+                    <h2>MeetMate</h2>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                
+                <form method="POST" action="{{ url_for('login') }}" class="modern-form">
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Log in</button>
+                </form>
+                
+                <div class="login-options">
+                    <a href="{{ url_for('register') }}" class="signup-link">Sign up</a>
+                    <a href="#" class="forgot-password">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn btn-primary">Log in</button>
-            </form>
-            
-            <div class="login-links">
-                <a href="{{ url_for('register') }}">Don't have an account? Sign up</a>
+                
+                <div class="social-login">
+                    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon google"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-icon apple"><i class="fab fa-apple"></i></a>
+                </div>
             </div>
         </div>
     </div>

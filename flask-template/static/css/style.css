@@ -207,52 +207,173 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Modern Login Styles */
+/* Modern Login Styles - NEW */
+.modern-login-body {
+    font-family: Arial, sans-serif;
+    background-color: #1d3557;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
 .modern-login-container {
-    display: block;
-    max-width: 1100px;
+    width: 90%;
+    max-width: 1000px;
     margin: 0 auto;
-    border-radius: 12px;
+}
+
+.login-card {
+    display: flex;
+    background-color: #b9c2d1;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.login-image-container {
+.login-image-side {
+    width: 50%;
+}
+
+.meeting-room-image {
     width: 100%;
-    text-align: center;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 20px 0 0 20px;
+}
+
+.login-form-side {
+    width: 50%;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.login-image {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-}
-
-.login-form-container {
-    width: 100%;
-    padding: 3rem;
-    text-align: center;
-    background-color: #b8c2d1;
-}
-
-.login-logo {
+.meetmate-logo {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.login-logo img {
-    width: 80px;
-    height: 80px;
-    background-color: #2c6ba0;
-    border-radius: 10px;
-    padding: 10px;
+.logo-container {
+    width: 100px;
+    height: 100px;
+    background-color: #2a6da9;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1rem;
 }
 
-.modern-login-form {
+.logo-container img {
+    width: 70%;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.meetmate-logo h2 {
+    color: #2a6da9;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.modern-form {
     width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
+    max-width: 400px;
+}
+
+.modern-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.modern-form input {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #8ce99a;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #69db7c;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin: 1.5rem 0;
+}
+
+.signup-link, .forgot-password {
+    color: #2a6da9;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.signup-link:hover, .forgot-password:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px);
+}
+
+.social-icon.facebook {
+    background-color: #1877f2;
+}
+
+.social-icon.google {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+.social-icon.apple {
+    background-color: #000;
 }
 
 /* Flash Messages */
@@ -901,5 +1022,23 @@ footer {
     
     .booking-status {
         text-align: center;
+    }
+
+    /* Modern Login Styles - Responsive */
+    .login-card {
+        flex-direction: column;
+    }
+
+    .login-image-side, .login-form-side {
+        width: 100%;
+    }
+
+    .meeting-room-image {
+        border-radius: 20px 20px 0 0;
+        max-height: 250px;
+    }
+
+    .login-form-side {
+        padding: 1.5rem;
     }
 }
