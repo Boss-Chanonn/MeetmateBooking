@@ -333,6 +333,11 @@ footer {
     margin: 1rem 0;
 }
 
+/* Specific styling for single link in login-options */
+.login-options.center-link {
+    justify-content: center;
+}
+
 .signup-link, .forgot-password {
     color: #2a6da9;
     font-size: 0.9rem;
@@ -1041,7 +1046,14 @@ footer {
     text-decoration: none;
     display: block;
     text-align: center;
-    margin-top: 1rem;
+    margin: 0 auto;
+}
+
+.center-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.2rem;
 }
 
 .login-link:hover {
