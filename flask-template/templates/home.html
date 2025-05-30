@@ -3,34 +3,80 @@
 {% block title %}Welcome to MeetMate{% endblock %}
 
 {% block content %}
-<div class="home-page">
-    <div class="hero">
-        <h1>Welcome to MeetMate</h1>
-        <p class="hero-subtitle">The simple meeting room booking solution</p>
-        
-        <div class="hero-buttons">
-            {% if session.user_id %}
-                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-                <a href="{{ url_for('register') }}" class="btn">Register</a>
-                <a href="{{ url_for('about') }}" class="btn btn-secondary">Learn More</a>
-            {% endif %}
+<div class="home-page">    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">MeetMate</span></h1>
+            <p class="hero-subtitle">Simplified meeting room booking for modern teams</p>
+            
+            <div class="hero-buttons">
+                {% if session.user_id %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register Now</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline">Learn More</a>
+                {% endif %}
+            </div>
         </div>
     </div>
-    
-    <div class="features">
+      <div class="features">
         <div class="feature">
+            <div class="feature-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
             <h3>Easy Booking</h3>
-            <p>Book meeting rooms quickly with our simple interface</p>
+            <p>Book meeting rooms in seconds with our intuitive interface</p>
         </div>
         <div class="feature">
+            <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+            </div>
             <h3>Real-time Availability</h3>
-            <p>See room availability in real time</p>
+            <p>See up-to-the-minute room availability across your organization</p>
         </div>
         <div class="feature">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
             <h3>Team Management</h3>
-            <p>Admins can manage users and rooms efficiently</p>
+            <p>Powerful admin tools to manage users, rooms, and bookings</p>
+        </div>
+    </div>
+
+    <div class="room-showcase">
+        <h2>Available Meeting Rooms</h2>
+        <p class="showcase-subtitle">Browse our selection of meeting rooms and book instantly</p>
+        
+        <div class="room-grid">
+            {% for room in rooms %}
+            <div class="room-card">
+                <div class="room-card-header">
+                    <h3>{{ room.name }}</h3>
+                    <span class="room-capacity">Capacity: {{ room.capacity }} people</span>
+                </div>                <div class="room-card-body">
+                    <div class="room-location">
+                        <i class="fas fa-map-marker-alt"></i> {{ room.location }}
+                    </div>
+                    <p class="room-description">
+                        {% if room.capacity > 10 %}
+                            A spacious conference room ideal for large team meetings, workshops, and presentations.
+                        {% elif room.capacity > 5 %}
+                            A modern meeting space perfect for mid-sized team discussions and client presentations.
+                        {% else %}
+                            An intimate meeting space ideal for small teams and focused discussions.
+                        {% endif %}
+                    </p>
+                    <div class="room-features">
+                        <span class="feature-tag">Wi-Fi</span>
+                        <span class="feature-tag">Projector</span>
+                        <span class="feature-tag">Whiteboard</span>
+                        {% if room.capacity > 8 %}<span class="feature-tag">Video Conferencing</span>{% endif %}
+                        {% if "Conference" in room.name %}<span class="feature-tag">Catering</span>{% endif %}
+                    </div>
+                </div><div class="room-card-footer">
+                    <a href="{{ url_for('login') }}?next=booking&room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

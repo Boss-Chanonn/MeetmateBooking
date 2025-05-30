@@ -318,7 +318,9 @@ def index():
     """Home page"""
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
-    return render_template('home.html')
+    # Get all rooms to display on homepage
+    rooms = get_all_rooms()
+    return render_template('home.html', rooms=rooms)
 
 @app.route('/about')
 def about():
