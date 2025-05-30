@@ -247,7 +247,7 @@ footer {
 
 .login-form-side {
     width: 50%;
-    padding: 2rem;
+    padding: 2rem 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -256,18 +256,18 @@ footer {
 
 .meetmate-logo {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .logo-container {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     background-color: #2a6da9;
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.5rem;
 }
 
 .logo-container img {
@@ -302,6 +302,11 @@ footer {
     box-sizing: border-box;
 }
 
+.register-form input {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+}
+
 .login-btn {
     width: 100%;
     padding: 1rem;
@@ -312,7 +317,7 @@ footer {
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     transition: background-color 0.3s;
 }
 
@@ -325,7 +330,7 @@ footer {
     justify-content: space-between;
     width: 100%;
     max-width: 400px;
-    margin: 1.5rem 0;
+    margin: 1rem 0;
 }
 
 .signup-link, .forgot-password {
@@ -974,6 +979,58 @@ footer {
     border-top: 1px solid #ddd;
 }
 
+/* Registration form specific styles */
+.register-form {
+    padding-right: 5px;
+    margin-bottom: 5px;
+}
+
+.register-form .form-group {
+    margin-bottom: 0.5rem;
+}
+
+/* Additional optimization for registration page */
+.register-form small.form-text {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.register-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: #fff;
+    box-sizing: border-box;
+    resize: none;
+    font-family: inherit;
+}
+
+.register-form small.form-text {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.login-link {
+    color: #2a6da9;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
 /* Mobile responsiveness - Simple approach */
 @media (max-width: 768px) {
     .container {
@@ -1036,9 +1093,12 @@ footer {
     .meeting-room-image {
         border-radius: 20px 20px 0 0;
         max-height: 250px;
-    }
-
-    .login-form-side {
+    }    .login-form-side {
         padding: 1.5rem;
+    }
+    
+    .register-form input {
+        padding: 0.75rem;
+        font-size: 0.95rem;
     }
 }

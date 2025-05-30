@@ -6,9 +6,10 @@
     <title>MeetMate - Register</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="login-body">
+<body class="modern-login-body">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-messages">
@@ -22,47 +23,47 @@
         {% endif %}
     {% endwith %}
 
-    <div class="login-container">
-        <div class="login-form">
-            <div class="login-header">
-                <h2>Join MeetMate</h2>
-                <p>Create your account</p>
+    <div class="modern-login-container">
+        <div class="login-card">
+            <div class="login-image-side">
+                <img src="{{ url_for('static', filename='images/meeting-room.jpg') }}" alt="Meeting Room" class="meeting-room-image">
             </div>
             
-            <form method="POST" action="{{ url_for('register') }}" class="form">
-                <div class="form-group">
-                    <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname" required>
-                </div>
-                <div class="form-group">
-                    <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname" name="lastname" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
-                </div>
-                <div class="form-group">
-                    <label for="dob">Date of Birth (Optional)</label>
-                    <input type="date" id="dob" name="dob">
-                </div>
-                <div class="form-group">
-                    <label for="address">Address (Optional)</label>
-                    <textarea id="address" name="address" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign up</button>
-            </form>
+            <div class="login-form-side">
+                <div class="meetmate-logo">
+                    <div class="logo-container">
+                        <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate Logo">
+                    </div>
+                    <h2>MeetMate</h2>                </div>
+                
+                <form method="POST" action="{{ url_for('register') }}" class="modern-form register-form">
+                    <div class="form-group">
+                        <input type="text" id="firstname" name="firstname" placeholder="First name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="lastname" name="lastname" placeholder="Last name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="dob" name="dob">
+                        <small class="form-text">Date of Birth (Optional)</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="address" name="address" placeholder="Address (Optional)">
+                    </div>
+                    <button type="submit" class="login-btn">Sign up</button>
+                </form>
             
-            <div class="login-links">
-                <a href="{{ url_for('login') }}">Already have an account? Log in</a>
+            <div class="login-options">
+                <a href="{{ url_for('login') }}" class="login-link">Already have an account? Log in</a>
             </div>
         </div>
     </div>
