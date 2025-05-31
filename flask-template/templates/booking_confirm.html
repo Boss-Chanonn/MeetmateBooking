@@ -1,17 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Confirm Booking{% endblock %}
+{% block title %}Confirm Booking - Step 3{% endblock %}
 
 {% block content %}
 <div class="booking-page">
-    <h1>Confirm Your Booking</h1>
+    <div class="booking-header">
+        <h1>Confirm Your Booking</h1>
+        <div class="booking-steps">
+            <div class="step completed">
+                <span class="step-number">✓</span>
+                <span class="step-text">Select Room Type & Time</span>
+            </div>
+            <div class="step completed">
+                <span class="step-number">✓</span>
+                <span class="step-text">Choose Specific Room</span>
+            </div>
+            <div class="step active">
+                <span class="step-number">3</span>
+                <span class="step-text">Confirm & Pay</span>
+            </div>
+        </div>
+    </div>
     
     <div class="confirm-card">
         <div class="confirm-header">
             <h2>Booking Details</h2>
         </div>
-        
-        <div class="confirm-details">
+          <div class="confirm-details">
+            <div class="detail-item">
+                <span class="label">Room Type:</span>
+                <span class="value">{{ room.room_type }}</span>
+            </div>
+            
             <div class="detail-item">
                 <span class="label">Room:</span>
                 <span class="value">{{ room.name }}</span>

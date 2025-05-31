@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Select Room - Step 2{% endblock %}
+
+{% block content %}
+<div class="booking-page">
+    <div class="booking-header">
+        <h1>Select Your {{ booking_data.room_type }}</h1>
+        <div class="booking-steps">
+            <div class="step completed">
+                <span class="step-number">✓</span>
+                <span class="step-text">Select Room Type & Time</span>
+            </div>
+            <div class="step active">
+                <span class="step-number">2</span>
+                <span class="step-text">Choose Specific Room</span>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <span class="step-text">Confirm & Pay</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-summary">
+        <h3>Booking Details</h3>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <i class="fas fa-calendar"></i>
+                <span>{{ booking_data.date }}</span>
+            </div>
+            <div class="summary-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ booking_data.time_start }} - {{ booking_data.time_end }}</span>
+            </div>
+            <div class="summary-item">
+                <i class="fas fa-hourglass-half"></i>
+                <span>{{ booking_data.duration }} hour{% if booking_data.duration != 1 %}s{% endif %}</span>
+            </div>
+        </div>
+    </div>
+    
+    <form method="POST" action="{{ url_for('select_room') }}" class="room-selection-form">
+        <div class="available-rooms">
+            <h3>Available {{ booking_data.room_type }} Rooms</h3>
+            {% if rooms %}
+                <div class="room-grid">
+                    {% for room in rooms %}
+                    <div class="room-card">
+                        <input type="radio" id="room_{{ room.id }}" name="room_id" value="{{ room.id }}" required>
+                        <label for="room_{{ room.id }}" class="room-label">
+                            <div class="room-header">
+                                <h4>{{ room.name }}</h4>
+                                <div class="room-capacity">
+                                    <i class="fas fa-users"></i>
+                                    <span>{{ room.capacity }} people</span>
+                                </div>
+                            </div>
+                            <div class="room-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ room.location }}</span>
+                            </div>
+                            <div class="room-features">
+                                {% if room.room_type == 'Circle Table' %}
+                                    <span class="feature-tag">Collaborative</span>
+                                    <span class="feature-tag">Brainstorming</span>
+                                {% elif room.room_type == 'Long Table' %}
+                                    <span class="feature-tag">Presentations</span>
+                                    <span class="feature-tag">Formal Meetings</span>
+                                {% elif room.room_type == 'Square Table' %}
+                                    <span class="feature-tag">Small Teams</span>
+                                    <span class="feature-tag">Interviews</span>
+                                {% endif %}
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-rooms">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>No {{ booking_data.room_type }} rooms are available for the selected time.</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Go Back
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        
+        {% if rooms %}
+        <div class="form-actions">
+            <a href="{{ url_for('booking') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i> Continue to Confirmation
+            </button>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add selection animation
+    const roomInputs = document.querySelectorAll('input[name="room_id"]');
+    roomInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            // Remove selected class from all cards
+            document.querySelectorAll('.room-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to current card
+            if (this.checked) {
+                this.closest('.room-card').classList.add('selected');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

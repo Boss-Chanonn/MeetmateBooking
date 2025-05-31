@@ -64,9 +64,17 @@ def initialize_database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 location TEXT NOT NULL,
-                capacity INTEGER NOT NULL
+                capacity INTEGER NOT NULL,
+                room_type TEXT DEFAULT 'conference'
             )
         ''')
+        
+        # Add room_type column if it doesn't exist (for existing databases)
+        try:
+            cursor.execute('ALTER TABLE rooms ADD COLUMN room_type TEXT DEFAULT "conference"')
+        except sqlite3.OperationalError:
+            # Column already exists, ignore
+            pass
         
         # Bookings table
         cursor.execute('''
@@ -119,8 +127,7 @@ def create_default_data_if_needed(cursor, connection):
         ''', ('testuser', 'user@meetmate.com', user_password, 'Test', 'User', 'user'))
         
         print("Default users created")
-    
-    # Check if rooms exist
+      # Check if rooms exist
     cursor.execute("SELECT COUNT(*) as count FROM rooms")
     room_count = cursor.fetchone()['count']
     
@@ -128,18 +135,33 @@ def create_default_data_if_needed(cursor, connection):
         print("Creating sample rooms...")
         
         rooms = [
-            ('Conference Room A', 'Floor 1, Building A', 10),
-            ('Conference Room B', 'Floor 2, Building A', 8),
-            ('Board Room', 'Floor 3, Building A', 15),
-            ('Small Meeting Room', 'Floor 1, Building B', 4),
-            ('Video Conference Room', 'Floor 2, Building B', 6)
+            # Circle Table rooms (5 rooms, capacity 6-8)
+            ('Circle Table - Alpha', 'Floor 1, East Wing', 6, 'Circle Table'),
+            ('Circle Table - Beta', 'Floor 1, West Wing', 8, 'Circle Table'),
+            ('Circle Table - Gamma', 'Floor 2, East Wing', 6, 'Circle Table'),
+            ('Circle Table - Delta', 'Floor 2, West Wing', 8, 'Circle Table'),
+            ('Circle Table - Epsilon', 'Floor 3, Center', 7, 'Circle Table'),
+            
+            # Long Table rooms (5 rooms, capacity 12-16)
+            ('Long Table - Mercury', 'Floor 1, Conference Wing', 12, 'Long Table'),
+            ('Long Table - Venus', 'Floor 2, Conference Wing', 14, 'Long Table'),
+            ('Long Table - Earth', 'Floor 3, Conference Wing', 16, 'Long Table'),
+            ('Long Table - Mars', 'Floor 1, Executive Wing', 14, 'Long Table'),
+            ('Long Table - Jupiter', 'Floor 2, Executive Wing', 15, 'Long Table'),
+            
+            # Square Table rooms (5 rooms, capacity 4-6)
+            ('Square Table - North', 'Floor 1, Collaboration Zone', 4, 'Square Table'),
+            ('Square Table - South', 'Floor 1, Innovation Hub', 6, 'Square Table'),
+            ('Square Table - East', 'Floor 2, Collaboration Zone', 4, 'Square Table'),
+            ('Square Table - West', 'Floor 2, Innovation Hub', 5, 'Square Table'),
+            ('Square Table - Central', 'Floor 3, Team Area', 6, 'Square Table')
         ]
         
-        for name, location, capacity in rooms:
+        for name, location, capacity, room_type in rooms:
             cursor.execute('''
-                INSERT INTO rooms (name, location, capacity)
-                VALUES (?, ?, ?)
-            ''', (name, location, capacity))
+                INSERT INTO rooms (name, location, capacity, room_type)
+                VALUES (?, ?, ?, ?)
+            ''', (name, location, capacity, room_type))
         
         print("Sample rooms created")
     
@@ -276,6 +298,35 @@ def create_booking(user_id, room_id, date, time_start, time_end, admin_id=None, 
         connection.rollback()
         connection.close()
         return None
+
+def get_rooms_by_type(room_type):
+    """Get all rooms of a specific type"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM rooms WHERE room_type = ? ORDER BY name", (room_type,))
+    rooms = cursor.fetchall()
+    conn.close()
+    return [dict(room) for room in rooms]
+
+def get_available_rooms_by_type(room_type, date, time_start, time_end):
+    """Get available rooms of a specific type for given date and time"""
+    rooms = get_rooms_by_type(room_type)
+    available_rooms = []
+    
+    for room in rooms:
+        if check_room_availability(room['id'], date, time_start, time_end):
+            available_rooms.append(room)
+    
+    return available_rooms
+
+def get_all_room_types():
+    """Get all distinct room types"""
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT room_type FROM rooms ORDER BY room_type")
+    types = cursor.fetchall()
+    conn.close()
+    return [row['room_type'] for row in types]
 
 # Authentication decorators
 def login_required(f):
@@ -620,29 +671,32 @@ def dashboard():
 @app.route('/booking', methods=['GET', 'POST'])
 @login_required
 def booking():
-    """Room booking page"""
+    """Room type selection page - first step of booking"""
     # If user is admin, redirect to admin booking page
     if session.get('role') == 'admin':
         return redirect(url_for('admin_book'))
     
     if request.method == 'GET':
-        # Show booking form
-        rooms = get_all_rooms()
-        current_time = datetime.now()
-        return render_template('booking.html', rooms=rooms, now=current_time)
+        # Show room type selection
+        room_types = get_all_room_types()
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        return render_template('booking.html', room_types=room_types, current_date=current_date)
     
-    # Process booking form (POST request)
+    # Process room type selection (POST request)
+    room_type = request.form.get('room_type')
+    date = request.form.get('date')
+    time_start = request.form.get('time_start')
+    time_end = request.form.get('time_end')
     
-    # Get booking details from form
-    room_id = request.form['room_id']
-    date = request.form['date']
-    time_start = request.form['time_start']
-    time_end = request.form['time_end']
-      # Validate booking duration (must be 1-8 hours)
+    if not all([room_type, date, time_start, time_end]):
+        flash('Please fill in all required fields.', 'error')
+        return redirect(url_for('booking'))
+    
+    # Validate booking duration (must be 1-8 hours)
     try:
-        start_hr = int(time_start.split(':')[0])
-        end_hr = int(time_end.split(':')[0])
-        duration = end_hr - start_hr
+        start_hour = int(time_start.split(':')[0])
+        end_hour = int(time_end.split(':')[0])
+        duration = end_hour - start_hour
         
         if duration < 1 or duration > 8:
             flash(f'Booking duration must be between 1 and 8 hours (you selected {duration} hours)', 'error')
@@ -651,18 +705,57 @@ def booking():
         flash('Invalid time format. Please try again.', 'error')
         return redirect(url_for('booking'))
     
-    # Check if room is available at requested time
-    if not check_room_availability(room_id, date, time_start, time_end):
-        flash('This room is already booked during the selected time. Please choose a different time.', 'error')
-        return redirect(url_for('booking'))
-    
-    # Room is available! Store booking details in session for confirmation page
+    # Store booking details in session and redirect to room selection
     session['booking_data'] = {
-        'room_id': room_id,
+        'room_type': room_type,
         'date': date,
         'time_start': time_start,
-        'time_end': time_end
+        'time_end': time_end,
+        'duration': duration
     }
+    
+    return redirect(url_for('select_room'))
+
+@app.route('/select_room', methods=['GET', 'POST'])
+@login_required
+def select_room():
+    """Room selection page - second step of booking"""
+    if 'booking_data' not in session:
+        flash('Please start the booking process from the beginning.', 'error')
+        return redirect(url_for('booking'))
+    
+    booking_data = session['booking_data']
+    
+    if request.method == 'GET':
+        # Show available rooms of selected type
+        available_rooms = get_available_rooms_by_type(
+            booking_data['room_type'],
+            booking_data['date'],
+            booking_data['time_start'],
+            booking_data['time_end']
+        )
+        
+        if not available_rooms:
+            flash(f'No {booking_data["room_type"]} rooms are available for the selected date and time. Please choose a different time.', 'error')
+            return redirect(url_for('booking'))
+        
+        return render_template('select_room.html', 
+                             rooms=available_rooms, 
+                             booking_data=booking_data)
+    
+    # Process room selection (POST request)
+    room_id = request.form.get('room_id')
+    
+    if not room_id:
+        flash('Please select a room.', 'error')
+        return redirect(url_for('select_room'))
+      # Double-check room availability
+    if not check_room_availability(room_id, booking_data['date'], 
+                                 booking_data['time_start'], booking_data['time_end']):
+        flash('This room is no longer available. Please select a different room.', 'error')
+        return redirect(url_for('select_room'))
+      # Update booking data with selected room
+    session['booking_data']['room_id'] = room_id
     
     # Get room details for confirmation page
     room = get_room_by_id(room_id)
@@ -671,10 +764,10 @@ def booking():
     return render_template(
         'booking_confirm.html',
         room=room,
-        booking_date=date,
-        time_start=time_start,
-        time_end=time_end,
-        duration=duration
+        booking_date=booking_data['date'],
+        time_start=booking_data['time_start'],
+        time_end=booking_data['time_end'],
+        duration=booking_data['duration']
     )
 
 @app.route('/confirm_booking', methods=['POST'])
@@ -683,8 +776,28 @@ def confirm_booking():
     """Process booking confirmation"""
     # Check if booking data exists in session
     if 'booking_data' not in session:
-        flash('Booking information not found. Please try again.', 'error')
-        return redirect(url_for('booking'))
+        # Try to get data from form as fallback
+        room_id = request.form.get('room_id')
+        date = request.form.get('date')
+        time_start = request.form.get('time_start')
+        time_end = request.form.get('time_end')
+        
+        if all([room_id, date, time_start, time_end]):
+            # Reconstruct session data from form
+            start_hour = int(time_start.split(':')[0])
+            end_hour = int(time_end.split(':')[0])
+            duration = end_hour - start_hour
+            
+            session['booking_data'] = {
+                'room_id': room_id,
+                'date': date,
+                'time_start': time_start,
+                'time_end': time_end,
+                'duration': duration
+            }
+        else:
+            flash('Booking information not found. Please start the booking process again.', 'error')
+            return redirect(url_for('booking'))
     
     # Get user's choice (confirm or cancel)
     action = request.form.get('action')
@@ -694,9 +807,20 @@ def confirm_booking():
         session.pop('booking_data', None)  # Remove booking data from session
         flash('Booking cancelled', 'info')
         return redirect(url_for('booking'))
-    
-    # User confirmed the booking - proceed to payment page
+      # User confirmed the booking - proceed to payment page
     booking_data = session['booking_data']
+    
+    # Ensure room_id is available
+    if 'room_id' not in booking_data:
+        # Try to get room_id from form data
+        room_id = request.form.get('room_id')
+        if room_id:
+            booking_data['room_id'] = room_id
+            session['booking_data'] = booking_data
+        else:
+            flash('Room information is missing. Please start the booking process again.', 'error')
+            return redirect(url_for('booking'))
+    
     room = get_room_by_id(booking_data['room_id'])
     
     # Calculate duration for payment page
@@ -1131,8 +1255,7 @@ def admin_book():
     is_recurring = request.form.get('is_recurring') == '1'
     recurrence_type = request.form.get('recurrence_type', 'weekly')
     recurrence_count = request.form.get('recurrence_count', '4')
-    
-    # Validate booking duration
+      # Validate booking duration
     try:
         start_hour = int(time_start.split(':')[0])
         end_hour = int(time_end.split(':')[0])
@@ -1304,8 +1427,7 @@ def admin_confirm_booking():
         booking_notes=booking_notes,
         is_recurring=is_recurring,
         recurrence_type=recurrence_type,
-        recurrence_count=recurrence_count,
-        all_bookings_created=all_bookings_created,
+        recurrence_count=recurrence_count,        all_bookings_created=all_bookings_created,
         created_bookings_count=len(created_bookings)
     )
 

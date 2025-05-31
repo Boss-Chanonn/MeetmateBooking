@@ -1,134 +1,167 @@
 {% extends "base.html" %}
 
-{% block title %}Book a Room{% endblock %}
+{% block title %}Book a Room - Step 1{% endblock %}
 
 {% block content %}
 <div class="booking-page">
-    <h1>Book a Meeting Room</h1>
+    <div class="booking-header">
+        <h1>Book a Meeting Room</h1>
+        <div class="booking-steps">
+            <div class="step active">
+                <span class="step-number">1</span>
+                <span class="step-text">Select Room Type & Time</span>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <span class="step-text">Choose Specific Room</span>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <span class="step-text">Confirm & Pay</span>
+            </div>
+        </div>
+    </div>
     
-    <form method="POST" action="{{ url_for('booking') }}" class="form">
-        <div class="form-group">
-            <label for="room_id">Select Room</label>
-            <select id="room_id" name="room_id" required>
-                <option value="" disabled selected>-- Select a room --</option>
-                {% for room in rooms %}
-                    <option value="{{ room.id }}">{{ room.name }} ({{ room.location }}, Capacity: {{ room.capacity }})</option>
+    <form method="POST" action="{{ url_for('booking') }}" class="booking-form">
+        <div class="form-section">
+            <h3>Room Type</h3>
+            <div class="room-type-cards">
+                {% for room_type in room_types %}
+                <div class="room-type-card">
+                    <input type="radio" id="room_type_{{ loop.index }}" name="room_type" value="{{ room_type }}" required>
+                    <label for="room_type_{{ loop.index }}" class="room-type-label">
+                        <div class="room-type-icon">
+                            {% if room_type == 'Circle Table' %}
+                                <i class="fas fa-circle"></i>
+                            {% elif room_type == 'Long Table' %}
+                                <i class="fas fa-minus"></i>
+                            {% elif room_type == 'Square Table' %}
+                                <i class="fas fa-square"></i>
+                            {% endif %}
+                        </div>
+                        <div class="room-type-info">
+                            <h4>{{ room_type }}</h4>
+                            <p class="room-type-description">
+                                {% if room_type == 'Circle Table' %}
+                                    Perfect for collaborative discussions and brainstorming sessions (6-8 people)
+                                {% elif room_type == 'Long Table' %}
+                                    Ideal for presentations and formal meetings (12-16 people)
+                                {% elif room_type == 'Square Table' %}
+                                    Great for small team meetings and interviews (4-6 people)
+                                {% endif %}
+                            </p>
+                        </div>
+                    </label>
+                </div>
                 {% endfor %}
-            </select>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
+        <div class="form-section">
+            <h3>Date & Time</h3>
+            <div class="datetime-grid">                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required min="{{ current_date }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="time_start">Start Time</label>
+                    <select id="time_start" name="time_start" required>
+                        <option value="" disabled selected>-- Select start time --</option>
+                        {% for hour in range(8, 22) %}
+                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time_end">End Time</label>
+                    <select id="time_end" name="time_end" required>
+                        <option value="" disabled selected>-- Select end time --</option>
+                        {% for hour in range(9, 23) %}
+                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="time_start">Start Time</label>
-            <select id="time_start" name="time_start" required>
-                <option value="" disabled selected>-- Select start time --</option>
-                {% for hour in range(8, 22) %}
-                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="time_end">End Time</label>
-            <select id="time_end" name="time_end" required>
-                <option value="" disabled selected>-- Select end time --</option>
-                {% for hour in range(9, 23) %}
-                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Book Room</button>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i> Next: Select Room
+            </button>
         </div>
     </form>
     
     <div class="booking-info">
-        <h3>Booking Information</h3>
-        <ul>
-            <li>Rooms are available Monday to Friday, 8:00 AM to 10:00 PM</li>
-            <li>Bookings can only be made on the hour (e.g., 10:00, 11:00)</li>
-            <li>Minimum booking duration is 1 hour</li>
-            <li>Maximum booking duration is 8 hours</li>
-            <li>Bookings must be made at least 1 hour in advance</li>
-        </ul>
+        <h3>How It Works</h3>
+        <div class="steps-info">
+            <div class="step-info">
+                <div class="step-icon">1</div>
+                <div class="step-details">
+                    <h4>Choose Room Type</h4>
+                    <p>Select the type of meeting room that best fits your needs</p>
+                </div>
+            </div>
+            <div class="step-info">
+                <div class="step-icon">2</div>
+                <div class="step-details">
+                    <h4>Pick Your Room</h4>
+                    <p>Browse available rooms of your chosen type for your selected time</p>
+                </div>
+            </div>
+            <div class="step-info">
+                <div class="step-icon">3</div>
+                <div class="step-details">
+                    <h4>Confirm & Pay</h4>
+                    <p>Review your booking details and complete the payment process</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set min date to today
-        var dateInput = document.getElementById('date');
-        var today = new Date();
-        var yyyy = today.getFullYear();
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var dd = String(today.getDate()).padStart(2, '0');
-        var formattedDate = yyyy + '-' + mm + '-' + dd;
-        dateInput.min = formattedDate;
+document.addEventListener('DOMContentLoaded', function() {
+    const timeStart = document.getElementById('time_start');
+    const timeEnd = document.getElementById('time_end');
+    
+    function updateEndTimeOptions() {
+        const startTime = timeStart.value;
+        if (!startTime) return;
         
-        // Validate end time is after start time
-        var startTimeSelect = document.getElementById('time_start');
-        var endTimeSelect = document.getElementById('time_end');
+        const startHour = parseInt(startTime.split(':')[0]);
         
-        // Function to update end time options based on start time
-        function updateEndTimeOptions() {
-            var startTime = startTimeSelect.value;
-            if (!startTime) return;
-            
-            var startHour = parseInt(startTime.split(':')[0], 10);
-            
-            // Clear existing options except the first placeholder
-            while (endTimeSelect.options.length > 1) {
-                endTimeSelect.remove(1);
-            }
-            
-            // Add options that are at least 1 hour later than start time
-            // Maximum is start time + 8 hours (for 8-hour booking) or 22 (10 PM), whichever is smaller
-            var maxEndHour = Math.min(startHour + 8, 22);
-            
-            for (var hour = startHour + 1; hour <= maxEndHour; hour++) {
-                var option = document.createElement('option');
-                var timeStr = String(hour).padStart(2, '0') + ':00';
-                option.value = timeStr;
-                option.text = timeStr;
-                endTimeSelect.add(option);
-            }
-            
-            // Select the first available option
-            if (endTimeSelect.options.length > 1) {
-                endTimeSelect.selectedIndex = 1;
-            } else {
-                endTimeSelect.selectedIndex = 0;
-            }
+        // Clear end time options
+        timeEnd.innerHTML = '<option value="" disabled selected>-- Select end time --</option>';
+        
+        // Add valid end time options (1-8 hours after start time)
+        for (let hour = startHour + 1; hour <= Math.min(startHour + 8, 23); hour++) {
+            const option = document.createElement('option');
+            option.value = String(hour).padStart(2, '0') + ':00';
+            option.textContent = String(hour).padStart(2, '0') + ':00';
+            timeEnd.appendChild(option);
         }
-        
-        // Function to validate maximum booking duration (8 hours)
-        function validateBookingDuration() {
-            if (startTimeSelect.value && endTimeSelect.value) {
-                var startHour = parseInt(startTimeSelect.value.split(':')[0], 10);
-                var endHour = parseInt(endTimeSelect.value.split(':')[0], 10);
-                var duration = endHour - startHour;
-                
-                if (duration > 8) {
-                    endTimeSelect.setCustomValidity('Maximum booking duration is 8 hours');
-                } else {
-                    endTimeSelect.setCustomValidity('');
-                }
+    }
+    
+    timeStart.addEventListener('change', updateEndTimeOptions);
+    
+    // Room type selection animation
+    const roomTypeInputs = document.querySelectorAll('input[name="room_type"]');
+    roomTypeInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            // Remove selected class from all cards
+            document.querySelectorAll('.room-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to current card
+            if (this.checked) {
+                this.closest('.room-type-card').classList.add('selected');
             }
-        }
-        
-        startTimeSelect.onchange = function() {
-            updateEndTimeOptions();
-            validateBookingDuration();
-        };
-        
-        endTimeSelect.onchange = validateBookingDuration;
+        });
     });
+});
 </script>
+
 {% endblock %}

@@ -481,7 +481,9 @@ footer {
 }
 
 .bookings-list {
-    /* Simple layout instead of grid */
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .booking-card {
@@ -500,6 +502,8 @@ footer {
     padding: 1rem;
     background-color: #4a6fa5;
     color: white;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .booking-header h3 {
@@ -578,7 +582,9 @@ footer {
 }
 
 .today-bookings-list, .upcoming-bookings-list, .user-today-bookings-list, .user-upcoming-bookings-list {
-    /* Simple list styling */
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .today-booking-item, .upcoming-booking-item, .user-today-booking-item, .user-upcoming-booking-item {
@@ -651,14 +657,18 @@ footer {
 }
 
 .booking-info {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 4px solid #4a6fa5;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 2rem;
 }
 
 .booking-info h3 {
-    margin-bottom: 1rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
 }
 
 .booking-info ul {
@@ -898,7 +908,9 @@ footer {
 }
 
 .history-bookings-list {
-    /* Simple list layout */
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .history-booking-item {
@@ -914,7 +926,7 @@ footer {
 }
 
 .booking-content {
-    /* Simple content layout */
+    padding: 1rem;
 }
 
 .booking-date-time {
@@ -1387,100 +1399,356 @@ footer {
     margin-bottom: 1rem;
 }
 
-/* Mobile responsiveness - Simple approach */
+/* New Booking Flow Styles */
+.booking-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.booking-steps {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    gap: 2rem;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 100%;
+    width: 2rem;
+    height: 2px;
+    background-color: #ddd;
+    z-index: -1;
+}
+
+.step.completed:not(:last-child)::after,
+.step.active:not(:last-child)::after {
+    background-color: #4a6fa5;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ddd;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.step.active .step-number {
+    background-color: #4a6fa5;
+    color: white;
+}
+
+.step.completed .step-number {
+    background-color: #28a745;
+    color: white;
+}
+
+.step-text {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+.step.active .step-text {
+    color: #4a6fa5;
+    font-weight: bold;
+}
+
+.step.completed .step-text {
+    color: #28a745;
+}
+
+.room-type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.room-type-card {
+    position: relative;
+}
+
+.room-type-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.room-type-label {
+    display: block;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.room-type-label:hover {
+    border-color: #4a6fa5;
+    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.1);
+}
+
+.room-type-card input[type="radio"]:checked + .room-type-label {
+    border-color: #4a6fa5;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.15);
+}
+
+.room-type-icon {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.room-type-icon i {
+    font-size: 2.5rem;
+    color: #4a6fa5;
+}
+
+.room-type-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    text-align: center;
+}
+
+.room-type-description {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-section h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 0.5rem;
+}
+
+.datetime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.booking-summary {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border-left: 4px solid #4a6fa5;
+}
+
+.booking-summary h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.summary-item i {
+    color: #4a6fa5;
+    width: 20px;
+}
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.room-card {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.room-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.room-label {
+    display: block;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.room-label:hover {
+    border-color: #4a6fa5;
+    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.1);
+    transform: translateY(-2px);
+}
+
+.room-card.selected .room-label,
+.room-card input[type="radio"]:checked + .room-label {
+    border-color: #4a6fa5;
+    background-color: #f8f9fa;
+    box-shadow: 0 6px 20px rgba(74, 111, 165, 0.15);
+    transform: translateY(-2px);
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.room-header h4 {
+    margin: 0;
+    color: #333;
+    flex: 1;
+}
+
+.room-capacity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+    background: #e9ecef;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+}
+
+.room-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.room-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.feature-tag {
+    background: #4a6fa5;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.no-rooms {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
+
+.no-rooms i {
+    font-size: 3rem;
+    color: #ffc107;
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
 @media (max-width: 768px) {
-    .container {
-        padding: 0.5rem;
-    }
-    
-    header {
-        padding: 1rem;
-    }
-    
-    nav ul li {
-        display: block;
-        margin: 0.5rem 0;
-    }
-    
-    .form-group.half {
-        width: 100%;
-        float: none;
-        margin-right: 0;
-    }
-    
-    .detail-label {
-        width: 100%;
-        float: none;
-        margin-bottom: 0.25rem;
-    }
-    
-    .detail-value {
-        margin-left: 0;
-    }
-    
-    .action-buttons {
-        text-align: center;
-    }
-    
-    .action-buttons .btn {
-        display: block;
-        margin: 0.5rem 0;
-        width: 100%;
-    }
-    
-    .booking-actions {
-        text-align: center;
-        margin-top: 1rem;
-    }
-    
-    .booking-status {
-        text-align: center;
-    }
-
-    /* Modern Login Styles - Responsive */
-    .login-card {
+    .booking-steps {
         flex-direction: column;
-    }
-
-    .login-image-side, .login-form-side {
-        width: 100%;
-    }
-
-    .meeting-room-image {
-        border-radius: 20px 20px 0 0;
-        max-height: 250px;
-    }    .login-form-side {
-        padding: 1.5rem;
+        gap: 1rem;
     }
     
-    .register-form input {
-        padding: 0.75rem;
-        font-size: 0.95rem;
-    }
-
-    .header-content {
-        flex-direction: column;
-        padding: 1rem 0;
+    .step:not(:last-child)::after {
+        display: none;
     }
     
-    .login-button {
-        margin-top: 1rem;
-        margin-left: 0;
-    }
-    
-    nav ul {
-        margin-top: 1rem;
-    }
-    
-    .hero h1 {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    
+    .room-type-cards,
     .room-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .datetime-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .summary-grid {
         grid-template-columns: 1fr;
     }
 }
