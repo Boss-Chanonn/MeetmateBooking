@@ -1,177 +1,225 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Booking{% endblock %}
+{% block title %}Admin Booking - Step 1{% endblock %}
 
 {% block content %}
 <div class="booking-page">
-    <h1>Book a Room for Client</h1>
+    <div class="booking-header">
+        <h1>Book a Room for Client</h1>
+        <div class="booking-steps">
+            <div class="step active">
+                <span class="step-number">1</span>
+                <span class="step-text">Select Client, Room Type & Time</span>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <span class="step-text">Choose Specific Room</span>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <span class="step-text">Confirm Booking</span>
+            </div>
+        </div>
+    </div>
     
-    <form method="POST" action="{{ url_for('admin_book') }}" class="form">
-        <div class="form-group">
-            <label for="client_id">Select Client</label>
-            <select id="client_id" name="client_id" required>
-                <option value="" disabled selected>-- Select a client --</option>
-                {% for client in clients %}
-                    <option value="{{ client.id }}">{{ client.firstname }} {{ client.lastname }} ({{ client.email }})</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="room_id">Select Room</label>
-            <select id="room_id" name="room_id" required>
-                <option value="" disabled selected>-- Select a room --</option>
-                {% for room in rooms %}
-                    <option value="{{ room.id }}">{{ room.name }} ({{ room.location }}, Capacity: {{ room.capacity }})</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
-        </div>
-        
-        <div class="form-group">
-            <label for="time_start">Start Time</label>
-            <select id="time_start" name="time_start" required>
-                <option value="" disabled selected>-- Select start time --</option>
-                {% for hour in range(8, 22) %}
-                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="time_end">End Time</label>
-            <select id="time_end" name="time_end" required>
-                <option value="" disabled selected>-- Select end time --</option>
-                {% for hour in range(9, 23) %}
-                    <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="booking_notes">Booking Notes (Optional)</label>
-            <textarea id="booking_notes" name="booking_notes" rows="3" placeholder="Add any special requirements or notes about this booking"></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label>
-                <input type="checkbox" id="is_recurring" name="is_recurring" value="1">
-                Make this a recurring booking
-            </label>
-        </div>
-        
-        <div id="recurring-options" class="form-group" style="display: none;">
-            <label for="recurrence_type">Recurrence Pattern</label>
-            <select id="recurrence_type" name="recurrence_type">
-                <option value="weekly">Weekly</option>
-                <option value="biweekly">Bi-weekly</option>
-                <option value="monthly">Monthly</option>
-            </select>
-            
+    <form method="POST" action="{{ url_for('admin_book') }}" class="booking-form">
+        <div class="form-section">
+            <h3>Select Client</h3>
             <div class="form-group">
-                <label for="recurrence_count">Number of occurrences</label>
-                <input type="number" id="recurrence_count" name="recurrence_count" min="2" max="12" value="4">
+                <label for="client_id">Client</label>
+                <select id="client_id" name="client_id" required>
+                    <option value="" disabled selected>-- Select a client --</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.firstname }} {{ client.lastname }} ({{ client.email }})</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Book Room for Client</button>
-            <a href="{{ url_for('admin') }}" class="btn btn-secondary">Cancel</a>
+        <div class="form-section">
+            <h3>Room Type</h3>
+            <div class="room-type-cards">
+                {% for room_type in room_types %}
+                <div class="room-type-card">
+                    <input type="radio" id="room_type_{{ loop.index }}" name="room_type" value="{{ room_type }}" required>
+                    <label for="room_type_{{ loop.index }}" class="room-type-label">
+                        <div class="room-type-icon">
+                            {% if room_type == 'Circle Table' %}
+                                <i class="fas fa-circle"></i>
+                            {% elif room_type == 'Long Table' %}
+                                <i class="fas fa-minus"></i>
+                            {% elif room_type == 'Square Table' %}
+                                <i class="fas fa-square"></i>
+                            {% endif %}
+                        </div>
+                        <div class="room-type-info">
+                            <h4>{{ room_type }}</h4>
+                            <p class="room-type-description">
+                                {% if room_type == 'Circle Table' %}
+                                    Perfect for collaborative discussions and brainstorming sessions (6-8 people)
+                                {% elif room_type == 'Long Table' %}
+                                    Ideal for presentations and formal meetings (12-16 people)
+                                {% elif room_type == 'Square Table' %}
+                                    Great for small team meetings and interviews (4-6 people)
+                                {% endif %}
+                            </p>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Date & Time</h3>
+            <div class="datetime-grid">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required min="{{ current_date }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="time_start">Start Time</label>
+                    <select id="time_start" name="time_start" required>
+                        <option value="" disabled selected>-- Select start time --</option>
+                        {% for hour in range(8, 22) %}
+                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time_end">End Time</label>
+                    <select id="time_end" name="time_end" required>
+                        <option value="" disabled selected>-- Select end time --</option>
+                        {% for hour in range(9, 23) %}
+                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Additional Options</h3>
+            <div class="form-group">
+                <label for="booking_notes">Booking Notes (Optional)</label>
+                <textarea id="booking_notes" name="booking_notes" rows="3" placeholder="Add any special requirements or notes about this booking"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="is_recurring" name="is_recurring" value="1">
+                    Make this a recurring booking
+                </label>
+            </div>
+            
+            <div id="recurring-options" class="form-group" style="display: none;">
+                <label for="recurrence_type">Recurrence Pattern</label>
+                <select id="recurrence_type" name="recurrence_type">
+                    <option value="weekly">Weekly</option>
+                    <option value="biweekly">Bi-weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+                
+                <div class="form-group">
+                    <label for="recurrence_count">Number of occurrences</label>
+                    <input type="number" id="recurrence_count" name="recurrence_count" min="2" max="12" value="4">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('admin') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i> Next: Select Room
+            </button>
         </div>
     </form>
     
     <div class="booking-info">
-        <h3>Booking Information</h3>
-        <ul>
-            <li>Rooms are available Monday to Friday, 8:00 AM to 10:00 PM</li>
-            <li>Bookings can only be made on the hour (e.g., 10:00, 11:00)</li>
-            <li>Minimum booking duration is 1 hour</li>
-            <li>Maximum booking duration is 8 hours</li>
-            <li>When booking for a client, a confirmation email will be sent to them</li>
-        </ul>
+        <h3>How It Works</h3>
+        <div class="steps-info">
+            <div class="step-info">
+                <div class="step-icon">1</div>
+                <div class="step-details">
+                    <h4>Choose Client & Room Type</h4>
+                    <p>Select the client you're booking for and the type of meeting room that best fits their needs</p>
+                </div>
+            </div>
+            <div class="step-info">
+                <div class="step-icon">2</div>
+                <div class="step-details">
+                    <h4>Pick Available Room</h4>
+                    <p>Browse available rooms of the chosen type for the selected time</p>
+                </div>
+            </div>
+            <div class="step-info">
+                <div class="step-icon">3</div>
+                <div class="step-details">
+                    <h4>Confirm Booking</h4>
+                    <p>Review booking details and confirm the reservation for your client</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Recurring booking toggle
-        var isRecurringCheckbox = document.getElementById('is_recurring');
-        var recurringOptions = document.getElementById('recurring-options');
+document.addEventListener('DOMContentLoaded', function() {
+    const timeStart = document.getElementById('time_start');
+    const timeEnd = document.getElementById('time_end');
+    
+    function updateEndTimeOptions() {
+        const startTime = timeStart.value;
+        if (!startTime) return;
         
-        isRecurringCheckbox.onchange = function() {
+        const startHour = parseInt(startTime.split(':')[0]);
+        
+        // Clear end time options
+        timeEnd.innerHTML = '<option value="" disabled selected>-- Select end time --</option>';
+        
+        // Add valid end time options (1-8 hours after start time)
+        for (let hour = startHour + 1; hour <= Math.min(startHour + 8, 23); hour++) {
+            const option = document.createElement('option');
+            option.value = String(hour).padStart(2, '0') + ':00';
+            option.textContent = String(hour).padStart(2, '0') + ':00';
+            timeEnd.appendChild(option);
+        }
+    }
+    
+    timeStart.addEventListener('change', updateEndTimeOptions);
+    
+    // Room type selection animation
+    const roomTypeInputs = document.querySelectorAll('input[name="room_type"]');
+    roomTypeInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            // Remove selected class from all cards
+            document.querySelectorAll('.room-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to current card
             if (this.checked) {
-                recurringOptions.style.display = 'block';
-            } else {
-                recurringOptions.style.display = 'none';
+                this.closest('.room-type-card').classList.add('selected');
             }
-        };
-        
-        // Set min date to today
-        var dateInput = document.getElementById('date');
-        var today = new Date();
-        var yyyy = today.getFullYear();
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var dd = String(today.getDate()).padStart(2, '0');
-        
-        var formattedDate = yyyy + '-' + mm + '-' + dd;
-        dateInput.min = formattedDate;
-        
-        // Validate end time is after start time
-        var startTimeSelect = document.getElementById('time_start');
-        var endTimeSelect = document.getElementById('time_end');
-        
-        // Function to update end time options based on start time
-        function updateEndTimeOptions() {
-            var startTime = startTimeSelect.value;
-            if (!startTime) return;
-            
-            var startHour = parseInt(startTime.split(':')[0], 10);
-            
-            // Clear existing options except the first placeholder
-            while (endTimeSelect.options.length > 1) {
-                endTimeSelect.remove(1);
-            }
-            
-            // Add options that are at least 1 hour later than start time
-            // Maximum is start time + 8 hours (for 8-hour booking) or 22 (10 PM), whichever is smaller
-            var maxEndHour = Math.min(startHour + 8, 22);
-            
-            for (var hour = startHour + 1; hour <= maxEndHour; hour++) {
-                var option = document.createElement('option');
-                option.value = String(hour).padStart(2, '0') + ':00';
-                option.text = String(hour).padStart(2, '0') + ':00';
-                endTimeSelect.add(option);
-            }
-            
-            // Enable the end time select
-            endTimeSelect.disabled = false;
-        }
-        
-        // Function to validate booking duration
-        function validateBookingDuration() {
-            var startTime = startTimeSelect.value;
-            var endTime = endTimeSelect.value;
-            
-            if (startTime && endTime) {
-                var startHour = parseInt(startTime.split(':')[0], 10);
-                var endHour = parseInt(endTime.split(':')[0], 10);
-                
-                if (endHour - startHour < 1 || endHour - startHour > 8) {
-                    alert('Booking duration must be between 1 and 8 hours.');
-                    endTimeSelect.value = '';
-                }
-            }
-        }
-        
-        // Add event listeners
-        startTimeSelect.onchange = updateEndTimeOptions;
-        endTimeSelect.onchange = validateBookingDuration;
+        });
     });
+    
+    // Recurring booking toggle
+    const isRecurringCheckbox = document.getElementById('is_recurring');
+    const recurringOptions = document.getElementById('recurring-options');
+    
+    isRecurringCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            recurringOptions.style.display = 'block';
+        } else {
+            recurringOptions.style.display = 'none';
+        }
+    });
+});
 </script>
+
 {% endblock %}
