@@ -320,13 +320,29 @@ def get_available_rooms_by_type(room_type, date, time_start, time_end):
     return available_rooms
 
 def get_all_room_types():
-    """Get all distinct room types"""
+    """Get all distinct room types in custom order"""
     conn = get_database_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT room_type FROM rooms ORDER BY room_type")
+    cursor.execute("SELECT DISTINCT room_type FROM rooms")
     types = cursor.fetchall()
     conn.close()
-    return [row['room_type'] for row in types]
+    
+    # Define custom order: Square Table, Circle Table, Long Table
+    room_types = [row['room_type'] for row in types]
+    custom_order = ['Square Table', 'Circle Table', 'Long Table']
+    
+    # Return room types in custom order, only including types that exist in DB
+    ordered_types = []
+    for room_type in custom_order:
+        if room_type in room_types:
+            ordered_types.append(room_type)
+    
+    # Add any additional room types not in our custom order (future-proofing)
+    for room_type in room_types:
+        if room_type not in ordered_types:
+            ordered_types.append(room_type)
+    
+    return ordered_types
 
 # Authentication decorators
 def login_required(f):
