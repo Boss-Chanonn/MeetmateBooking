@@ -64,6 +64,42 @@ nav {
     margin-left: 1.5rem;
 }
 
+.auth-buttons {
+    flex: 0 0 auto;
+    margin-left: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.auth-buttons .btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.auth-buttons .btn-primary {
+    background-color: #2a6da9;
+}
+
+.auth-buttons .btn-primary:hover {
+    background-color: #1e5c94;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(42, 109, 169, 0.2);
+}
+
+.auth-buttons .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.auth-buttons .btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+}
+
 .login-button .btn-primary {
     background-color: #2a6da9;
     padding: 0.6rem 1.5rem;
