@@ -682,7 +682,7 @@ footer {
 
 /* Booking Pages */
 .booking-page, .profile-page {
-    padding: 2rem 0;
+    padding: 1rem 0;
 }
 
 .booking-form, .profile-form {
@@ -1473,7 +1473,8 @@ footer {
 /* New Booking Flow Styles */
 .booking-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 0rem;
+    border-radius: 8px;
 }
 
 .booking-steps {
@@ -1609,7 +1610,7 @@ footer {
 }
 
 .form-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: 1.5rem;
     background: white;
     border-radius: 10px;
