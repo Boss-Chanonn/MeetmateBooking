@@ -16,72 +16,86 @@
                 {% endif %}
             </div>
         </div>    </div>    <div class="room-showcase">
-        <h2>Meeting Room Types</h2>
-        <p class="showcase-subtitle">Choose from our selection of meeting room configurations</p>
-        
-        <div class="room-grid">
-            <div class="room-card">
+        <h2>Meeting Room Types</h2>        
+        <div class="room-grid">            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Circle Table Room</h3>
                 </div>
                 <div class="room-card-body">
-                    <div class="room-location">
-                        <i class="fas fa-circle"></i> Circular Configuration
-                    </div>
-                    <p class="room-description">
-                        Designed for equal participation and open discussions. The circular setup promotes collaboration and ensures everyone has a voice in the meeting.
-                    </p>
-                    <div class="room-features">
-                        <span class="feature-tag">Wi-Fi</span>
-                        <span class="feature-tag">Projector</span>
-                        <span class="feature-tag">Whiteboard</span>
-                        <span class="feature-tag">Collaboration Tools</span>
+                    <div class="room-details">
+                        <div class="detail-item">
+                            <strong>Table Type:</strong> Circular Configuration
+                        </div>                        <div class="detail-item">
+                            <strong>Capacity:</strong> 8-12 people
+                        </div>
+                        <div class="detail-item">
+                            <strong>Price:</strong> $100/hr
+                        </div>
+                        <div class="detail-item">
+                            <strong>Features:</strong>
+                            <ul class="feature-list">
+                                <li>Wi-Fi</li>
+                                <li>Projector</li>
+                                <li>Whiteboard</li>
+                                <li>Collaboration Tools</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="room-card-footer">
                     <a href="{{ url_for('select_room') }}?type=circle" class="btn btn-primary">View Details</a>
                 </div>
-            </div>
-
-            <div class="room-card">
+            </div>            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Long Table Room</h3>
                 </div>
                 <div class="room-card-body">
-                    <div class="room-location">
-                        <i class="fas fa-minus"></i> Traditional Conference Setup
-                    </div>
-                    <p class="room-description">
-                        Classic boardroom style with a long table perfect for formal presentations, client meetings, and structured discussions with clear hierarchy.
-                    </p>
-                    <div class="room-features">
-                        <span class="feature-tag">Wi-Fi</span>
-                        <span class="feature-tag">Projector</span>
-                        <span class="feature-tag">Video Conferencing</span>
-                        <span class="feature-tag">Catering</span>
+                    <div class="room-details">
+                        <div class="detail-item">
+                            <strong>Table Type:</strong> Traditional Conference Setup
+                        </div>                        <div class="detail-item">
+                            <strong>Capacity:</strong> 12-20 people
+                        </div>
+                        <div class="detail-item">
+                            <strong>Price:</strong> $180/hr
+                        </div>
+                        <div class="detail-item">
+                            <strong>Features:</strong>
+                            <ul class="feature-list">
+                                <li>Wi-Fi</li>
+                                <li>Projector</li>
+                                <li>Video Conferencing</li>
+                                <li>Catering</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="room-card-footer">
                     <a href="{{ url_for('select_room') }}?type=long" class="btn btn-primary">View Details</a>
                 </div>
-            </div>
-
-            <div class="room-card">
+            </div>            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Square Table Room</h3>
                 </div>
                 <div class="room-card-body">
-                    <div class="room-location">
-                        <i class="fas fa-square"></i> Compact Square Setup
-                    </div>
-                    <p class="room-description">
-                        Intimate square table configuration perfect for small team meetings, brainstorming sessions, and focused discussions with up to 8 participants.
-                    </p>
-                    <div class="room-features">
-                        <span class="feature-tag">Wi-Fi</span>
-                        <span class="feature-tag">Whiteboard</span>
-                        <span class="feature-tag">Projector</span>
-                        <span class="feature-tag">Brainstorming Tools</span>
+                    <div class="room-details">
+                        <div class="detail-item">
+                            <strong>Table Type:</strong> Compact Square Setup
+                        </div>                        <div class="detail-item">
+                            <strong>Capacity:</strong> 4-8 people
+                        </div>
+                        <div class="detail-item">
+                            <strong>Price:</strong> $150/hr
+                        </div>
+                        <div class="detail-item">
+                            <strong>Features:</strong>
+                            <ul class="feature-list">
+                                <li>Wi-Fi</li>
+                                <li>Whiteboard</li>
+                                <li>Projector</li>
+                                <li>Brainstorming Tools</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="room-card-footer">
