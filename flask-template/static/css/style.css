@@ -1156,7 +1156,6 @@ footer {
     transform: translateX(-50%);
     width: 80px;
     height: 4px;
-    background: linear-gradient(90deg, #8ce99a, #63e6be);
     border-radius: 2px;
 }
 
@@ -1808,6 +1807,56 @@ footer {
     margin-bottom: 0.25rem;
     color: #333;
     font-size: 0.9rem;
+}
+
+/* Home Page Full Background - Like Login Page */
+.home-page-body {
+    background-color: #1d3557 !important;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Home page container adjustments */
+.home-page-body .container {
+    padding: 0;
+    max-width: none;
+}
+
+.home-page-body header {
+    background-color: rgba(185, 194, 209, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.home-page-body footer {
+    background-color: #1d3557;
+    color: #b9c2d1;
+    border-top: 1px solid rgba(185, 194, 209, 0.3);
+}
+
+/* Home page content styling */
+.home-page {
+    background-color: transparent;
+    min-height: calc(100vh - 120px); /* Account for header/footer */
+}
+
+.home-page .hero {
+    margin: 0;
+    padding: 12rem 2rem;
+}
+
+.home-page .room-showcase {
+    background-color: transparent;
+    padding: 0rem 2rem;
+}
+
+.home-page .room-showcase .container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    margin: 0 auto;
+    max-width: 1200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
