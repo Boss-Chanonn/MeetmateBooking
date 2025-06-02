@@ -83,37 +83,7 @@
                         {% endfor %}
                     </select>
                 </div>
-            </div>
-        </div>
-        
-        <div class="form-section">
-            <h3>Additional Options</h3>
-            <div class="form-group">
-                <label for="booking_notes">Booking Notes (Optional)</label>
-                <textarea id="booking_notes" name="booking_notes" rows="3" placeholder="Add any special requirements or notes about this booking"></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="is_recurring" name="is_recurring" value="1">
-                    Make this a recurring booking
-                </label>
-            </div>
-            
-            <div id="recurring-options" class="form-group" style="display: none;">
-                <label for="recurrence_type">Recurrence Pattern</label>
-                <select id="recurrence_type" name="recurrence_type">
-                    <option value="weekly">Weekly</option>
-                    <option value="biweekly">Bi-weekly</option>
-                    <option value="monthly">Monthly</option>
-                </select>
-                
-                <div class="form-group">
-                    <label for="recurrence_count">Number of occurrences</label>
-                    <input type="number" id="recurrence_count" name="recurrence_count" min="2" max="12" value="4">
-                </div>
-            </div>
-        </div>
+            </div>        </div>
         
         <div class="form-actions">
             <a href="{{ url_for('admin') }}" class="btn btn-secondary">
@@ -122,35 +92,7 @@
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-arrow-right"></i> Next: Select Room
             </button>
-        </div>
-    </form>
-    
-    <div class="booking-info">
-        <h3>How It Works</h3>
-        <div class="steps-info">
-            <div class="step-info">
-                <div class="step-icon">1</div>
-                <div class="step-details">
-                    <h4>Choose Client & Room Type</h4>
-                    <p>Select the client you're booking for and the type of meeting room that best fits their needs</p>
-                </div>
-            </div>
-            <div class="step-info">
-                <div class="step-icon">2</div>
-                <div class="step-details">
-                    <h4>Pick Available Room</h4>
-                    <p>Browse available rooms of the chosen type for the selected time</p>
-                </div>
-            </div>
-            <div class="step-info">
-                <div class="step-icon">3</div>
-                <div class="step-details">
-                    <h4>Confirm Booking</h4>
-                    <p>Review booking details and confirm the reservation for your client</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        </div>    </form>
 </div>
 
 <script>
@@ -191,20 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.checked) {
                 this.closest('.room-type-card').classList.add('selected');
             }
-        });
-    });
-    
-    // Recurring booking toggle
-    const isRecurringCheckbox = document.getElementById('is_recurring');
-    const recurringOptions = document.getElementById('recurring-options');
-    
-    isRecurringCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            recurringOptions.style.display = 'block';
-        } else {
-            recurringOptions.style.display = 'none';
-        }
-    });
+        });    });
 });
 </script>
 
