@@ -91,7 +91,7 @@ nav {
 }
 
 .auth-buttons .btn-secondary {
-    background-color: #6c757d;
+    background-color: transparent;
     color: white;
 }
 
@@ -1138,7 +1138,7 @@ footer {
 
 .room-showcase h2 {
     text-align: center;
-    color: #2a6da9;
+    color: white;
     margin-bottom: 0.75rem;
     font-size: 2.5rem;
     font-weight: 700;
@@ -1210,7 +1210,7 @@ footer {
     padding: 1.75rem;
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
 }
 
@@ -1823,7 +1823,7 @@ footer {
 }
 
 .home-page-body header {
-    background-color: rgba(185, 194, 209, 0.95);
+    background-color: transparent;
     backdrop-filter: blur(10px);
 }
 
