@@ -3,21 +3,26 @@
 {% block title %}Welcome to MeetMate{% endblock %}
 
 {% block content %}
-<div class="home-page">    <div class="hero">
+<div class="home-page">
+    <div class="hero">
         <div class="hero-content">
             <h1>Welcome to <span class="highlight">MeetMate</span></h1>
             <p class="hero-subtitle">Simplified meeting room booking for modern teams</p>
-              <div class="hero-buttons">
+            <div class="hero-buttons">
                 {% if session.user_id %}
                     <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
                 {% else %}
                     <a href="{{ url_for('select_room') }}" class="btn btn-primary">Book Now</a>
                     <a href="{{ url_for('about') }}" class="btn btn-outline">Learn More</a>
                 {% endif %}
-            </div>
-        </div>    </div>    <div class="room-showcase">
-        <h2>Meeting Room Types</h2>        
-        <div class="room-grid">            <div class="room-card">
+            </div>        </div>
+    </div>
+
+    <div class="room-showcase">
+        <h2>Meeting Room Types</h2>
+        
+        <div class="room-grid">
+            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Circle Table Room</h3>
                 </div>
@@ -25,9 +30,12 @@
                     <div class="room-details">
                         <div class="detail-item">
                             <strong>Table Type:</strong> Circle Table
-                        </div>                        <div class="detail-item">
+                        </div>
+                        
+                        <div class="detail-item">
                             <strong>Capacity:</strong> 8-12 people
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Features:</strong>
                             <ul class="feature-list">
@@ -37,6 +45,7 @@
                                 <li>Collaboration Tools</li>
                             </ul>
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Price:</strong> $100/hr
                         </div>
@@ -45,7 +54,8 @@
                 <div class="room-card-footer">
                     <a href="{{ url_for('select_room') }}?type=circle" class="btn btn-primary">View Details</a>
                 </div>
-            </div>            <div class="room-card">
+            </div>            
+            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Long Table Room</h3>
                 </div>
@@ -53,9 +63,12 @@
                     <div class="room-details">
                         <div class="detail-item">
                             <strong>Table Type:</strong> Long Table
-                        </div>                        <div class="detail-item">
+                        </div>
+                        
+                        <div class="detail-item">
                             <strong>Capacity:</strong> 12-20 people
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Features:</strong>
                             <ul class="feature-list">
@@ -65,6 +78,7 @@
                                 <li>Catering</li>
                             </ul>
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Price:</strong> $180/hr
                         </div>
@@ -73,7 +87,8 @@
                 <div class="room-card-footer">
                     <a href="{{ url_for('select_room') }}?type=long" class="btn btn-primary">View Details</a>
                 </div>
-            </div>            <div class="room-card">
+            </div>            
+            <div class="room-card">
                 <div class="room-card-header">
                     <h3>Square Table Room</h3>
                 </div>
@@ -81,9 +96,12 @@
                     <div class="room-details">
                         <div class="detail-item">
                             <strong>Table Type:</strong> Square Table
-                        </div>                        <div class="detail-item">
+                        </div>
+                        
+                        <div class="detail-item">
                             <strong>Capacity:</strong> 4-8 people
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Features:</strong>
                             <ul class="feature-list">
@@ -93,6 +111,7 @@
                                 <li>Brainstorming Tools</li>
                             </ul>
                         </div>
+                        
                         <div class="detail-item">
                             <strong>Price:</strong> $150/hr
                         </div>
