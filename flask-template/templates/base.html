@@ -28,14 +28,12 @@
                                 <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
                             {% endif %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>                        {% else %}
-                            <li><a href="{{ url_for('about') }}">About</a></li>
-                            <li><a href="{{ url_for('index') }}">Home</a></li>
                         {% endif %}
                     </ul>
                 </nav>
                 {% if not session.user_id %}
                 <div class="auth-buttons">
-                    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-secondary">Sign up</a>
                     <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
                 </div>
                 {% endif %}

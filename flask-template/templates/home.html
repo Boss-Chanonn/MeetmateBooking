@@ -7,15 +7,14 @@
     <div class="hero">
         <div class="hero-content">
             <h1>Welcome to <span class="highlight">MeetMate</span></h1>
-            <p class="hero-subtitle">Simplified meeting room booking for modern teams</p>
-            <div class="hero-buttons">
+            <p class="hero-subtitle">Simplified meeting room booking for modern teams</p>            <div class="hero-buttons">
                 {% if session.user_id %}
                     <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
                 {% else %}
-                    <a href="{{ url_for('select_room') }}" class="btn btn-primary">Book Now</a>
+                    <a href="{{ url_for('select_room') }}" class="btn btn-secondary">Book Now</a>
                     <a href="{{ url_for('about') }}" class="btn btn-outline">Learn More</a>
                 {% endif %}
-            </div>        </div>
+            </div></div>
     </div>
 
     <div class="room-showcase">
@@ -49,10 +48,9 @@
                         <div class="detail-item">
                             <strong>Price:</strong> $100/hr
                         </div>
-                    </div>
-                </div>
+                    </div>                </div>
                 <div class="room-card-footer">
-                    <a href="{{ url_for('select_room') }}?type=circle" class="btn btn-primary">View Details</a>
+                    <a href="{{ url_for('select_room') }}?type=circle" class="btn btn-primary">Booking</a>
                 </div>
             </div>            
             <div class="room-card">
@@ -81,11 +79,10 @@
                         
                         <div class="detail-item">
                             <strong>Price:</strong> $180/hr
-                        </div>
-                    </div>
+                        </div>                    </div>
                 </div>
                 <div class="room-card-footer">
-                    <a href="{{ url_for('select_room') }}?type=long" class="btn btn-primary">View Details</a>
+                    <a href="{{ url_for('select_room') }}?type=long" class="btn btn-primary">Booking</a>
                 </div>
             </div>            
             <div class="room-card">
@@ -114,11 +111,10 @@
                         
                         <div class="detail-item">
                             <strong>Price:</strong> $150/hr
-                        </div>
-                    </div>
+                        </div>                    </div>
                 </div>
                 <div class="room-card-footer">
-                    <a href="{{ url_for('select_room') }}?type=square" class="btn btn-primary">View Details</a>
+                    <a href="{{ url_for('select_room') }}?type=square" class="btn btn-primary">Booking</a>
                 </div>
             </div>
         </div>

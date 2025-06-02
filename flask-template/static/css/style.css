@@ -80,13 +80,14 @@ nav {
 }
 
 .auth-buttons .btn-primary {
-    background-color: #2a6da9;
+    background-color: #8ce99a;
+    color: #1b1b1b;
 }
 
 .auth-buttons .btn-primary:hover {
-    background-color: #1e5c94;
+    background-color: #69db7c;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(42, 109, 169, 0.2);
+    box-shadow: 0 5px 15px rgba(140, 233, 154, 0.4);
 }
 
 .auth-buttons .btn-secondary {
@@ -1142,8 +1143,9 @@ footer {
     font-size: 2.5rem;
     font-weight: 700;
     position: relative;
-    display: inline-block;
+    display: block;
     padding-bottom: 1rem;
+    width: 100%;
 }
 
 .room-showcase h2::after {
@@ -1185,11 +1187,16 @@ footer {
 
 .room-card {
     background-color: white;
-    border-radius: 12px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s;
-    border: 1px solid #f1f1f1;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e8e9ea;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .room-card:hover {
@@ -1379,15 +1386,15 @@ footer {
 }
 
 .hero-buttons .btn-primary {
-    background-color: #8ce99a;
-    color: #1b1b1b;
+    background-color: #2a6da9;
+    color: white;
     border: none;
 }
 
 .hero-buttons .btn-primary:hover {
-    background-color: #69db7c;
+    background-color: #1e5c94;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(140, 233, 154, 0.4);
+    box-shadow: 0 5px 15px rgba(42, 109, 169, 0.2);
 }
 
 .hero-buttons .btn-secondary {
@@ -1397,9 +1404,9 @@ footer {
 }
 
 .hero-buttons .btn-secondary:hover {
-    background-color: #205689;
+    background-color: #1e5c94;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(42, 109, 169, 0.4);
+    box-shadow: 0 5px 15px rgba(42, 109, 169, 0.2);
 }
 
 .hero-buttons .btn-outline {
