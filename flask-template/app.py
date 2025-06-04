@@ -1348,22 +1348,25 @@ def admin_select_room():
         
         return render_template('admin_select_room.html', 
                              rooms=available_rooms, 
-                             booking_data=booking_data)
-    
-    # Process room selection (POST request)
+                             booking_data=booking_data)    # Process room selection (POST request)
     room_id = request.form.get('room_id')
     
     if not room_id:
         flash('Please select a room.', 'error')
         return redirect(url_for('admin_select_room'))
     
+    # Convert room_id to integer
+    try:
+        room_id = int(room_id)
+    except (ValueError, TypeError):
+        flash('Invalid room selection.', 'error')
+        return redirect(url_for('admin_select_room'))
+    
     # Double-check room availability
     if not check_room_availability(room_id, booking_data['date'], 
                                  booking_data['time_start'], booking_data['time_end']):
         flash('This room is no longer available. Please select a different room.', 'error')
-        return redirect(url_for('admin_select_room'))
-    
-    # Update booking data with selected room
+        return redirect(url_for('admin_select_room'))    # Update booking data with selected room
     session['admin_booking_data']['room_id'] = room_id
     
     # Get room and client details for confirmation page
@@ -1398,24 +1401,29 @@ def admin_confirm_booking():
         session.pop('admin_booking_data', None)
         flash('Booking cancelled', 'info')
         return redirect(url_for('admin_book'))
+      # Get booking data from form (since confirmation template sends data via form)
+    room_id = request.form.get('room_id')
+    date = request.form.get('date')
+    time_start = request.form.get('time_start')
+    time_end = request.form.get('time_end')
+    client_id = request.form.get('client_id')
+    booking_notes = request.form.get('booking_notes', '')
+    is_recurring = request.form.get('is_recurring') == '1'
+    recurrence_type = request.form.get('recurrence_type', 'weekly')
+    recurrence_count = int(request.form.get('recurrence_count', 4))
     
-    # Get booking data from session
-    if 'admin_booking_data' not in session:
-        flash('Booking information not found. Please try again.', 'error')
+    # Validate required fields
+    if not all([room_id, date, time_start, time_end, client_id]):
+        flash('Missing required booking information. Please try again.', 'error')
         return redirect(url_for('admin_book'))
     
-    booking_data = session.pop('admin_booking_data')  # Remove from session since we're processing it
-    
-    # Extract booking details
-    room_id = booking_data['room_id']
-    date = booking_data['date']
-    time_start = booking_data['time_start']
-    time_end = booking_data['time_end']
-    client_id = booking_data['client_id']
-    booking_notes = booking_data.get('booking_notes', '')
-    is_recurring = booking_data.get('is_recurring', False)
-    recurrence_type = booking_data.get('recurrence_type', 'weekly')
-    recurrence_count = int(booking_data.get('recurrence_count', 4))
+    # Convert room_id and client_id to integers
+    try:
+        room_id = int(room_id)
+        client_id = int(client_id)
+    except (ValueError, TypeError):
+        flash('Invalid booking information. Please try again.', 'error')
+        return redirect(url_for('admin_book'))
     
     # Double-check room availability
     if not check_room_availability(room_id, date, time_start, time_end):
