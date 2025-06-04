@@ -12,16 +12,15 @@
             <div class="header-content">
                 <div class="logo">
                     <a href="{{ url_for('index') }}">MeetMate</a>
-                </div>                <nav>
-                    <ul>
+                </div>                <nav>                    <ul>
                         {% if session.user_id %}
-                            <li><a href="{{ url_for('my_account') }}">My Account</a></li>
                             {% if session.role != 'admin' %}
+                                <li><a href="{{ url_for('my_account') }}">My Account</a></li>
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
-                            {% endif %}
-                            {% if session.role == 'admin' %}
-                                <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                            {% endif %}                            {% if session.role == 'admin' %}
+                                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                                 <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
+                                <li><a href="{{ url_for('admin') }}">My Account</a></li>
                             {% endif %}
                             <li><a href="{{ url_for('logout') }}">Logout</a></li>
                         {% else %}

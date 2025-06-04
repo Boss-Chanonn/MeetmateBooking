@@ -458,7 +458,11 @@ def register():
 def login():
     """User login"""
     if 'user_id' in session:
-        return redirect(url_for('dashboard'))
+        # If user is already logged in, redirect based on role
+        if session.get('role') == 'admin':
+            return redirect(url_for('dashboard'))
+        else:
+            return redirect(url_for('booking'))
     
     if request.method == 'GET':
         return render_template('login.html')
@@ -480,7 +484,11 @@ def login():
     session['role'] = user['role']
     
     flash(f'Welcome back, {user["username"]}!', 'success')
-    return redirect(url_for('dashboard'))
+      # Redirect based on user role
+    if user['role'] == 'admin':
+        return redirect(url_for('dashboard'))
+    else:
+        return redirect(url_for('booking'))
 
 @app.route('/logout')
 def logout():
