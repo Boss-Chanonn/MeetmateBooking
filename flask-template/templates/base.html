@@ -12,21 +12,22 @@
             <div class="header-content">
                 <div class="logo">
                     <a href="{{ url_for('index') }}">MeetMate</a>
-                </div>                <nav>                    <ul>
-                        {% if session.user_id %}
-                            {% if session.role != 'admin' %}
-                                <li><a href="{{ url_for('my_account') }}">My Account</a></li>
+                </div>                <nav>                    <ul>                        {% if session.user_id %}                            {% if session.role != 'admin' %}
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
-                            {% endif %}                            {% if session.role == 'admin' %}
+                                <li><a href="{{ url_for('my_account') }}">My Account</a></li>
+                            {% endif %}{% if session.role == 'admin' %}
                                 <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                                 <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
                                 <li><a href="{{ url_for('admin') }}">My Account</a></li>
                             {% endif %}
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
                         {% else %}
                         {% endif %}
-                    </ul>
-                </nav>
+                    </ul>                </nav>
+                {% if session.user_id %}
+                <div class="user-menu">
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+                </div>
+                {% endif %}
                 {% if not session.user_id %}
                 <div class="auth-buttons">
                     <a href="{{ url_for('register') }}" class="btn btn-secondary">Sign up</a>
