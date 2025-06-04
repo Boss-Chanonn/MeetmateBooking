@@ -151,33 +151,67 @@ footer {
     margin-top: 2rem;
 }
 
-/* Buttons */
+/* Buttons - Updated with Theme Colors */
 .btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #4a6fa5;
+    padding: 0.8rem 2rem;
+    background-color: #2a6da9;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(42, 109, 169, 0.2);
 }
 
 .btn:hover {
-    background-color: #2c6ba0;
+    background-color: #1e5c94;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.3);
+    color: white;
 }
 
 .btn-primary {
-    background-color: #4a6fa5;
+    background-color: #2a6da9;
+    color: white;
 }
 
 .btn-primary:hover {
-    background-color: #2c6ba0;
+    background-color: #1e5c94;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #b9c2d1;
+    color: #1d3557;
+}
+
+.btn-secondary:hover {
+    background-color: #a8b2c1;
+    color: #1d3557;
+}
+
+.btn-success {
+    background-color: #8ce99a;
+    color: #1d3557;
+}
+
+.btn-success:hover {
+    background-color: #69db7c;
+    color: #1d3557;
 }
 
 .btn-danger {
     background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    color: white;
 }
 
 .btn-danger:hover {
@@ -493,82 +527,176 @@ footer {
     float: right;
 }
 
-/* Dashboard */
+/* Dashboard - Updated with Theme Colors */
 .dashboard {
     padding: 2rem 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+}
+
+.dashboard h1 {
+    color: #1d3557;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .dashboard-section {
     background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
     margin-bottom: 2rem;
+    border: 1px solid rgba(185, 194, 209, 0.3);
+}
+
+.section-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
+    border: 1px solid rgba(185, 194, 209, 0.3);
 }
 
 .section-header {
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #b9c2d1;
     padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .section-header h2 {
-    color: #4a6fa5;
+    color: #1d3557;
     margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
 }
 
+.section-header .date,
+.section-header .subtitle {
+    background-color: #2a6da9;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Dashboard Booking Lists - Updated with Theme Colors */
 .bookings-list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.booking-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #b9c2d1;
+    border-radius: 12px;
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
 }
 
-.booking-card:hover {
-    border-color: #4a6fa5;
+.booking-item:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    border-color: #2a6da9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.15);
 }
 
-.booking-header {
-    padding: 1rem;
-    background-color: #4a6fa5;
-    color: white;
-    text-align: center;
-    margin-bottom: 2rem;
+.booking-info {
+    flex: 1;
 }
 
-.booking-header h3 {
-    margin-bottom: 0.25rem;
-}
-
-.booking-location {
-    font-size: 0.875rem;
-    opacity: 0.9;
-}
-
-.booking-details {
-    padding: 1rem;
-}
-
-.booking-date, .booking-time {
+.booking-date {
+    color: #1d3557;
+    font-weight: 700;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.booking-date i, .booking-time i {
-    margin-right: 0.5rem;
-    color: #888;
+.booking-time {
+    color: #2a6da9;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.booking-details {
+    margin-top: 0.5rem;
+}
+
+.booking-details strong {
+    color: #1d3557;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.booking-location {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.booking-notes {
+    color: #6c757d;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+    background-color: rgba(185, 194, 209, 0.2);
+    padding: 0.5rem;
+    border-radius: 6px;
 }
 
 .booking-actions {
-    padding: 1rem;
-    border-top: 1px solid #ddd;
-    text-align: right;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.booking-status .status-completed {
+    background-color: #8ce99a;
+    color: #1d3557;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.no-bookings {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+}
+
+.no-bookings p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #1d3557;
+}
+
+.no-bookings .btn {
+    background-color: #2a6da9;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.no-bookings .btn:hover {
+    background-color: #1e5c94;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.3);
 }
 
 .empty-state {
@@ -680,88 +808,188 @@ footer {
     color: #ddd;
 }
 
-/* Booking Pages */
+/* Booking Pages - Updated with Theme Colors */
 .booking-page, .profile-page {
-    padding: 1rem 0;
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.2);
+}
+
+.booking-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
 }
 
 .booking-form, .profile-form {
     background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
     margin-bottom: 2rem;
+    border: 1px solid rgba(185, 194, 209, 0.3);
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+}
+
+.form-section h3 {
+    color: #1d3557;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #b9c2d1;
+    padding-bottom: 0.5rem;
 }
 
 .booking-info {
     background: white;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
     margin-top: 2rem;
+    border: 1px solid rgba(185, 194, 209, 0.3);
 }
 
 .booking-info h3 {
     margin-top: 0;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #333;
+    color: #1d3557;
+    font-weight: 600;
 }
 
 .booking-info ul {
     padding-left: 1.5rem;
+    color: #495057;
 }
 
-/* Admin Dashboard */
+/* Admin Dashboard - Updated with Theme Colors */
 .admin-dashboard {
     padding: 2rem 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+}
+
+.admin-dashboard h1 {
+    color: #1d3557;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .admin-tabs {
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #b9c2d1;
+    background-color: white;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(29, 53, 87, 0.1);
 }
 
 .tab-btn {
-    background: none;
+    background: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 600;
+    color: #6c757d;
     border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
 }
 
 .tab-btn:hover {
-    color: #4a6fa5;
+    color: #2a6da9;
+    background-color: #f8f9fa;
 }
 
 .tab-btn.active {
-    color: #4a6fa5;
-    border-bottom-color: #4a6fa5;
+    color: #1d3557;
+    background-color: #b9c2d1;
+    border-bottom-color: #2a6da9;
+}
+
+.tab-content {
+    background-color: white;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
+    overflow: hidden;
 }
 
 .tab-pane {
     display: none;
+    padding: 2rem;
 }
 
 .tab-pane.active {
     display: block;
 }
 
+/* Admin Tables - Updated with Theme Colors */
+.section-header {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #b9c2d1;
+    padding-bottom: 1rem;
+}
+
+.section-header h2 {
+    color: #1d3557;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
 .table-responsive {
     overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(29, 53, 87, 0.1);
 }
 
 .admin-table {
     width: 100%;
     border-collapse: collapse;
+    background-color: white;
 }
 
-.admin-table th,
-.admin-table td {
-    padding: 0.75rem;
+.admin-table th {
+    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
+    color: white;
+    padding: 1rem 0.75rem;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 1rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.admin-table tbody tr:hover {
+    background-color: rgba(185, 194, 209, 0.1);
+    transform: scale(1.01);
 }
 
 .admin-table th {
@@ -769,7 +997,59 @@ footer {
     font-weight: bold;
 }
 
-/* Modal */
+/* Admin Dashboard Buttons - Updated with Theme Colors */
+.admin-table .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.admin-table .btn-primary {
+    background-color: #2a6da9;
+    color: white;
+}
+
+.admin-table .btn-primary:hover {
+    background-color: #1e5c94;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42, 109, 169, 0.3);
+}
+
+.admin-table .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.admin-table .btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.admin-table .btn-success {
+    background-color: #8ce99a;
+    color: #1d3557;
+}
+
+.admin-table .btn-success:hover {
+    background-color: #69db7c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(140, 233, 154, 0.3);
+}
+
+.admin-table .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* Modal - Updated with Theme Colors */
 .modal {
     display: none;
     position: fixed;
@@ -777,34 +1057,53 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(29, 53, 87, 0.6);
     z-index: 1000;
 }
 
 .modal-content {
     position: relative;
     background-color: white;
-    margin: auto;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-top: 1rem;
-    padding-bottom: 0.5rem;
+    margin: 10% auto;
+    padding: 2rem 3rem;
     max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(29, 53, 87, 0.3);
+    border: 1px solid #b9c2d1;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-50px) scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
 }
 
 .modal .close {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    color: #888;
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+.modal .close:hover {
+    color: #1d3557;
 }
 
 .modal h2 {
+    color: #1d3557;
     margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid #b9c2d1;
+    padding-bottom: 0.5rem;
 }
 
 /* Special status classes */
@@ -935,9 +1234,34 @@ footer {
     color: #888;
 }
 
-/* History Page Styles */
+/* History Page Styles - Updated with Theme Colors */
 .history-page {
     padding: 2rem 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+}
+
+.history-page h1 {
+    color: #1d3557;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.history-page p {
+    color: #6c757d;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.history-section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
+    border: 1px solid rgba(185, 194, 209, 0.3);
 }
 
 .history-summary {
@@ -952,14 +1276,18 @@ footer {
 
 .history-booking-item {
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid #b9c2d1;
+    border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(29, 53, 87, 0.05);
 }
 
 .history-booking-item:hover {
-    border-color: #4a6fa5;
+    border-color: #2a6da9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.15);
 }
 
 .booking-content {
@@ -1546,6 +1874,7 @@ footer {
     color: #28a745;
 }
 
+/* Room Type Cards - Updated with Theme Colors */
 .room-type-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1570,9 +1899,9 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 1.5rem;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
+    padding: 2rem;
+    border: 2px solid #b9c2d1;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     background: white;
@@ -1580,17 +1909,20 @@ footer {
     height: 100%;
     min-height: 220px;
     box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(29, 53, 87, 0.05);
 }
 
 .room-type-label:hover {
-    border-color: #4a6fa5;
-    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.1);
+    border-color: #2a6da9;
+    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.15);
+    transform: translateY(-2px);
 }
 
 .room-type-card input[type="radio"]:checked + .room-type-label {
-    border-color: #4a6fa5;
-    background-color: #f8f9fa;
-    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.15);
+    border-color: #2a6da9;
+    background: linear-gradient(135deg, #f8f9fa 0%, rgba(185, 194, 209, 0.1) 100%);
+    box-shadow: 0 8px 25px rgba(42, 109, 169, 0.2);
+    transform: translateY(-3px);
 }
 
 .room-type-icon {
@@ -1600,8 +1932,14 @@ footer {
 }
 
 .room-type-icon i {
-    font-size: 2.5rem;
-    color: #4a6fa5;
+    font-size: 3rem;
+    color: #2a6da9;
+    transition: all 0.3s ease;
+}
+
+.room-type-card input[type="radio"]:checked + .room-type-label .room-type-icon i {
+    color: #1d3557;
+    transform: scale(1.1);
 }
 
 .room-type-info {
@@ -1613,28 +1951,38 @@ footer {
 
 .room-type-info h4 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: #1d3557;
     text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 .room-type-description {
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 0.95rem;
+    color: #6c757d;
     text-align: center;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.5;
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.room-type-card input[type="radio"]:checked + .room-type-label .room-type-info h4 {
+    color: #1d3557;
+}
+
+.room-type-card input[type="radio"]:checked + .room-type-label .room-type-description {
+    color: #495057;
+}
+
 .form-section {
-    margin-bottom: 1rem;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .form-section h3 {
@@ -1645,24 +1993,60 @@ footer {
     padding-bottom: 0.5rem;
 }
 
+/* Form Elements - Updated with Theme Colors */
 .datetime-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #1d3557;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #b9c2d1;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2a6da9;
+    box-shadow: 0 0 0 3px rgba(42, 109, 169, 0.1);
 }
 
 .booking-summary {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #f8f9fa 0%, rgba(185, 194, 209, 0.1) 100%);
+    padding: 2rem;
+    border-radius: 15px;
     margin-bottom: 2rem;
-    border-left: 4px solid #4a6fa5;
+    border-left: 4px solid #2a6da9;
+    box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
 }
 
 .booking-summary h3 {
     margin-top: 0;
-    margin-bottom: 1rem;
-    color: #333;
+    margin-bottom: 1.5rem;
+    color: #1d3557;
+    font-weight: 600;
 }
 
 .summary-grid {
