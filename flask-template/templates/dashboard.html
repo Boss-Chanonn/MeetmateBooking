@@ -44,11 +44,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
-            {% else %}
+                </div>            {% else %}
                 <div class="no-bookings">
                     <p>No bookings scheduled for today</p>
-                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
                 </div>
             {% endif %}
         </div>
@@ -93,11 +91,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
-            {% else %}
+                </div>            {% else %}
                 <div class="no-bookings">
                     <p>No upcoming bookings in the next 7 days</p>
-                    <a href="{{ url_for('admin_book') }}" class="btn btn-primary">Book for Client</a>
                 </div>
             {% endif %}
         </div>
@@ -144,11 +140,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
-            {% else %}
+                </div>            {% else %}
                 <div class="no-bookings">
                     <p>No bookings scheduled for today</p>
-                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
                 </div>
             {% endif %}
         </div>
@@ -196,11 +190,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
-            {% else %}
+                </div>            {% else %}
                 <div class="no-bookings">
                     <p>No upcoming bookings in the next 7 days</p>
-                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
                 </div>
             {% endif %}
         </div>
