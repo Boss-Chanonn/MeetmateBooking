@@ -1030,10 +1030,10 @@ def history():
         
         if booking_date > current_date:
             booking['can_cancel'] = True
-            booking['status'] = None
+            booking['status'] = 'Confirmed'
         elif booking_date == current_date:
             booking['can_cancel'] = current_time < booking_start_time
-            booking['status'] = 'Complete' if current_time >= booking_start_time else None
+            booking['status'] = 'Complete' if current_time >= booking_start_time else 'Confirmed'
         else:
             booking['can_cancel'] = False
             booking['status'] = 'Complete'
@@ -1507,6 +1507,162 @@ def admin_confirm_booking():
 def page_not_found(error):
     """404 error page"""
     return render_template('error404.html'), 404
+
+@app.route('/my_account', methods=['GET', 'POST'])
+@login_required
+def my_account():
+    """Combined user account page with Dashboard, Profile, and History tabs"""
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    
+    # Get current user's ID from session
+    user_id = session['user_id']
+    
+    # Get current user information for profile tab
+    user = get_user_by_id(user_id)
+    if not user:
+        flash('User not found', 'error')
+        return redirect(url_for('logout'))
+    
+    # Handle profile update (POST request)
+    if request.method == 'POST':
+        # Get updated information from form
+        new_email = request.form['email'].strip()
+        firstname = request.form.get('firstname', '').strip()
+        lastname = request.form.get('lastname', '').strip()
+        dob = request.form.get('dob', '').strip()
+        address = request.form.get('address', '').strip()
+        
+        # Check if new email is already used by another user
+        if new_email != user['email']:
+            existing_user = get_user_by_email(new_email)
+            if existing_user:
+                flash('Email already in use by another user', 'error')
+                return redirect(url_for('my_account'))
+        
+        # Update user information in database
+        try:
+            cursor.execute('''
+                UPDATE users 
+                SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?
+                WHERE id = ?
+            ''', (new_email, firstname, lastname, dob, address, user_id))
+            connection.commit()
+            flash('Profile updated successfully', 'success')
+        except Exception as e:
+            flash('Error updating profile', 'error')
+        
+        return redirect(url_for('my_account'))
+    
+    # GET request - prepare data for all tabs
+    
+    # Get current date and time for comparison
+    now = datetime.now()
+    current_date = now.date()
+    current_time = now.time()
+    
+    # Dashboard data
+    from datetime import date, timedelta
+    today = date.today()
+    today_str = today.strftime('%Y-%m-%d')
+    today_date = today.strftime('%B %d, %Y')
+    
+    # Calculate date range for upcoming bookings (next 7 days excluding today)
+    tomorrow = today + timedelta(days=1)
+    next_week = today + timedelta(days=7)
+    tomorrow_str = tomorrow.strftime('%Y-%m-%d')
+    next_week_str = next_week.strftime('%Y-%m-%d')
+    
+    # Get user's today's bookings for dashboard tab
+    cursor.execute('''
+        SELECT 
+            b.id,
+            b.date,
+            b.time_start,
+            b.time_end,
+            b.notes,
+            r.name as room_name,
+            r.location as room_location
+        FROM bookings b
+        JOIN rooms r ON b.room_id = r.id
+        WHERE b.user_id = ? AND b.date = ?
+        ORDER BY b.time_start
+    ''', (user_id, today_str))
+    
+    user_today_bookings = []
+    for row in cursor.fetchall():
+        booking = dict(row)
+        
+        # Add time-based logic for today's bookings
+        booking_date = date.fromisoformat(booking['date'])
+        booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
+        
+        if booking_date == current_date:
+            booking['can_cancel'] = current_time < booking_start_time
+            booking['status'] = 'Complete' if current_time >= booking_start_time else None
+        else:
+            booking['can_cancel'] = True
+            booking['status'] = None
+            
+        user_today_bookings.append(booking)
+    
+    # Get user's upcoming bookings for dashboard tab (next 7 days)
+    cursor.execute('''
+        SELECT 
+            b.id,
+            b.date,
+            b.time_start,
+            b.time_end,
+            b.notes,
+            r.name as room_name,
+            r.location as room_location
+        FROM bookings b
+        JOIN rooms r ON b.room_id = r.id
+        WHERE b.user_id = ? AND b.date >= ? AND b.date <= ?
+        ORDER BY b.date, b.time_start
+        LIMIT 10
+    ''', (user_id, tomorrow_str, next_week_str))
+    
+    user_upcoming_bookings = []
+    for row in cursor.fetchall():
+        booking = dict(row)
+        
+        # Format the date for display
+        booking_date = date.fromisoformat(booking['date'])
+        booking['formatted_date'] = booking_date.strftime('%a, %b %d')
+        
+        # Add time-based logic for upcoming bookings (all future bookings can be cancelled)
+        booking['can_cancel'] = True
+        booking['status'] = None
+        
+        user_upcoming_bookings.append(booking)
+    
+    # History data - get all bookings for this user
+    user_bookings = get_user_bookings(user_id)
+    
+    # Add cancellation eligibility and completion status to each booking for history tab
+    for booking in user_bookings:
+        booking_date = date.fromisoformat(booking['date'])
+        booking_start_time = time.fromisoformat(booking['time_start'] + ':00' if len(booking['time_start']) == 5 else booking['time_start'])
+        
+        if booking_date > current_date:
+            booking['can_cancel'] = True
+            booking['status'] = 'Confirmed'
+        elif booking_date == current_date:
+            booking['can_cancel'] = current_time < booking_start_time
+            booking['status'] = 'Complete' if current_time >= booking_start_time else 'Confirmed'
+        else:
+            booking['can_cancel'] = False
+            booking['status'] = 'Complete'
+    
+    connection.close()
+    
+    return render_template('my_account.html', 
+                         user=user,
+                         today_date=today_date,
+                         user_today_bookings=user_today_bookings,
+                         user_upcoming_bookings=user_upcoming_bookings,
+                         bookings=user_bookings)
 
 # Main execution
 if __name__ == '__main__':

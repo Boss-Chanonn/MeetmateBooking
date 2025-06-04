@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}My Account{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <h1>My Account</h1>
+    
+    <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="dashboard-tab">Dashboard</button>
+        <button class="tab-btn" data-tab="profile-tab">Profile</button>
+        <button class="tab-btn" data-tab="history-tab">History</button>
+    </div>
+    
+    <div class="tab-content">
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-pane active">
+            <div class="section-header">
+                <h2>Dashboard</h2>
+            </div>
+            
+            <!-- Today's Bookings Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2>Today's Bookings</h2>
+                        <span class="date">{{ today_date }}</span>
+                    </div>
+                    {% if user_today_bookings %}
+                        <div class="bookings-list">
+                            {% for booking in user_today_bookings %}
+                                <div class="booking-item">
+                                    <div class="booking-info">
+                                        <div class="booking-time">
+                                            {{ booking.time_start }} - {{ booking.time_end }}
+                                        </div>
+                                        <div class="booking-details">
+                                            <strong>{{ booking.room_name }}</strong>
+                                            <div class="booking-location">
+                                                {{ booking.room_location }}
+                                            </div>
+                                            {% if booking.notes %}
+                                                <div class="booking-notes">{{ booking.notes }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="booking-actions">
+                                        {% if booking.can_cancel %}
+                                            <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                               class="btn btn-danger btn-small"
+                                               onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                Cancel
+                                            </a>
+                                        {% elif booking.status == 'Complete' %}
+                                            <div class="booking-status">
+                                                <span class="status-completed">Complete</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-bookings">
+                            <p>No bookings scheduled for today</p>
+                            <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Upcoming Bookings Section -->
+            <div class="dashboard-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2>Upcoming Bookings</h2>
+                        <span class="subtitle">Next 7 days</span>
+                    </div>
+                    {% if user_upcoming_bookings %}
+                        <div class="bookings-list">
+                            {% for booking in user_upcoming_bookings %}
+                                <div class="booking-item">
+                                    <div class="booking-info">
+                                        <div class="booking-date">
+                                            {{ booking.formatted_date }}
+                                        </div>
+                                        <div class="booking-time">
+                                            {{ booking.time_start }} - {{ booking.time_end }}
+                                        </div>
+                                        <div class="booking-details">
+                                            <strong>{{ booking.room_name }}</strong>
+                                            <div class="booking-location">
+                                                {{ booking.room_location }}
+                                            </div>
+                                            {% if booking.notes %}
+                                                <div class="booking-notes">{{ booking.notes }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="booking-actions">
+                                        {% if booking.can_cancel %}
+                                            <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                               class="btn btn-danger btn-small"
+                                               onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                Cancel
+                                            </a>
+                                        {% elif booking.status == 'Complete' %}
+                                            <div class="booking-status">
+                                                <span class="status-completed">Complete</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-bookings">
+                            <p>No upcoming bookings in the next 7 days</p>
+                            <a href="{{ url_for('booking') }}" class="btn btn-primary">Book a Room Now</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Tab -->
+        <div id="profile-tab" class="tab-pane">
+            <div class="section-header">
+                <h2>My Profile</h2>
+            </div>
+            
+            <div class="profile-form">
+                <form method="POST" action="{{ url_for('profile') }}" class="form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" value="{{ user.username }}" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" value="{{ user.firstname or '' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" id="lastname" name="lastname" value="{{ user.lastname or '' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" value="{{ user.dob or '' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="3">{{ user.address or '' }}</textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- History Tab -->
+        <div id="history-tab" class="tab-pane">
+            <div class="section-header">
+                <h2>Booking History</h2>
+                <span class="subtitle">Complete booking history</span>
+            </div>
+            
+            {% if bookings %}
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Room</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                    <td>{{ booking.date }}</td>
+                                    <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
+                                    <td>{{ booking.room_name }}</td>
+                                    <td>{{ booking.room_location }}</td>
+                                    <td>
+                                        {% if booking.status == 'Confirmed' %}
+                                            <span class="status-confirmed">{{ booking.status }}</span>
+                                        {% elif booking.status == 'Complete' %}
+                                            <span class="status-completed">{{ booking.status }}</span>
+                                        {% elif booking.status == 'Cancelled' %}
+                                            <span class="status-cancelled">{{ booking.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if booking.can_cancel %}
+                                            <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                Cancel
+                                            </a>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="no-bookings">
+                    <p>You haven't made any bookings yet</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary">Book Your First Room</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tab handling - same as admin dashboard
+        var tabButtons = document.querySelectorAll('.tab-btn');
+        var tabPanes = document.querySelectorAll('.tab-pane');
+        
+        for (var i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].onclick = function() {
+                var targetTab = this.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and panes
+                for (var j = 0; j < tabButtons.length; j++) {
+                    tabButtons[j].classList.remove('active');
+                }
+                for (var k = 0; k < tabPanes.length; k++) {
+                    tabPanes[k].classList.remove('active');
+                }
+                
+                // Add active class to clicked button and corresponding pane
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+            };
+        }
+    });
+</script>
+{% endblock %}
