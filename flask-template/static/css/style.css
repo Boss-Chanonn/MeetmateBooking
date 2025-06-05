@@ -1194,14 +1194,14 @@ footer {
 }
 
 .home-page .room-showcase .container {
-    background: rgba(255, 255, 255, 0.98);
-    border-radius: 24px;
+    background: transparent;
+    border-radius: 0;
     padding: 4rem 3rem;
     margin: 0 auto;
     max-width: 1200px;
-    box-shadow: 0 10px 40px rgba(29, 53, 87, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+    backdrop-filter: none;
+    border: none;
 }
 
 /* Hero Section Components */
@@ -1251,7 +1251,7 @@ footer {
 /* Room Showcase Grid - Simple Version */
 .room-showcase h2 {
     text-align: center;
-    color: #333;
+    color: white;
     margin-bottom: 2rem;
     font-size: 2rem;
     font-weight: 600;
@@ -1298,6 +1298,31 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+/* Horizontal layout for room info (Table Type, Capacity, Price) */
+.room-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.room-info-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.room-info-item strong {
+    color: #333;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
 }
 
 .detail-item {
@@ -2047,15 +2072,15 @@ footer {
 
 /* Final layout optimizations - Simplified */
 
-/* Improved container spacing */
+/* Improved container spacing - transparent background */
 .home-page .room-showcase .container {
-    background: white;
-    border-radius: 10px;
+    background: transparent;
+    border-radius: 0;
     padding: 3rem 2rem;
     margin: 0 auto;
     max-width: 1200px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e9ecef;
+    box-shadow: none;
+    border: none;
 }
 
 /* Remove duplicate room showcase header - using simple version from earlier */
