@@ -1813,7 +1813,7 @@ footer {
 
 .detail-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     padding: 1rem 0;
     border-bottom: 1px solid #e2e8f0;
