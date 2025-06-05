@@ -1137,7 +1137,7 @@ def admin():
         booking = dict(row)
         # Determine who made the booking
         if booking['admin_name']:
-            booking['booked_by'] = f"Admin: {booking['admin_name']}"
+            booking['booked_by'] = f"{booking['admin_name']}"
         else:
             booking['booked_by'] = "Self"
         
