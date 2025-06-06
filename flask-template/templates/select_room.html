@@ -33,17 +33,14 @@
                 <div class="room-grid">
                     {% for room in rooms %}
                     <div class="room-card">
-                        <input type="radio" id="room_{{ room.id }}" name="room_id" value="{{ room.id }}" required>
-                        <label for="room_{{ room.id }}" class="room-label">
+                        <input type="radio" id="room_{{ room.id }}" name="room_id" value="{{ room.id }}" required>                        <label for="room_{{ room.id }}" class="room-label">
                             <div class="room-header">
                                 <h4>{{ room.name }}</h4>
                                 <div class="room-capacity">
-                                    <i class="fas fa-users"></i>
                                     <span>{{ room.capacity }} people</span>
                                 </div>
                             </div>
                             <div class="room-location">
-                                <i class="fas fa-map-marker-alt"></i>
                                 <span>{{ room.location }}</span>
                             </div>
                             <div class="room-features">
@@ -62,24 +59,21 @@
                     </div>
                     {% endfor %}
                 </div>
-            {% else %}
-                <div class="no-rooms">
-                    <i class="fas fa-exclamation-circle"></i>
+            {% else %}                <div class="no-rooms">
                     <p>No {{ booking_data.room_type }} rooms are available for the selected time.</p>
                     <a href="{{ url_for('booking') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Go Back
+                        Back
                     </a>
                 </div>
             {% endif %}
         </div>
         
-        {% if rooms %}
-        <div class="form-actions">
+        {% if rooms %}        <div class="form-actions">
             <a href="{{ url_for('booking') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back
+                Back
             </a>
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-arrow-right"></i> Continue to Confirmation
+                Continue to Confirmation
             </button>
         </div>
         {% endif %}
