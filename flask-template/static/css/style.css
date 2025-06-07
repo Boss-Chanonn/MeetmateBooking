@@ -1036,8 +1036,7 @@ footer {
 }
 
 .admin-table th {
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
-    color: white;
+    color: #b9c2d1;
     padding: 1rem 0.75rem;
     text-align: center;
     font-weight: 600;
