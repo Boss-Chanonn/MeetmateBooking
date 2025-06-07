@@ -12,15 +12,8 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Today's Bookings</h2>
-                <span class="date">{{ today_date }}</span>            </div>
-              {% if today_bookings %}
-                <div class="booking-headers">
-                    <div class="header-time">Time</div>
-                    <div class="header-details">Room name</div>
-                    <div class="header-name">Name</div>
-                    <div class="header-status">Status</div>
-                </div>
-                <div class="bookings-list">                    {% for booking in today_bookings %}
+                <span class="date">{{ today_date }}</span>            </div>              {% if today_bookings %}
+                <div class="bookings-list">{% for booking in today_bookings %}
                         <div class="booking-item">
                             <div class="booking-time">
                                 {{ booking.time_start }} - {{ booking.time_end }}
@@ -61,16 +54,8 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Upcoming Bookings</h2>
-                <span class="subtitle">Next 7 days</span>            </div>
-              {% if upcoming_bookings %}
-                <div class="booking-headers">
-                    <div class="header-date">Date</div>
-                    <div class="header-time">Time</div>
-                    <div class="header-details">Room name</div>
-                    <div class="header-name">Name</div>
-                    <div class="header-status">Status</div>
-                </div>
-                <div class="bookings-list">                    {% for booking in upcoming_bookings %}
+                <span class="subtitle">Next 7 days</span>            </div>              {% if upcoming_bookings %}
+                <div class="bookings-list">{% for booking in upcoming_bookings %}
                         <div class="booking-item">
                             <div class="booking-date">
                                 {{ booking.formatted_date }}
@@ -116,14 +101,8 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Today's Bookings</h2>
-                <span class="date">{{ today_date }}</span>            </div>
-              {% if user_today_bookings %}
-                <div class="booking-headers">
-                    <div class="header-time">Time</div>
-                    <div class="header-details">Room name</div>
-                    <div class="header-name">Name</div>
-                    <div class="header-status">Status</div>
-                </div>                <div class="bookings-list">{% for booking in user_today_bookings %}
+                <span class="date">{{ today_date }}</span>            </div>              {% if user_today_bookings %}
+                <div class="bookings-list">{% for booking in user_today_bookings %}
                         <div class="booking-item">
                             <div class="booking-time">
                                 {{ booking.time_start }} - {{ booking.time_end }}
@@ -167,15 +146,8 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Upcoming Bookings</h2>
-                <span class="subtitle">Next 7 days</span>            </div>
-              {% if user_upcoming_bookings %}
-                <div class="booking-headers">
-                    <div class="header-date">Date</div>
-                    <div class="header-time">Time</div>
-                    <div class="header-details">Room name</div>
-                    <div class="header-name">Name</div>
-                    <div class="header-status">Status</div>
-                </div>                <div class="bookings-list">{% for booking in user_upcoming_bookings %}
+                <span class="subtitle">Next 7 days</span>            </div>              {% if user_upcoming_bookings %}
+                <div class="bookings-list">{% for booking in user_upcoming_bookings %}
                         <div class="booking-item">
                             <div class="booking-date">
                                 {{ booking.formatted_date }}
