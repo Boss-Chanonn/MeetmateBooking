@@ -1204,10 +1204,11 @@ footer {
 .form-group textarea,
 .form-group select {
     width: 100%;
-    margin-bottom: 0.5rem;
-    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
     border: 2px solid #b9c2d1;
-    border-radius: 8px;    font-size: 1rem;
+    border-radius: 8px;    
+    font-size: 1rem;
     background-color: white;
 }
 
@@ -1747,6 +1748,7 @@ footer {
 
 .payment-card h2 {
     color: #1d3557;
+    text-align: center;
     font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
