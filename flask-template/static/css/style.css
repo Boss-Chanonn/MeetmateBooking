@@ -620,6 +620,7 @@ footer {
 .dashboard-section .booking-item > .booking-time,
 .dashboard-section .booking-item > .booking-date {
     color: #2a6da9;
+    text-align: center;
     font-weight: 700;
     font-size: 1rem;
     min-width: 140px;
@@ -633,6 +634,7 @@ footer {
 
 .dashboard-section .booking-item > .booking-details {
     flex: 1;
+    text-align: center;
     min-width: 200px;
 }
 
@@ -654,6 +656,14 @@ footer {
     margin-top: 0.25rem;
 }
 
+.dashboard-section .booking-name {
+    min-width: 100px;
+    flex-shrink: 0;
+    color: #1d3557;
+    font-weight: 500;
+    text-align: left;
+}
+
 .dashboard-section .booking-actions {
     display: flex;
     align-items: center;
@@ -672,20 +682,96 @@ footer {
     font-size: 1.1rem;
 }
 
+/* Booking Headers */
+.dashboard-section .booking-headers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px 6px 0 0;
+    font-weight: 500;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.dashboard-section .booking-headers .header-time,
+.dashboard-section .booking-headers .header-date {
+    min-width: 140px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.dashboard-section .booking-headers .header-date {
+    min-width: 80px;
+    text-align: center;
+}
+
+.dashboard-section .booking-headers .header-details {
+    flex: 1;
+    text-align: center;
+    min-width: 200px;
+
+}
+
+.dashboard-section .booking-headers .header-name {
+    min-width: 100px;
+    flex-shrink: 0;
+}
+
+.dashboard-section .booking-headers .header-status {
+    min-width: 80px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+/* Adjust first booking item to connect with headers */
+.dashboard-section .booking-headers + .bookings-list .booking-item:first-child {
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+}
+
+/* Mobile responsive for headers */
+@media (max-width: 768px) {
+    .dashboard-section .booking-headers {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .dashboard-section .booking-headers .header-time,
+    .dashboard-section .booking-headers .header-date,
+    .dashboard-section .booking-headers .header-details,
+    .dashboard-section .booking-headers .header-name,
+    .dashboard-section .booking-headers .header-status {
+        min-width: auto;
+        width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .dashboard-section .booking-item {
         flex-direction: column;
         gap: 0.75rem;
         align-items: flex-start;
     }
-    
-    .dashboard-section .booking-item > .booking-time,
+      .dashboard-section .booking-item > .booking-time,
     .dashboard-section .booking-item > .booking-date {
         min-width: auto;
         width: 100%;
     }
     
     .dashboard-section .booking-item > .booking-details {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .dashboard-section .booking-item > .booking-name {
         min-width: auto;
         width: 100%;
     }
