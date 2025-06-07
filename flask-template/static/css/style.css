@@ -1646,7 +1646,7 @@ footer {
 }
 
 .payment-card {
-    background-color: white;
+    background-color: #b9c2d1;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
     overflow: hidden;
@@ -1799,7 +1799,7 @@ footer {
 
 .success-box {
     text-align: center;
-    background-color: white;
+    background-color: #b9c2d1;
     padding: 4rem 3rem;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(29, 53, 87, 0.15);
