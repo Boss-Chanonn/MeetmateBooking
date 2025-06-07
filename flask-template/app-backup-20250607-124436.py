@@ -16,10 +16,6 @@ from functools import wraps
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'meetmate_secret_key_v2_2025'
 
-# ============================================================================
-# DATABASE FUNCTIONS
-# ============================================================================
-
 def get_database_path():
     """Get database file path"""
     # Get the directory where our app.py file is located
@@ -167,12 +163,11 @@ def create_default_data_if_needed(cursor, connection):
                 VALUES (?, ?, ?, ?)
             ''', (name, location, capacity, room_type))
         
-        print("Sample rooms created")    
+        print("Sample rooms created")
+    
     connection.commit()
 
-# ============================================================================
-# HELPER FUNCTIONS
-# ============================================================================
+# Helper functions
 def get_user_by_id(user_id):
     """Get user by ID"""
     connection = get_database_connection()
@@ -349,10 +344,7 @@ def get_all_room_types():
     
     return ordered_types
 
-# ============================================================================
-# AUTHENTICATION DECORATORS
-# ============================================================================
-
+# Authentication decorators
 def login_required(f):
     """Decorator to ensure user is logged in"""
     @wraps(f)
@@ -387,10 +379,7 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# ============================================================================
-# ROUTES - MAIN APPLICATION
-# ============================================================================
-
+# Routes
 @app.route('/')
 def index():
     """Home page"""
@@ -404,10 +393,6 @@ def index():
 def about():
     """About page"""
     return render_template('about.html')
-
-# ============================================================================
-# ROUTES - AUTHENTICATION
-# ============================================================================
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -511,10 +496,6 @@ def logout():
     session.clear()
     flash('You have been logged out successfully', 'info')
     return redirect(url_for('index'))
-
-# ============================================================================
-# ROUTES - USER DASHBOARD & BOOKING
-# ============================================================================
 
 @app.route('/dashboard')
 @login_required
@@ -1067,10 +1048,7 @@ def history():
 
     return render_template('history.html', bookings=user_bookings)
 
-# ============================================================================
-# ROUTES - ADMIN FUNCTIONS
-# ============================================================================
-
+# Admin routes
 @app.route('/admin')
 @login_required
 @admin_required
@@ -1540,18 +1518,11 @@ def admin_confirm_booking():
         created_bookings_count=len(created_bookings)
     )
 
-# ============================================================================
-# ERROR HANDLERS
-# ============================================================================
-
+# Error handlers
 @app.errorhandler(404)
 def page_not_found(error):
     """404 error page"""
     return render_template('error404.html'), 404
-
-# ============================================================================
-# UTILITY ROUTES
-# ============================================================================
 
 @app.route('/my_account', methods=['GET', 'POST'])
 @login_required
@@ -1709,10 +1680,7 @@ def my_account():
                          user_upcoming_bookings=user_upcoming_bookings,
                          bookings=user_bookings)
 
-# ============================================================================
-# APPLICATION STARTUP
-# ============================================================================
-
+# Main execution
 if __name__ == '__main__':
     print("Initializing MeetMate application...")
     initialize_database()
