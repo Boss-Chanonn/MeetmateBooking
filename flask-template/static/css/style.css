@@ -1260,9 +1260,12 @@ footer {
 /* Modern Room Grid - Two Column Layout */
 .room-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 2.5rem;
     margin-top: 2rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Modern Room Card Design */
@@ -1276,6 +1279,8 @@ footer {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    width: 100%;
+    min-width: 400px;
 }
 
 .room-card:hover {
