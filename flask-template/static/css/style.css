@@ -947,7 +947,7 @@ footer {
     background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
     color: white;
     padding: 1rem 0.75rem;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -956,7 +956,7 @@ footer {
 
 .admin-table td {
     padding: 1rem 0.75rem;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #e9ecef;
     color: #495057;
     vertical-align: middle;
