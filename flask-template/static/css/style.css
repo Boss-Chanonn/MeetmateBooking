@@ -1013,7 +1013,8 @@ footer {
 
 /* Admin Tables - Updated with Theme Colors */
 .section-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
     border-bottom: 2px solid #b9c2d1;
     padding-bottom: 1rem;
 }
@@ -1408,6 +1409,7 @@ footer {
 
 .room-header h4 {
     margin: 0 0 1rem 0;
+    text-align: center;
     font-size: 1.4rem;
     font-weight: bold;
     color: #1d3557;
@@ -2151,7 +2153,6 @@ footer {
     overflow: hidden;
     border: 1px solid rgba(29, 53, 87, 0.1);
     width: 100%;
-    max-width: 380px;
     position: relative;
     display: flex;
     flex-direction: column;
