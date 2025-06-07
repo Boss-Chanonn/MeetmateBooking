@@ -255,11 +255,6 @@ footer {
     font-size: 0.875rem;
 }
 
-/* Forms */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
@@ -1127,7 +1122,7 @@ footer {
 .modal-content {
     position: relative;
     background-color: white;
-    margin: 10% auto;
+    margin: auto;
     padding: 2rem 3rem;
     max-width: 500px;
     border-radius: 15px;
@@ -1208,6 +1203,7 @@ footer {
 .form-group textarea,
 .form-group select {
     width: 100%;
+    margin-bottom: 0.5rem;
     padding: 0.8rem;
     border: 2px solid #b9c2d1;
     border-radius: 8px;    font-size: 1rem;
@@ -1229,9 +1225,6 @@ footer {
     font-weight: 600;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
 
 /* Home Page Full Background - Like Login Page */
 .home-page-body {
