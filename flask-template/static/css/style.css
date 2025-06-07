@@ -37,7 +37,7 @@ a:hover {
 /* Header */
 header {
     background-color: transparent;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.10);
     padding: 1rem 2rem;
     position: sticky;
     top: 0;
@@ -545,13 +545,12 @@ footer {
 
 /* Dashboard - Updated with Theme Colors */
 .dashboard {
-    padding: 2rem 0;
     background-color: #1d3557;
     min-height: calc(100vh - 200px);
 }
 
 .dashboard h1 {
-    color: #1d3557;
+    color: white;
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 2rem;
@@ -559,8 +558,8 @@ footer {
 }
 
 .dashboard-section {
-    background-color: white;
-    border: 2px solid #b9c2d1;
+    background-color: #b9c2d1;
+    border: 2px solid white;
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
