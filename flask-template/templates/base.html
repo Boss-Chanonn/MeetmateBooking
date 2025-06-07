@@ -15,12 +15,14 @@
                 </div>                <nav>                    <ul>                        {% if session.user_id %}                            {% if session.role != 'admin' %}
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
                                 <li><a href="{{ url_for('my_account') }}">My Account</a></li>
+                                <li><a href="{{ url_for('about') }}">Contact us</a></li>
                             {% endif %}{% if session.role == 'admin' %}
                                 <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                                 <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
                                 <li><a href="{{ url_for('admin') }}">My Account</a></li>
                             {% endif %}
                         {% else %}
+                            <li><a href="{{ url_for('about') }}">Contact us</a></li>
                         {% endif %}
                     </ul>                </nav>
                 {% if session.user_id %}
