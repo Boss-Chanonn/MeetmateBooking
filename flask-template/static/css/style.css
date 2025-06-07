@@ -641,7 +641,10 @@ footer {
 .dashboard-section .booking-location {
     color: #64748b;
     font-size: 0.9rem;
-    margin-top: 0.25rem;
+    min-width: 150px;
+    text-align: center;
+    flex-shrink: 0;
+    font-weight: 500;
 }
 
 .dashboard-section .booking-notes {
@@ -656,7 +659,7 @@ footer {
     flex-shrink: 0;
     color: #1d3557;
     font-weight: 500;
-    text-align: left;
+    text-align: center;
 }
 
 .dashboard-section .booking-actions {
