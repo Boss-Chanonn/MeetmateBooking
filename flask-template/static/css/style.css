@@ -604,9 +604,12 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;    background-color: #f8fafc;
+    padding: 1rem;
+    background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .dashboard-section .booking-item:hover {
@@ -614,25 +617,23 @@ footer {
     border-color: #b9c2d1;
 }
 
-.dashboard-section .booking-info {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex: 1;
-}
-
-.dashboard-section .booking-time {
+.dashboard-section .booking-item > .booking-time,
+.dashboard-section .booking-item > .booking-date {
     color: #2a6da9;
     font-weight: 700;
     font-size: 1rem;
     min-width: 140px;
+    flex-shrink: 0;
 }
 
-.dashboard-section .booking-date {
-    color: #2a6da9;
-    font-weight: 700;
+.dashboard-section .booking-item > .booking-date {
     font-size: 0.9rem;
     min-width: 80px;
+}
+
+.dashboard-section .booking-item > .booking-details {
+    flex: 1;
+    min-width: 200px;
 }
 
 .dashboard-section .booking-details strong {
@@ -653,6 +654,13 @@ footer {
     margin-top: 0.25rem;
 }
 
+.dashboard-section .booking-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
 .dashboard-section .no-bookings {
     text-align: center;
     padding: 2rem;
@@ -667,20 +675,25 @@ footer {
 @media (max-width: 768px) {
     .dashboard-section .booking-item {
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
         align-items: flex-start;
     }
     
-    .dashboard-section .booking-info {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
+    .dashboard-section .booking-item > .booking-time,
+    .dashboard-section .booking-item > .booking-date {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .dashboard-section .booking-item > .booking-details {
+        min-width: auto;
         width: 100%;
     }
     
     .dashboard-section .booking-actions {
         width: 100%;
         text-align: center;
+        margin-left: 0;
     }
     
     .dashboard-section .section-header {

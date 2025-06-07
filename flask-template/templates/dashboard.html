@@ -15,19 +15,16 @@
                 <span class="date">{{ today_date }}</span>
             </div>
               {% if today_bookings %}
-                <div class="bookings-list">
-                    {% for booking in today_bookings %}
+                <div class="bookings-list">                    {% for booking in today_bookings %}
                         <div class="booking-item">
-                            <div class="booking-info">
-                                <div class="booking-time">
-                                    {{ booking.time_start }} - {{ booking.time_end }}
-                                </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
-                                    {% if booking.notes %}
-                                        <div class="booking-notes">{{ booking.notes }}</div>
-                                    {% endif %}
-                                </div>
+                            <div class="booking-time">
+                                {{ booking.time_start }} - {{ booking.time_end }}
+                            </div>
+                            <div class="booking-details">
+                                <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
+                                {% if booking.notes %}
+                                    <div class="booking-notes">{{ booking.notes }}</div>
+                                {% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
@@ -59,22 +56,19 @@
                 <span class="subtitle">Next 7 days</span>
             </div>
               {% if upcoming_bookings %}
-                <div class="bookings-list">
-                    {% for booking in upcoming_bookings %}
+                <div class="bookings-list">                    {% for booking in upcoming_bookings %}
                         <div class="booking-item">
-                            <div class="booking-info">
-                                <div class="booking-date">
-                                    {{ booking.formatted_date }}
-                                </div>
-                                <div class="booking-time">
-                                    {{ booking.time_start }} - {{ booking.time_end }}
-                                </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
-                                    {% if booking.notes %}
-                                        <div class="booking-notes">{{ booking.notes }}</div>
-                                    {% endif %}
-                                </div>
+                            <div class="booking-date">
+                                {{ booking.formatted_date }}
+                            </div>
+                            <div class="booking-time">
+                                {{ booking.time_start }} - {{ booking.time_end }}
+                            </div>
+                            <div class="booking-details">
+                                <strong>{{ booking.room_name }}</strong> - {{ booking.username }}
+                                {% if booking.notes %}
+                                    <div class="booking-notes">{{ booking.notes }}</div>
+                                {% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
@@ -108,22 +102,19 @@
                 <span class="date">{{ today_date }}</span>
             </div>
               {% if user_today_bookings %}
-                <div class="bookings-list">
-                    {% for booking in user_today_bookings %}
+                <div class="bookings-list">                    {% for booking in user_today_bookings %}
                         <div class="booking-item">
-                            <div class="booking-info">
-                                <div class="booking-time">
-                                    {{ booking.time_start }} - {{ booking.time_end }}
+                            <div class="booking-time">
+                                {{ booking.time_start }} - {{ booking.time_end }}
+                            </div>
+                            <div class="booking-details">
+                                <strong>{{ booking.room_name }}</strong>
+                                <div class="booking-location">
+                                    {{ booking.room_location }}
                                 </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong>
-                                    <div class="booking-location">
-                                        {{ booking.room_location }}
-                                    </div>
-                                    {% if booking.notes %}
-                                        <div class="booking-notes">{{ booking.notes }}</div>
-                                    {% endif %}
-                                </div>
+                                {% if booking.notes %}
+                                    <div class="booking-notes">{{ booking.notes }}</div>
+                                {% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
@@ -155,25 +146,22 @@
                 <span class="subtitle">Next 7 days</span>
             </div>
               {% if user_upcoming_bookings %}
-                <div class="bookings-list">
-                    {% for booking in user_upcoming_bookings %}
+                <div class="bookings-list">                    {% for booking in user_upcoming_bookings %}
                         <div class="booking-item">
-                            <div class="booking-info">
-                                <div class="booking-date">
-                                    {{ booking.formatted_date }}
+                            <div class="booking-date">
+                                {{ booking.formatted_date }}
+                            </div>
+                            <div class="booking-time">
+                                {{ booking.time_start }} - {{ booking.time_end }}
+                            </div>
+                            <div class="booking-details">
+                                <strong>{{ booking.room_name }}</strong>
+                                <div class="booking-location">
+                                    {{ booking.room_location }}
                                 </div>
-                                <div class="booking-time">
-                                    {{ booking.time_start }} - {{ booking.time_end }}
-                                </div>
-                                <div class="booking-details">
-                                    <strong>{{ booking.room_name }}</strong>
-                                    <div class="booking-location">
-                                        {{ booking.room_location }}
-                                    </div>
-                                    {% if booking.notes %}
-                                        <div class="booking-notes">{{ booking.notes }}</div>
-                                    {% endif %}
-                                </div>
+                                {% if booking.notes %}
+                                    <div class="booking-notes">{{ booking.notes }}</div>
+                                {% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
