@@ -140,7 +140,7 @@ nav ul li a:hover {
 footer {
     text-align: center;
     padding: 1rem;
-    background-color: white;
+    background-color: transparent;
     border-top: 1px solid #ddd;
     color: #888;
     font-size: 0.9rem;
@@ -813,7 +813,7 @@ footer {
 }
 
 .booking-form, .profile-form {
-    background-color: white;
+    background-color: #b9c2d1;
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
@@ -1863,8 +1863,8 @@ footer {
 
 /* Booking Confirmation Pages - Updated with Theme Colors */
 .confirm-card {
-    background-color: white;
-    border: 2px solid #b9c2d1;
+    background-color: #b9c2d1;
+    border: 2px solid white;
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
@@ -2021,7 +2021,7 @@ footer {
 
 /* Room Selection Components - Updated with Theme Colors */
 .room-selection-form {
-    background-color: white;
+    background-color: #b9c2d1;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
     padding: 2rem;
