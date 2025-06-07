@@ -16,95 +16,97 @@
             <div class="section-header">
                 <h2>Dashboard</h2>
             </div>
-            
-            <!-- Today's Bookings Section -->
+              <!-- Today's Bookings Section -->
             <div class="dashboard-section">
                 <div class="section-header">
                     <h2>Today's Bookings</h2>
                     <span class="date">{{ today_date }}</span>
                 </div>
                 {% if user_today_bookings %}
-                    <div class="bookings-list">
-                        {% for booking in user_today_bookings %}
-                            <div class="booking-item">
-                                <div class="booking-info">
-                                    <div class="booking-time">
-                                        {{ booking.time_start }} - {{ booking.time_end }}
-                                    </div>
-                                    <div class="booking-details">
-                                        <strong>{{ booking.room_name }}</strong>
-                                        <div class="booking-location">
-                                            {{ booking.room_location }}
-                                        </div>
-                                        {% if booking.notes %}
-                                            <div class="booking-notes">{{ booking.notes }}</div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="booking-actions">
-                                    {% if booking.can_cancel %}
-                                        <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                           class="btn btn-danger btn-small"
-                                           onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                            Cancel
-                                        </a>
-                                    {% elif booking.status == 'Complete' %}
-                                        <div class="booking-status">
-                                            <span class="status-completed">Complete</span>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>                {% else %}
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Room Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in user_today_bookings %}
+                                    <tr>
+                                        <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
+                                        <td>{{ booking.room_name }}</td>
+                                        <td>{{ booking.room_location }}</td>
+                                        <td>
+                                            {% if booking.can_cancel %}
+                                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                                   class="btn btn-sm btn-danger"
+                                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                    Cancel
+                                                </a>
+                                            {% elif booking.status == 'Complete' %}
+                                                <span class="status-completed">Complete</span>
+                                            {% else %}
+                                                <span class="status-confirmed">Confirmed</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
                     <div class="no-bookings">
                         <p>No bookings scheduled for today</p>
                     </div>
                 {% endif %}
             </div>
-            
-            <!-- Upcoming Bookings Section -->
+              <!-- Upcoming Bookings Section -->
             <div class="dashboard-section">
                 <div class="section-header">
                     <h2>Upcoming Bookings</h2>
                     <span class="subtitle">Next 7 days</span>
                 </div>
                 {% if user_upcoming_bookings %}
-                    <div class="bookings-list">
-                        {% for booking in user_upcoming_bookings %}
-                            <div class="booking-item">
-                                <div class="booking-info">
-                                    <div class="booking-date">
-                                        {{ booking.formatted_date }}
-                                    </div>
-                                    <div class="booking-time">
-                                        {{ booking.time_start }} - {{ booking.time_end }}
-                                    </div>
-                                    <div class="booking-details">
-                                        <strong>{{ booking.room_name }}</strong>
-                                        <div class="booking-location">
-                                            {{ booking.room_location }}
-                                        </div>
-                                        {% if booking.notes %}
-                                            <div class="booking-notes">{{ booking.notes }}</div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="booking-actions">                                    {% if booking.can_cancel %}
-                                        <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
-                                           class="btn btn-danger btn-small"
-                                           onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                            Cancel
-                                        </a>
-                                    {% elif booking.status == 'Complete' %}
-                                        <div class="booking-status">
-                                            <span class="status-completed">Complete</span>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>                {% else %}
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Room Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in user_upcoming_bookings %}
+                                    <tr>
+                                        <td>{{ booking.formatted_date }}</td>
+                                        <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
+                                        <td>{{ booking.room_name }}</td>
+                                        <td>{{ booking.room_location }}</td>
+                                        <td>
+                                            {% if booking.can_cancel %}
+                                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                                   class="btn btn-sm btn-danger"
+                                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                    Cancel
+                                                </a>
+                                            {% elif booking.status == 'Complete' %}
+                                                <span class="status-completed">Complete</span>
+                                            {% else %}
+                                                <span class="status-confirmed">Confirmed</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
                     <div class="no-bookings">
                         <p>No upcoming bookings in the next 7 days</p>
                     </div>
