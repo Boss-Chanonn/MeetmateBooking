@@ -394,8 +394,8 @@ def admin_required(f):
 @app.route('/')
 def index():
     """Home page"""
-    if 'user_id' in session:
-        return redirect(url_for('dashboard'))
+    # Clear all sessions when accessing home page
+    session.clear()
     # Get all rooms to display on homepage
     rooms = get_all_rooms()
     return render_template('home.html', rooms=rooms)
