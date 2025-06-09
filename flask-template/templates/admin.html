@@ -174,13 +174,7 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Edit User</h2>
-        
-        <form method="POST" action="" id="edit-user-form" class="booking-form">
-            <div class="form-group">
-                <label for="edit-username">Username</label>
-                <input type="text" id="edit-username" name="username" required>
-            </div>
-            
+          <form method="POST" action="" id="edit-user-form" class="booking-form">
             <div class="form-group">
                 <label for="edit-email">Email</label>
                 <input type="email" id="edit-email" name="email" required>
@@ -279,12 +273,10 @@
                 var dob = this.getAttribute('data-dob');
                 var address = this.getAttribute('data-address');
                 var role = this.getAttribute('data-role');
-                
-                // Set form action
+                  // Set form action
                 editUserForm.action = '/admin/edit_user/' + userId;
                 
                 // Fill form fields
-                document.getElementById('edit-username').value = username;
                 document.getElementById('edit-email').value = email;
                 document.getElementById('edit-firstname').value = firstname || '';
                 document.getElementById('edit-lastname').value = lastname || '';

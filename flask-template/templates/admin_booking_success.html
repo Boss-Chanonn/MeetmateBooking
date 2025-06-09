@@ -5,7 +5,7 @@
 {% block content %}
 <div class="success-page">
     <div class="success-box">
-        <h1>Booking Successfully Created!</h1>
+        <h1>Booking Successfully.</h1>
         
         <div class="details">
             <div class="detail-item">
@@ -61,12 +61,7 @@
         </div>
         
         <div class="action-buttons">
-            <a href="{{ url_for('admin') }}" class="btn btn-primary">Return to Admin Panel</a>
-            <a href="{{ url_for('admin_book') }}" class="btn">Book Another Room</a>
-        </div>
-        
-        <div class="notification">
-            <p>A confirmation email has been sent to {{ client.email }}</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Dashboard</a>
         </div>
     </div>
 </div>

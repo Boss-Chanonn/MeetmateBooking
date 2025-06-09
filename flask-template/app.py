@@ -1234,13 +1234,12 @@ def add_room():
 def edit_user(user_id):
     """Edit user information"""
     # Get updated user information from form
-    username = request.form['username'].strip()
     email = request.form['email'].strip()
     role = request.form['role']
     
     # Validate input
-    if not username or not email:
-        flash('Username and email are required', 'error')
+    if not email:
+        flash('Email is required', 'error')
         return redirect(url_for('admin'))
     
     if role not in ['user', 'admin']:
@@ -1254,9 +1253,9 @@ def edit_user(user_id):
     try:
         cursor.execute('''
             UPDATE users 
-            SET username = ?, email = ?, role = ?
+            SET email = ?, role = ?
             WHERE id = ?
-        ''', (username, email, role, user_id))
+        ''', (email, role, user_id))
         
         connection.commit()
         flash('User updated successfully', 'success')
