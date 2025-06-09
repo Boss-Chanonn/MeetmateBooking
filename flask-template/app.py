@@ -974,8 +974,7 @@ def cancel_booking(booking_id):
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    """User profile page"""
-    # Get current user information
+    """User profile page"""    # Get current user information
     user = get_user_by_id(session['user_id'])
     
     if not user:
@@ -995,13 +994,12 @@ def profile():
     dob = request.form.get('dob', '').strip()
     address = request.form.get('address', '').strip()
     new_password = request.form.get('password', '').strip()
-    
-    # Check if new email is already used by another user
+      # Check if new email is already used by another user
     if new_email != user['email']:
         existing_user = get_user_by_email(new_email)
         if existing_user:
             flash('Email already in use by another user', 'error')
-            return redirect(url_for('profile'))
+            return redirect(url_for('my_account'))
     
     # Update user information in database
     connection = get_database_connection()
@@ -1022,8 +1020,7 @@ def profile():
             cursor.execute('''
                 UPDATE users 
                 SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?
-                WHERE id = ?
-            ''', (new_email, firstname, lastname, dob, address, user['id']))
+                WHERE id = ?            ''', (new_email, firstname, lastname, dob, address, user['id']))
         
         connection.commit()
         flash('Profile updated successfully', 'success')
@@ -1034,7 +1031,7 @@ def profile():
     finally:
         connection.close()
     
-    return redirect(url_for('profile'))
+    return redirect(url_for('my_account'))
 
 @app.route('/history')
 @login_required
