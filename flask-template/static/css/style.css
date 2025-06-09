@@ -931,10 +931,10 @@ footer {
 
 .booking-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     padding: 2rem;
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
-    color: white;
+    background: #b9c2d1;
+    color: #1d3557;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.2);
 }
@@ -963,9 +963,7 @@ footer {
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #b9c2d1;
-    padding-bottom: 0.5rem;
+
 }
 
 .booking-info {
@@ -1236,10 +1234,6 @@ footer {
     border: 1px solid rgba(185, 194, 209, 0.3);
 }
 
-.form-actions {
-    margin-top: 2rem;
-    text-align: center;
-}
 
 /* Form styling improvements */
 .form-group input,
@@ -1683,12 +1677,13 @@ footer {
 
 /* Booking Summary - Updated with Theme Colors */
 .booking-summary {
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
-    color: white;
+    background: #b9c2d1;
+    color: #1d3557;
     padding: 2rem;
     border-radius: 15px;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .booking-summary h3 {
@@ -1696,6 +1691,7 @@ footer {
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
+    color: #1d3557;
 }
 
 .summary-grid {
@@ -1709,9 +1705,10 @@ footer {
     align-items: center;
     gap: 0.8rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 10px;
     backdrop-filter: blur(10px);
+    color: #1d3557;
 }
 
 /* Form Actions - Updated with Theme Colors */
@@ -1720,9 +1717,6 @@ footer {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 2px solid #b9c2d1;
 }
 
 .form-actions .btn {
@@ -1743,7 +1737,7 @@ footer {
 }
 
 .form-actions .btn-primary:hover {
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
+    background: #1d3557;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(42, 109, 169, 0.3);
 }
@@ -1771,8 +1765,8 @@ footer {
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
-    color: white;
+    background: #b9c2d1;
+    color: #1d3557;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.2);
     font-size: 2.5rem;
@@ -1822,8 +1816,8 @@ footer {
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
-    background: linear-gradient(135deg, #1d3557 0%, #2a6da9 100%);
-    color: white;
+    background: #b9c2d1;
+    color: #1d3557;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(29, 53, 87, 0.2);
     font-size: 2.5rem;
@@ -1969,7 +1963,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
+    padding: 0.3rem 0;
     border-bottom: 1px solid rgba(185, 194, 209, 0.3);
 }
 
@@ -2032,8 +2026,6 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #e2e8f0;
 }
 
 .detail-item:last-child {
@@ -2179,7 +2171,7 @@ footer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2.5rem;
-    margin: 3rem auto 0;
+    margin-bottom: 2rem;
     max-width: 1200px;
     justify-items: center;
     align-items: stretch;
