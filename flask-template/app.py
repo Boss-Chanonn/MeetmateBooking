@@ -1245,6 +1245,10 @@ def edit_user(user_id):
     """Edit user information"""
     # Get updated user information from form
     email = request.form['email'].strip()
+    firstname = request.form.get('firstname', '').strip()
+    lastname = request.form.get('lastname', '').strip()
+    dob = request.form.get('dob', '').strip()
+    address = request.form.get('address', '').strip()
     role = request.form['role']
     
     # Validate input
@@ -1263,9 +1267,9 @@ def edit_user(user_id):
     try:
         cursor.execute('''
             UPDATE users 
-            SET email = ?, role = ?
+            SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?, role = ?
             WHERE id = ?
-        ''', (email, role, user_id))
+        ''', (email, firstname, lastname, dob, address, role, user_id))
         
         connection.commit()
         flash('User updated successfully', 'success')
