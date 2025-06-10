@@ -522,8 +522,15 @@ def dashboard():
     """User dashboard page"""
     connection = get_database_connection()
     cursor = connection.cursor()
-      # Get current user's ID from session
+    
+    # Get current user's ID from session
     user_id = session['user_id']
+    
+    # Get current user information
+    user = get_user_by_id(user_id)
+    if not user:
+        flash('User not found', 'error')
+        return redirect(url_for('logout'))
     
     # Get current date and time for comparison
     now = datetime.now()
@@ -702,9 +709,9 @@ def dashboard():
             user_upcoming_bookings.append(booking)
     
     connection.close()
-    
-    # Show the dashboard with user's bookings and today's overview
+      # Show the dashboard with user's bookings and today's overview
     return render_template('dashboard.html',
+                         user=user,
                          today_bookings=today_bookings,
                          today_date=today_date,
                          upcoming_bookings=upcoming_bookings,
@@ -1015,14 +1022,20 @@ def profile():
                 SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?, password = ?
                 WHERE id = ?
             ''', (new_email, firstname, lastname, dob, address, password_hash, user['id']))
-        else:
-            # Keep existing password
+        else:            # Keep existing password
             cursor.execute('''
                 UPDATE users 
                 SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?
-                WHERE id = ?            ''', (new_email, firstname, lastname, dob, address, user['id']))
+                WHERE id = ?
+            ''', (new_email, firstname, lastname, dob, address, user['id']))
         
         connection.commit()
+        
+        # Update session with new user data if update was successful
+        updated_user = get_user_by_id(user['id'])
+        if updated_user:
+            session['username'] = updated_user['username']  # Keep username in session for compatibility
+            
         flash('Profile updated successfully', 'success')
         
     except Exception as error:
@@ -1573,8 +1586,7 @@ def my_account():
         lastname = request.form.get('lastname', '').strip()
         dob = request.form.get('dob', '').strip()
         address = request.form.get('address', '').strip()
-        
-        # Check if new email is already used by another user
+          # Check if new email is already used by another user
         if new_email != user['email']:
             existing_user = get_user_by_email(new_email)
             if existing_user:
@@ -1589,6 +1601,12 @@ def my_account():
                 WHERE id = ?
             ''', (new_email, firstname, lastname, dob, address, user_id))
             connection.commit()
+            
+            # Update session with new user data
+            updated_user = get_user_by_id(user_id)
+            if updated_user:
+                session['username'] = updated_user['username']  # Keep username in session for compatibility
+                
             flash('Profile updated successfully', 'success')
         except Exception as e:
             flash('Error updating profile', 'error')

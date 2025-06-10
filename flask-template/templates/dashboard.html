@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="dashboard">
-    <h1>Welcome, {{ session.username }}!</h1>
+    <h1>Welcome, {% if user.firstname %}{{ user.firstname }}{% else %}{{ session.username }}{% endif %}!</h1>
     
     {% if session.role == 'admin' %}
     <!-- Admin Dashboard -->
@@ -101,7 +101,7 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Today's Bookings</h2>
-                <span class="date">{{ today_date }}</span>            </div>              {% if user_today_bookings %}
+                <span class="date">{{ today_date }}</span>            </div>            {% if user_today_bookings %}
                 <div class="bookings-list">{% for booking in user_today_bookings %}                        <div class="booking-item">
                             <div class="booking-time">
                                 {{ booking.time_start }} - {{ booking.time_end }}
@@ -116,7 +116,7 @@
                                 {{ booking.room_location }}
                             </div>
                             <div class="booking-name">
-                                {{ session.username }}
+                                {% if user.firstname %}{{ user.firstname }}{% else %}{{ session.username }}{% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
@@ -145,7 +145,7 @@
         <div class="section-card">
             <div class="section-header">
                 <h2>Upcoming Bookings</h2>
-                <span class="subtitle">Next 7 days</span>            </div>              {% if user_upcoming_bookings %}
+                <span class="subtitle">Next 7 days</span>            </div>            {% if user_upcoming_bookings %}
                 <div class="bookings-list">{% for booking in user_upcoming_bookings %}                        <div class="booking-item">
                             <div class="booking-date">
                                 {{ booking.formatted_date }}
@@ -163,7 +163,7 @@
                                 {{ booking.room_location }}
                             </div>
                             <div class="booking-name">
-                                {{ session.username }}
+                                {% if user.firstname %}{{ user.firstname }}{% else %}{{ session.username }}{% endif %}
                             </div>
                             <div class="booking-actions">
                                 {% if booking.can_cancel %}
