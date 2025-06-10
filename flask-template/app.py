@@ -139,26 +139,29 @@ def create_default_data_if_needed(cursor, connection):
         print("Creating sample rooms...")
         
         rooms = [
-            # Circle Table rooms (5 rooms, capacity 6-8)
-            ('Circle Table - Alpha', 'Floor 1, East Wing', 6, 'Circle Table'),
-            ('Circle Table - Beta', 'Floor 1, West Wing', 8, 'Circle Table'),
-            ('Circle Table - Gamma', 'Floor 2, East Wing', 6, 'Circle Table'),
-            ('Circle Table - Delta', 'Floor 2, West Wing', 8, 'Circle Table'),
-            ('Circle Table - Epsilon', 'Floor 3, Center', 7, 'Circle Table'),
+            # Circle Table rooms (6 rooms, capacity 6-8)
+            ('Circle Table - Room A', 'Floor 1, East Wing', 6, 'Circle Table'),
+            ('Circle Table - Room B', 'Floor 1, West Wing', 8, 'Circle Table'),
+            ('Circle Table - Room C', 'Floor 2, East Wing', 6, 'Circle Table'),
+            ('Circle Table - Room D', 'Floor 2, West Wing', 8, 'Circle Table'),
+            ('Circle Table - Room E', 'Floor 3, Center', 7, 'Circle Table'),
+            ('Circle Table - Room F', 'Floor 3, East Wing', 7, 'Circle Table'),
             
-            # Long Table rooms (5 rooms, capacity 12-16)
-            ('Long Table - Mercury', 'Floor 1, Conference Wing', 12, 'Long Table'),
-            ('Long Table - Venus', 'Floor 2, Conference Wing', 14, 'Long Table'),
-            ('Long Table - Earth', 'Floor 3, Conference Wing', 16, 'Long Table'),
-            ('Long Table - Mars', 'Floor 1, Executive Wing', 14, 'Long Table'),
-            ('Long Table - Jupiter', 'Floor 2, Executive Wing', 15, 'Long Table'),
+            # Long Table rooms (6 rooms, capacity 12-16)
+            ('Long Table - Room A', 'Floor 1, Conference Wing', 12, 'Long Table'),
+            ('Long Table - Room B', 'Floor 2, Conference Wing', 14, 'Long Table'),
+            ('Long Table - Room C', 'Floor 3, Conference Wing', 16, 'Long Table'),
+            ('Long Table - Room D', 'Floor 1, Executive Wing', 14, 'Long Table'),
+            ('Long Table - Room E', 'Floor 2, Executive Wing', 15, 'Long Table'),
+            ('Long Table - Room F', 'Floor 3, Executive Wing', 13, 'Long Table'),
             
-            # Square Table rooms (5 rooms, capacity 4-6)
-            ('Square Table - North', 'Floor 1, Collaboration Zone', 4, 'Square Table'),
-            ('Square Table - South', 'Floor 1, Innovation Hub', 6, 'Square Table'),
-            ('Square Table - East', 'Floor 2, Collaboration Zone', 4, 'Square Table'),
-            ('Square Table - West', 'Floor 2, Innovation Hub', 5, 'Square Table'),
-            ('Square Table - Central', 'Floor 3, Team Area', 6, 'Square Table')
+            # Square Table rooms (6 rooms, capacity 4-6)
+            ('Square Table - Room A', 'Floor 1, Collaboration Zone', 4, 'Square Table'),
+            ('Square Table - Room B', 'Floor 1, Innovation Hub', 6, 'Square Table'),
+            ('Square Table - Room C', 'Floor 2, Collaboration Zone', 4, 'Square Table'),
+            ('Square Table - Room D', 'Floor 2, Innovation Hub', 5, 'Square Table'),
+            ('Square Table - Room E', 'Floor 3, Team Area', 6, 'Square Table'),
+            ('Square Table - Room F', 'Floor 3, Collaboration Zone', 5, 'Square Table')
         ]
         
         for name, location, capacity, room_type in rooms:
@@ -167,7 +170,7 @@ def create_default_data_if_needed(cursor, connection):
                 VALUES (?, ?, ?, ?)
             ''', (name, location, capacity, room_type))
         
-        print("Sample rooms created")    
+        print("Sample rooms created (18 total: 6 of each type)")    
     connection.commit()
 
 # ============================================================================
@@ -1245,6 +1248,10 @@ def edit_user(user_id):
     """Edit user information"""
     # Get updated user information from form
     email = request.form['email'].strip()
+    firstname = request.form.get('firstname', '').strip()
+    lastname = request.form.get('lastname', '').strip()
+    dob = request.form.get('dob', '').strip()
+    address = request.form.get('address', '').strip()
     role = request.form['role']
     
     # Validate input
@@ -1263,11 +1270,19 @@ def edit_user(user_id):
     try:
         cursor.execute('''
             UPDATE users 
-            SET email = ?, role = ?
+            SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?, role = ?
             WHERE id = ?
-        ''', (email, role, user_id))
+        ''', (email, firstname, lastname, dob, address, role, user_id))
         
         connection.commit()
+        
+        # If the updated user is the current admin, update their session
+        if user_id == session['user_id']:
+            updated_user = get_user_by_id(user_id)
+            if updated_user:
+                session['username'] = updated_user['username']
+                session['role'] = updated_user['role']
+        
         flash('User updated successfully', 'success')
         
     except Exception as error:
