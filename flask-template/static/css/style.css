@@ -1816,6 +1816,7 @@ footer {
 
 /* Form Actions - Standardized Design */
 .form-actions {
+    display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: center;
