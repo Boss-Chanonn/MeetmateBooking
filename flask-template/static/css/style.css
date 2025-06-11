@@ -19,11 +19,11 @@ h1, h2, h3, h4, h5, h6 {
 /* Links */
 a {
     text-decoration: none;
-    color: #4a6fa5;
+    color: #2563eb;
 }
 
 a:hover {
-    color: #2c6ba0;
+    color: #1d4ed8;
 }
 
 /* Container */
@@ -74,36 +74,52 @@ nav {
 
 .auth-buttons .btn {
     padding: 0.6rem 1.5rem;
-    border-radius: 50px;    font-weight: 600;
+    border-radius: 8px;
+    font-weight: 600;
     text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .auth-buttons .btn-primary {
     background-color: #8ce99a;
-    color: #1b1b1b;
+    color: #1d3557;
 }
 
 .auth-buttons .btn-primary:hover {
     background-color: #69db7c;
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(140, 233, 154, 0.3);
 }
 
 .auth-buttons .btn-secondary {
-    background-color: transparent;
-    color: white;
+    background-color: #D0DAEB;
+    color: #1d3557;
 }
 
 .auth-buttons .btn-secondary:hover {
-    background-color: #5a6268;
+    background-color: #b9c2d1;
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(208, 218, 235, 0.3);
 }
 
 .login-button .btn-primary {
-    background-color: #2a6da9;
+    background-color: #8ce99a;
+    color: #1d3557;
     padding: 0.6rem 1.5rem;
-    border-radius: 50px;    font-weight: 600;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-button .btn-primary:hover {
-    background-color: #1e5c94;
+    background-color: #69db7c;
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(140, 233, 154, 0.3);
 }
 
 /* Navigation */
@@ -189,112 +205,157 @@ footer {
     margin-top: 2rem;
 }
 
-/* Buttons - Updated with Theme Colors */
+/* Buttons - Standardized Design System */
+/*
+ * Button Color Specification:
+ * - .btn-primary (Blue #2563eb): Submit/Confirm actions on all pages
+ * - .btn-secondary (Gray #b9c2d1): Cancel/Back actions on all pages  
+ * - .btn-danger (Red #dc3545): Delete/Cancel actions on Admin/Booking pages
+ * - .btn-success (Green #8ce99a): Success actions on success pages
+ * - .btn-outline (Transparent): Call-to-action on Hero section
+ * - .login-btn (Green #8ce99a): Login/Register on login page
+ * - .btn-logout (Red #dc3545): Logout in header
+ */
+
+/* Base button styling - shared across all button types */
 .btn {
     display: inline-block;
-    padding: 0.4rem 1.5rem;
-    background-color: #2a6da9;
-    color: white;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 25px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
-    box-shadow: 0 2px 10px rgba(42, 109, 169, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-    background-color: #1e5c94;
-    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Primary Button - Blue #2563eb - Submit/Confirm actions */
 .btn-primary {
     background-color: #2563eb;
     color: white;
-    padding: 1rem 2.5rem;
+    padding: 0.75rem 2rem;
     border-radius: 8px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     border: none;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
     background-color: #1d4ed8;
     color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
+/* Secondary Button - Gray #D0DAEB - Cancel/Back actions */
 .btn-secondary {
-    background-color: #b9c2d1;
+    background-color: #D0DAEB;
     color: #1d3557;
-    padding: 1rem 2.5rem;
+    padding: 0.75rem 2rem;
     border-radius: 8px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     border: none;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #a8b2c1;
+    background-color: #b9c2d1;
     color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(208, 218, 235, 0.3);
 }
 
+/* Outline Button - Transparent - Call-to-action Hero section */
 .btn-outline {
     background-color: transparent;
     color: white;
-    padding: 1rem 2.5rem;
+    padding: 0.75rem 2rem;
     border-radius: 8px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     border: 2px solid white;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
     background-color: white;
-    color: #333;
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
 }
 
+/* Success Button - Green #8ce99a - Success actions */
 .btn-success {
     background-color: #8ce99a;
     color: #1d3557;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .btn-success:hover {
     background-color: #69db7c;
     color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(140, 233, 154, 0.3);
 }
 
+/* Danger Button - Red #dc3545 - Delete/Cancel actions */
 .btn-danger {
     background-color: #dc3545;
     color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .btn-danger:hover {
     background-color: #c82333;
     color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
-.btn-danger:hover {
-    background-color: #c0392b;
-}
-
+/* Button size variants */
 .btn-sm {
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
     font-size: 0.875rem;
+}
+
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
 }
 
 .form-group label {
@@ -423,7 +484,7 @@ footer {
 .logo-container {
     width: 80px;
     height: 80px;
-    background-color: #2a6da9;
+    background-color: #2563eb;
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -438,7 +499,7 @@ footer {
 }
 
 .meetmate-logo h2 {
-    color: #2a6da9;
+    color: #2563eb;
     margin: 0;
     font-size: 1.8rem;
     font-weight: bold;
@@ -464,20 +525,27 @@ footer {
     font-size: 0.95rem;
 }
 
+/* Login Button - Green #8ce99a - Login/Register actions */
 .login-btn {
     width: 100%;
     padding: 1rem;
     background-color: #8ce99a;
-    color: #000;
+    color: #1d3557;
     border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
     margin-top: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-btn:hover {
     background-color: #69db7c;
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(140, 233, 154, 0.3);
 }
 
 .login-options {
@@ -494,7 +562,7 @@ footer {
 }
 
 .signup-link, .forgot-password {
-    color: #2a6da9;
+    color: #2563eb;
     font-size: 0.9rem;
     text-decoration: none;
 }
@@ -910,6 +978,31 @@ footer {
     margin-right: 0.5rem;
 }
 
+/* Override for Cancel buttons in booking sections - use old style */
+.booking-actions .btn-danger,
+.booking-actions-mini .btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.booking-actions .btn-danger:hover,
+.booking-actions-mini .btn-danger:hover {
+    background-color: #c82333;
+    color: white;
+    transform: none;
+    box-shadow: none;
+}
+
 .no-bookings-today, .no-upcoming-bookings, .no-user-today-bookings, .no-user-upcoming-bookings {
     text-align: center;
     padding: 2rem 1rem;
@@ -1020,18 +1113,20 @@ footer {
     padding: 1rem 2rem;
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 600;    color: #6c757d;
+    font-weight: 600;
+    color: #6c757d;
+    transition: all 0.3s ease;
 }
 
 .tab-btn:hover {
-    color: #2a6da9;
+    color: #2563eb;
     background-color: #f8f9fa;
 }
 
 .tab-btn.active {
     color: #1d3557;
     background-color: white;
-    border-bottom-color: #2a6da9;
+    border-bottom-color: #2563eb;
 }
 
 .tab-content {
@@ -1104,9 +1199,10 @@ footer {
     font-weight: bold;
 }
 
-/* Admin Dashboard Buttons - Updated with Theme Colors */
+/* Admin Dashboard Buttons - Standardized Design */
 .admin-table .btn {
-    padding: 0.5rem 1rem;    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
     border: none;
@@ -1114,15 +1210,19 @@ footer {
     text-decoration: none;
     display: inline-block;
     margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-table .btn-primary {
-    background-color: #2a6da9;
+    background-color: #2563eb;
     color: white;
 }
 
 .admin-table .btn-primary:hover {
-    background-color: #1e5c94;
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
 .admin-table .btn-danger {
@@ -1132,6 +1232,8 @@ footer {
 
 .admin-table .btn-danger:hover {
     background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
 .admin-table .btn-success {
@@ -1141,6 +1243,8 @@ footer {
 
 .admin-table .btn-success:hover {
     background-color: #69db7c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(140, 233, 154, 0.3);
 }
 
 .admin-table .btn-sm {
@@ -1193,7 +1297,7 @@ footer {
 
 /* Status Badges for History Table - Updated with Theme Colors */
 .status-confirmed {
-    background-color: #2a6da9;
+    background-color: #2563eb;
     color: white;
     padding: 0.4rem 0.8rem;
     border-radius: 15px;
@@ -1252,8 +1356,8 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #2a6da9;
-    box-shadow: 0 0 0 3px rgba(42, 109, 169, 0.1);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group label {
@@ -1671,8 +1775,8 @@ footer {
 .datetime-grid .form-group input:focus,
 .datetime-grid .form-group select:focus {
     outline: none;
-    border-color: #2a6da9;
-    box-shadow: 0 0 0 3px rgba(42, 109, 169, 0.1);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* Booking Summary - Updated with Theme Colors */
@@ -1701,8 +1805,8 @@ footer {
 }
 
 .summary-item {
-    display: flex;
     align-items: center;
+    text-align: center;
     gap: 0.8rem;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.6);
@@ -1711,47 +1815,50 @@ footer {
     color: #1d3557;
 }
 
-/* Form Actions - Updated with Theme Colors */
+/* Form Actions - Standardized Design */
 .form-actions {
-    display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
     gap: 1rem;
 }
 
 .form-actions .btn {
-    padding: 0.8rem 2rem;
+    padding: 0.75rem 2rem;
     font-size: 1rem;
     font-weight: 600;
-    border-radius: 25px;
+    border-radius: 8px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-actions .btn-primary {
-    background: linear-gradient(135deg, #2a6da9 0%, #1d3557 100%);
+    background-color: #2563eb;
     color: white;
     border: none;
 }
 
 .form-actions .btn-primary:hover {
-    background: #1d3557;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 109, 169, 0.3);
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
 .form-actions .btn-secondary {
-    background-color: white;
+    background-color: #D0DAEB;
     color: #1d3557;
-    border: 2px solid #b9c2d1;
+    border: none;
 }
 
 .form-actions .btn-secondary:hover {
     background-color: #b9c2d1;
-    border-color: #1d3557;
-    transform: translateY(-2px);
+    color: #1d3557;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(208, 218, 235, 0.3);
 }
 
 /* Payment Page - Updated with Theme Colors */
@@ -1864,13 +1971,13 @@ footer {
 }
 
 .about-section a {
-    color: #2a6da9;
+    color: #2563eb;
     text-decoration: none;
     font-weight: 500;
 }
 
 .about-section a:hover {
-    color: #1e5c94;
+    color: #1d4ed8;
     text-decoration: underline;
 }
 
@@ -2122,19 +2229,22 @@ footer {
     margin-left: auto;
 }
 
+/* Logout Button - Red #dc3545 - Logout action in header */
 .btn-logout {
     background-color: #dc3545;
     color: white;
-    border: 2px solid #dc3545;
+    border: none;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-logout:hover {
     background-color: #c82333;
-    border-color: #c82333;
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
