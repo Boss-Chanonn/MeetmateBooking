@@ -8,45 +8,147 @@
       <div class="admin-tabs">
         <button class="tab-btn active" data-tab="profile-tab">Profile</button>
         <button class="tab-btn" data-tab="history-tab">History</button>
-    </div>      <div class="tab-content">        
-        <!-- Profile Tab -->
+    </div>      <div class="tab-content">          <!-- Profile Tab -->
         <div id="profile-tab" class="tab-pane active">
             <div class="section-header">
                 <h2>My Profile</h2>
-            </div>            <div class="profile-form">
-                <form method="POST" action="{{ url_for('my_account') }}" class="form">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            
+            <!-- Profile V2 Container -->
+            <div class="profile-v2-container">
+                <!-- View Mode -->
+                <div id="profile-view-mode" class="profile-view-mode">
+                    <div class="profile-field-row">
+                        <div class="profile-field-label">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                        </div>
+                        <div class="profile-field-value">
+                            <span>{{ user.email }}</span>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="firstname">First Name</label>
-                        <input type="text" id="firstname" name="firstname" value="{{ user.firstname or '' }}">
+                    <div class="profile-field-row">
+                        <div class="profile-field-label">
+                            <i class="fas fa-user"></i>
+                            <span>First Name</span>
+                        </div>
+                        <div class="profile-field-value">
+                            <span>{{ user.firstname or 'Not provided' }}</span>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="lastname">Last Name</label>
-                        <input type="text" id="lastname" name="lastname" value="{{ user.lastname or '' }}">
+                    <div class="profile-field-row">
+                        <div class="profile-field-label">
+                            <i class="fas fa-user"></i>
+                            <span>Last Name</span>
+                        </div>
+                        <div class="profile-field-value">
+                            <span>{{ user.lastname or 'Not provided' }}</span>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" value="{{ user.dob or '' }}">
-                    </div>
-                      <div class="form-group">
-                        <label for="address">Address</label>
-                        <textarea id="address" name="address" rows="3">{{ user.address or '' }}</textarea>
-                    </div>
-                      <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+                    <div class="profile-field-row">
+                        <div class="profile-field-label">
+                            <i class="fas fa-calendar"></i>
+                            <span>Date of Birth</span>
+                        </div>
+                        <div class="profile-field-value">
+                            <span>{{ user.dob or 'Not provided' }}</span>
+                        </div>
                     </div>
                     
-                    <div class="profile-form-actions">
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    <div class="profile-field-row">
+                        <div class="profile-field-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Address</span>
+                        </div>
+                        <div class="profile-field-value">
+                            <span>{{ user.address or 'Not provided' }}</span>
+                        </div>
                     </div>
-                </form>
+                    
+                    <div class="profile-v2-actions">
+                        <button type="button" class="btn btn-primary" id="edit-profile-btn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Edit Mode -->
+                <div id="profile-edit-mode" class="profile-edit-mode" style="display: none;">
+                    <form method="POST" action="{{ url_for('my_account') }}" class="profile-v2-form">
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-user"></i>
+                                <span>First Name</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <input type="text" id="firstname" name="firstname" value="{{ user.firstname or '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-user"></i>
+                                <span>Last Name</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <input type="text" id="lastname" name="lastname" value="{{ user.lastname or '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-calendar"></i>
+                                <span>Date of Birth</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <input type="date" id="dob" name="dob" value="{{ user.dob or '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Address</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <textarea id="address" name="address" rows="3">{{ user.address or '' }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-field-row">
+                            <div class="profile-field-label">
+                                <i class="fas fa-lock"></i>
+                                <span>Password</span>
+                            </div>
+                            <div class="profile-field-input">
+                                <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+                                <small>Only fill this if you want to change your password</small>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-v2-actions">
+                            <button type="button" class="btn btn-secondary" id="cancel-edit-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         
@@ -134,6 +236,28 @@
                 // Add active class to clicked button and corresponding pane
                 this.classList.add('active');
                 document.getElementById(targetTab).classList.add('active');
+            };
+        }
+        
+        // Profile V2 edit/view mode handling
+        var viewMode = document.getElementById('profile-view-mode');
+        var editMode = document.getElementById('profile-edit-mode');
+        var editBtn = document.getElementById('edit-profile-btn');
+        var cancelBtn = document.getElementById('cancel-edit-btn');
+        
+        // Switch to edit mode
+        if (editBtn) {
+            editBtn.onclick = function() {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+            };
+        }
+        
+        // Switch back to view mode
+        if (cancelBtn) {
+            cancelBtn.onclick = function() {
+                editMode.style.display = 'none';
+                viewMode.style.display = 'block';
             };
         }
     });

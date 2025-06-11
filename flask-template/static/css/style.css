@@ -1951,6 +1951,161 @@ footer {
     border: 1px solid rgba(185, 194, 209, 0.3);
 }
 
+/* Profile V2 Layout - 2-Column Design */
+.profile-v2-container {
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(185, 194, 209, 0.2);
+}
+
+.profile-field-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(185, 194, 209, 0.2);
+    gap: 2rem;
+}
+
+.profile-field-row:last-of-type {
+    border-bottom: none;
+}
+
+.profile-field-label {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #1d3557;
+    flex-shrink: 0;
+}
+
+.profile-field-label i {
+    color: #3B82F6;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.profile-field-value {
+    width: 60%;
+    color: #495057;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.profile-field-value span {
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.profile-field-input {
+    width: 60%;
+}
+
+.profile-field-input input,
+.profile-field-input textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f9fafb;
+}
+
+.profile-field-input input:focus,
+.profile-field-input textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.profile-field-input textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.profile-field-input small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.profile-v2-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid rgba(185, 194, 209, 0.2);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.profile-v2-actions .btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+}
+
+.profile-v2-actions .btn-primary {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.profile-v2-actions .btn-primary:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.profile-v2-actions .btn-secondary {
+    background-color: #D0DAEB;
+    color: #1d3557;
+}
+
+.profile-v2-actions .btn-secondary:hover {
+    background-color: #b9c2d1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(208, 218, 235, 0.3);
+}
+
+/* Mobile Responsive for Profile V2 */
+@media (max-width: 768px) {
+    .profile-field-row {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .profile-field-label,
+    .profile-field-value,
+    .profile-field-input {
+        width: 100%;
+    }
+    
+    .profile-v2-actions {
+        flex-direction: column;
+    }
+    
+    .profile-v2-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* About Page - Updated with Theme Colors */
 .about-page {
     padding: 2rem 0;
