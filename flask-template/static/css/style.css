@@ -1768,6 +1768,7 @@ footer {
     border-radius: 8px;
     padding: 1rem;
     font-size: 1rem;
+    text-align: center;
 }
 
 .datetime-grid .form-group input:focus,
@@ -1963,8 +1964,8 @@ footer {
 
 .profile-field-row {
     display: flex;
-    align-items: flex-start;
-    padding: 1.25rem 0;
+    align-items: center;
+    padding: 1.25rem 15rem;
     border-bottom: 1px solid rgba(185, 194, 209, 0.2);
     gap: 2rem;
 }
@@ -2038,8 +2039,7 @@ footer {
 }
 
 .profile-v2-actions {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
+    margin-top: 1rem;
     border-top: 2px solid rgba(185, 194, 209, 0.2);
     display: flex;
     justify-content: center;
