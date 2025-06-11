@@ -1592,8 +1592,7 @@ def my_account():
     if not user:
         flash('User not found', 'error')
         return redirect(url_for('logout'))
-    
-    # Handle profile update (POST request)
+      # Handle profile update (POST request)
     if request.method == 'POST':
         # Get updated information from form
         new_email = request.form['email'].strip()
@@ -1601,6 +1600,7 @@ def my_account():
         lastname = request.form.get('lastname', '').strip()
         dob = request.form.get('dob', '').strip()
         address = request.form.get('address', '').strip()
+        new_password = request.form.get('password', '').strip()
           # Check if new email is already used by another user
         if new_email != user['email']:
             existing_user = get_user_by_email(new_email)
@@ -1610,11 +1610,22 @@ def my_account():
         
         # Update user information in database
         try:
-            cursor.execute('''
-                UPDATE users 
-                SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?
-                WHERE id = ?
-            ''', (new_email, firstname, lastname, dob, address, user_id))
+            # Prepare update query based on whether password is being changed
+            if new_password:
+                # User wants to change password
+                password_hash = generate_password_hash(new_password)
+                cursor.execute('''
+                    UPDATE users 
+                    SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?, password = ?
+                    WHERE id = ?
+                ''', (new_email, firstname, lastname, dob, address, password_hash, user_id))
+            else:
+                # Keep existing password
+                cursor.execute('''
+                    UPDATE users 
+                    SET email = ?, firstname = ?, lastname = ?, dob = ?, address = ?
+                    WHERE id = ?
+                ''', (new_email, firstname, lastname, dob, address, user_id))
             connection.commit()
             
             # Update session with new user data
