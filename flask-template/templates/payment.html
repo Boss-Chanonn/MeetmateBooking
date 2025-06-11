@@ -27,11 +27,10 @@
             
             <div class="form-group">
                 <label for="cvv">CVV</label>
-                <input type="text" id="cvv" name="cvv" pattern="[0-9]{3,4}" maxlength="4" placeholder="3-4 digits" required>
-            </div>
+                <input type="text" id="cvv" name="cvv" pattern="[0-9]{3,4}" maxlength="4" placeholder="3-4 digits" required>            </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Complete Payment</button>
                 <a href="{{ url_for('booking') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Complete Payment</button>
             </div>
         </form>
     </div>

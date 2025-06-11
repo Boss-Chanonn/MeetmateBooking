@@ -1902,6 +1902,12 @@ footer {
     padding: 2rem;
 }
 
+.payment-card .form-group:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
 .payment-info {
     text-align: center;
     color: #6c757d;
