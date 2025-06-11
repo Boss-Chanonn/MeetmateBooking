@@ -2311,7 +2311,7 @@ footer {
 }
 
 .room-card-header {
-    background: linear-gradient(135deg, #1d3557 0%, #4a6fa5 100%);
+    background: linear-gradient(#4a6fa5);
     color: white;
     padding: 1.5rem;
     text-align: center;
