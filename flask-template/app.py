@@ -1162,8 +1162,7 @@ def admin():
             admin.username as admin_name
         FROM bookings b
         JOIN users u ON b.user_id = u.id
-        JOIN rooms r ON b.room_id = r.id
-        LEFT JOIN users admin ON b.booking_admin_id = admin.id
+        JOIN rooms r ON b.room_id = r.id        LEFT JOIN users admin ON b.booking_admin_id = admin.id
         ORDER BY b.date, b.time_start
     ''')
     
@@ -1172,7 +1171,7 @@ def admin():
         booking = dict(row)
         # Determine who made the booking
         if booking['admin_name']:
-            booking['booked_by'] = f"{booking['admin_name']}"
+            booking['booked_by'] = "Admin"
         else:
             booking['booked_by'] = "Self"
         
