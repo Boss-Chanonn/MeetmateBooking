@@ -1563,6 +1563,63 @@ def admin_confirm_booking():
         created_bookings_count=len(created_bookings)
     )
 
+@app.route('/admin/add_user', methods=['POST'])
+@login_required
+@admin_required
+def add_user():
+    """Add new user"""
+    # Get user details from form
+    email = request.form['email'].strip()
+    firstname = request.form['firstname'].strip()
+    lastname = request.form['lastname'].strip()
+    username = request.form['username'].strip()
+    password = request.form['password']
+    dob = request.form.get('dob', '').strip()
+    address = request.form.get('address', '').strip()
+    role = request.form['role']
+    
+    # Validate input
+    if not email or not firstname or not lastname or not username or not password:
+        flash('Email, first name, last name, username, and password are required', 'error')
+        return redirect(url_for('admin'))
+    
+    # Check if email already exists
+    if get_user_by_email(email):
+        flash('Email already exists. Please use a different email.', 'error')
+        return redirect(url_for('admin'))
+    
+    # Check if username already exists
+    if get_user_by_username(username):
+        flash('Username already exists. Please use a different username.', 'error')
+        return redirect(url_for('admin'))
+    
+    # Validate role
+    if role not in ['user', 'admin']:
+        flash('Invalid role selected', 'error')
+        return redirect(url_for('admin'))
+    
+    # Add user to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    
+    try:
+        password_hash = generate_password_hash(password)
+        cursor.execute('''
+            INSERT INTO users (username, email, password, firstname, lastname, dob, address, role)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (username, email, password_hash, firstname, lastname, dob, address, role))
+        
+        connection.commit()
+        flash('User added successfully', 'success')
+        
+    except Exception as error:
+        connection.rollback()
+        flash(f'Failed to add user: {error}', 'error')
+    finally:
+        connection.close()
+    
+    return redirect(url_for('admin'))
+
 # ============================================================================
 # ERROR HANDLERS
 # ============================================================================

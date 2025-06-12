@@ -12,11 +12,11 @@
         <button class="tab-btn" data-tab="bookings-tab">All Bookings</button>
     </div>
     
-    <div class="tab-content">
-        <!-- Users Tab -->
+    <div class="tab-content">        <!-- Users Tab -->
         <div id="users-tab" class="tab-pane active">
             <div class="section-header">
                 <h2>Users</h2>
+                <button class="btn btn-primary" id="add-user-btn">Add User</button>
             </div>
             
             <div class="table-responsive">
@@ -161,6 +161,64 @@
     </div>
 </div>
 
+<!-- Add User Modal -->
+<div id="add-user-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New User</h2>
+        
+        <form method="POST" action="{{ url_for('add_user') }}" class="booking-form">
+            <div class="form-group">
+                <label for="add-email">Email</label>
+                <input type="email" id="add-email" name="email" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="add-firstname">First Name</label>
+                    <input type="text" id="add-firstname" name="firstname" required>
+                </div>
+                <div class="form-group half">
+                    <label for="add-lastname">Last Name</label>
+                    <input type="text" id="add-lastname" name="lastname" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="add-username">Username</label>
+                <input type="text" id="add-username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="add-password">Password</label>
+                <input type="password" id="add-password" name="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="add-dob">Date of Birth</label>
+                <input type="date" id="add-dob" name="dob">
+            </div>
+            
+            <div class="form-group">
+                <label for="add-address">Address</label>
+                <textarea id="add-address" name="address" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="add-role">Role</label>
+                <select id="add-role" name="role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Edit User Modal -->
 <div id="edit-user-modal" class="modal">
     <div class="modal-content">
@@ -247,8 +305,17 @@
             closeButtons[i].onclick = function() {
                 addRoomModal.style.display = 'none';
                 editUserModal.style.display = 'none';
+                addUserModal.style.display = 'none';
             };
         }
+        
+        // Add User Modal
+        var addUserModal = document.getElementById('add-user-modal');
+        var addUserBtn = document.getElementById('add-user-btn');
+        
+        addUserBtn.onclick = function() {
+            addUserModal.style.display = 'block';
+        };
         
         // Edit User Modal
         var editUserModal = document.getElementById('edit-user-modal');
@@ -288,6 +355,9 @@
             }
             if (event.target == editUserModal) {
                 editUserModal.style.display = 'none';
+            }
+            if (event.target == addUserModal) {
+                addUserModal.style.display = 'none';
             }
         };
     });
