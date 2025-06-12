@@ -94,11 +94,9 @@
             </div>
             
             <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
+                <table class="admin-table">                    <thead>
                         <tr>
                             <th>ID</th>                            
-                            <th>User</th>
                             <th>Room</th>
                             <th>Date</th>
                             <th>Time</th>
@@ -107,16 +105,14 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% for booking in bookings %}
+                    <tbody>                        {% for booking in bookings %}
                             <tr>                                
                                 <td>{{ booking.id }}</td>
-                                <td>{{ booking.username }}</td>
                                 <td>{{ booking.room_name }}</td>                                
                                 <td>{{ booking.date }}</td>
                                 <td>{{ booking.time_start }} - {{ booking.time_end }}</td>
                                 <td>{{ booking.booked_by }}</td>
-                                <td>{{ booking.notes|default('-', true) }}</td>                                <td>
+                                <td>{{ booking.notes|default('-', true) }}</td><td>
                                     {% if booking.can_cancel %}
                                         <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
                                            class="btn btn-sm btn-danger"
