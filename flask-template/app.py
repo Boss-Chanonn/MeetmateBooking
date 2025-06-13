@@ -1204,10 +1204,17 @@ def add_room():
     name = request.form['name'].strip()
     location = request.form['location'].strip()
     capacity = request.form['capacity']
+    room_type = request.form['room_type'].strip()
     
     # Validate input
-    if not name or not location:
-        flash('Room name and location are required', 'error')
+    if not name or not location or not room_type:
+        flash('Room name, location, and room type are required', 'error')
+        return redirect(url_for('admin'))
+    
+    # Validate room type
+    valid_room_types = ['Circle Table', 'Long Table', 'Square Table']
+    if room_type not in valid_room_types:
+        flash('Invalid room type selected', 'error')
         return redirect(url_for('admin'))
     
     try:
@@ -1225,9 +1232,9 @@ def add_room():
     
     try:
         cursor.execute('''
-            INSERT INTO rooms (name, location, capacity)
-            VALUES (?, ?, ?)
-        ''', (name, location, capacity))
+            INSERT INTO rooms (name, location, capacity, room_type)
+            VALUES (?, ?, ?, ?)
+        ''', (name, location, capacity, room_type))
         
         connection.commit()
         flash('Room added successfully', 'success')

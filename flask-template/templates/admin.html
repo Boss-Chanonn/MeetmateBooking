@@ -62,14 +62,14 @@
                 <button class="btn btn-primary" id="add-room-btn">Add Room</button>
             </div>
             
-            <div class="table-responsive">
-                <table class="admin-table">
+            <div class="table-responsive">                <table class="admin-table">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Location</th>
                             <th>Capacity</th>
+                            <th>Room Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,6 +79,7 @@
                                 <td>{{ room.name }}</td>
                                 <td>{{ room.location }}</td>
                                 <td>{{ room.capacity }}</td>
+                                <td>{{ room.room_type|default('Not specified', true) }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -136,9 +137,17 @@
 <div id="add-room-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Add New Room</h2>
-        
-        <form method="POST" action="{{ url_for('add_room') }}" class="booking-form">
+        <h2>Add New Room</h2>        <form method="POST" action="{{ url_for('add_room') }}" class="booking-form">
+            <div class="form-group">
+                <label for="room_type">Room Type</label>
+                <select id="room_type" name="room_type" required>
+                    <option value="" disabled selected>-- Select room type --</option>
+                    <option value="Circle Table">Circle Table</option>
+                    <option value="Long Table">Long Table</option>
+                    <option value="Square Table">Square Table</option>
+                </select>
+            </div>
+            
             <div class="form-group">
                 <label for="name">Room Name</label>
                 <input type="text" id="name" name="name" required>
