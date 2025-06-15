@@ -11,7 +11,8 @@ A Flask web application for booking meeting rooms with user authentication and a
 
 2. **Run the application:**
    ```bash
-   python app.py
+   1. cd flask-template
+   2. python app.py
    ```
 
 3. **Open browser:** http://127.0.0.1:5000
@@ -25,7 +26,6 @@ A Flask web application for booking meeting rooms with user authentication and a
 - Room booking with payment simulation
 - Admin dashboard for user/room management
 - Booking history and cancellation
-- Recurring bookings (weekly/monthly)
 - Responsive design
 
 ## Technologies
