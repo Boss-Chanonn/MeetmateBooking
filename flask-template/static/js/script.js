@@ -1,4 +1,3 @@
-// MeetMate main JavaScript file - Beginner-Friendly Version
 
 // Wait for the page to load completely
 document.addEventListener('DOMContentLoaded', function() {
