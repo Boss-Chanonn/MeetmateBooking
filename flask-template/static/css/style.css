@@ -53,6 +53,17 @@ header .header-content {
     flex: 0 0 auto;
 }
 
+.logo a {
+    display: inline-block;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
 nav {
     position: absolute;
     left: 50%;
@@ -169,6 +180,10 @@ nav ul li a:hover {
         order: 1;
     }
     
+    .logo-img {
+        height: 35px;
+    }
+    
     .auth-buttons, .user-menu {
         order: 3;
         margin-left: 0;
@@ -183,6 +198,10 @@ nav ul li a:hover {
     nav ul li {
         display: block;
         margin: 0.5rem 0;
+    }
+    
+    .logo-img {
+        height: 30px;
     }
     
     .auth-buttons {

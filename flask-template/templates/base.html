@@ -7,11 +7,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">    </head>
     
-    <body{% if request.endpoint == 'index' %} class="home-page-body"{% endif %}>        <header>
-            <div class="header-content">
+    <body{% if request.endpoint == 'index' %} class="home-page-body"{% endif %}>        <header>            <div class="header-content">
                 <div class="logo">
-                    <a href="{{ url_for('index') }}">MeetMate</a>
-                </div>                <nav>                    <ul>                        {% if session.user_id %}                            {% if session.role != 'admin' %}
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate" class="logo-img">
+                    </a>
+                </div><nav>                    <ul>                        {% if session.user_id %}                            {% if session.role != 'admin' %}
                                 <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                                 <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
                                 <li><a href="{{ url_for('my_account') }}">My Account</a></li>
