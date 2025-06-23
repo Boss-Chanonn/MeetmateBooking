@@ -30,8 +30,7 @@
                 <div class="user-menu">
                     <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
                 </div>
-                {% endif %}
-                {% if not session.user_id %}
+                {% endif %}                {% if not session.user_id and request.endpoint not in ['login', 'register'] %}
                 <div class="auth-buttons">
                     <a href="{{ url_for('register') }}" class="btn btn-secondary">Sign up</a>
                     <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>

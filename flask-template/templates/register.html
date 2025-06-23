@@ -10,6 +10,45 @@
 </head>
 
 <body class="modern-login-body">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='images/meetmate-logo.png') }}" alt="MeetMate" class="logo-img">
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    {% if session.user_id %}
+                        {% if session.role != 'admin' %}
+                            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ url_for('booking') }}">Book a Room</a></li>
+                            <li><a href="{{ url_for('my_account') }}">My Account</a></li>
+                            <li><a href="{{ url_for('about') }}">Contact us</a></li>
+                        {% endif %}
+                        {% if session.role == 'admin' %}
+                            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ url_for('admin_book') }}">Book for Client</a></li>
+                            <li><a href="{{ url_for('admin') }}">My Account</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><a href="{{ url_for('about') }}">Contact us</a></li>
+                    {% endif %}
+                </ul>
+            </nav>            {% if session.user_id %}
+            <div class="user-menu">
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+            {% endif %}
+            {% if not session.user_id and request.endpoint not in ['login', 'register'] %}
+            <div class="auth-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-secondary">Sign up</a>
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-messages">
