@@ -1385,6 +1385,7 @@ footer {
     border-radius: 8px;    
     font-size: 1rem;
     background-color: white;
+    text-align: center;
 }
 
 .form-group input:focus,
@@ -1806,6 +1807,10 @@ footer {
     padding: 1rem;
     font-size: 1rem;
     text-align: center;
+}
+
+.datetime-grid .form-group input[type="date"] {
+    text-transform: uppercase;
 }
 
 .datetime-grid .form-group input:focus,

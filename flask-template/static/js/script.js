@@ -43,27 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('End time must be after start time.');
                     return false;
                 }
-            }
-        };
-    }
-    
-    // Add current date to booking form
-    var dateInput = document.getElementById('date');
-    if (dateInput && !dateInput.value) {
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = today.getMonth() + 1;
-        var day = today.getDate();
-        
-        // Add leading zeros if needed
-        if (month < 10) {
-            month = '0' + month;
-        }
-        if (day < 10) {
-            day = '0' + day;
-        }
-        
-        dateInput.value = year + '-' + month + '-' + day;
+            }        };
     }
 });
 
