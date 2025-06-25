@@ -28,8 +28,8 @@ A Flask web application for booking meeting rooms with user authentication and a
 - Responsive design
 
 ## Technologies
-- **Backend:** Flask 2.1.3, SQLite
-- **Frontend:** HTML, CSS, JavaScript (Bootstrap)
+- **Backend:** Flask 3.1.0, SQLite
+- **Frontend:** HTML, CSS, JavaScript
 - **Python:** 3.8+ required
 
 ## Database
