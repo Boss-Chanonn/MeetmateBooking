@@ -11,8 +11,7 @@ A Flask web application for booking meeting rooms with user authentication and a
 
 2. **Run the application:**
    ```bash
-   1. cd flask-template
-   2. python app.py
+   python app.py
    ```
 
 3. **Open browser:** http://127.0.0.1:5000
