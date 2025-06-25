@@ -1627,6 +1627,52 @@ def add_user():
     
     return redirect(url_for('admin'))
 
+@app.route('/admin/delete_room/<int:room_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_room(room_id):
+    """Delete room"""
+    connection = get_database_connection()
+    cursor = connection.cursor()
+    
+    try:
+        # Check if room exists
+        cursor.execute('SELECT name FROM rooms WHERE id = ?', (room_id,))
+        room = cursor.fetchone()
+        
+        if not room:
+            flash('Room not found', 'error')
+            return redirect(url_for('admin'))
+        
+        room_name = room['name']
+        
+        # Check if room has active bookings
+        cursor.execute('''
+            SELECT COUNT(*) as booking_count 
+            FROM bookings 
+            WHERE room_id = ? AND date >= DATE('now')
+        ''', (room_id,))
+        
+        active_bookings = cursor.fetchone()['booking_count']
+        
+        if active_bookings > 0:
+            flash(f'Cannot delete room "{room_name}". It has {active_bookings} active booking(s).', 'error')
+            return redirect(url_for('admin'))
+        
+        # Delete the room
+        cursor.execute('DELETE FROM rooms WHERE id = ?', (room_id,))
+        connection.commit()
+        
+        flash(f'Room "{room_name}" deleted successfully', 'success')
+        
+    except Exception as error:
+        connection.rollback()
+        flash(f'Failed to delete room: {error}', 'error')
+    finally:
+        connection.close()
+    
+    return redirect(url_for('admin'))
+
 # ============================================================================
 # ERROR HANDLERS
 # ============================================================================

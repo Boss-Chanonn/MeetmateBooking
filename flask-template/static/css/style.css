@@ -2018,6 +2018,7 @@ footer {
     font-weight: 600;
     color: #1d3557;
     flex-shrink: 0;
+    padding: 0px 0px 0px 80px;
 }
 
 .profile-field-label i {

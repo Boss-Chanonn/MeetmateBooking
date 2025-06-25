@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="admin-dashboard">
-    <h1>Admin Dashboard</h1>
+    <h1>Admin Management</h1>
     
     <div class="admin-tabs">
         <button class="tab-btn active" data-tab="users-tab">Users</button>
@@ -69,6 +69,7 @@
                             <th>Name</th>
                             <th>Location</th>
                             <th>Capacity</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,6 +80,13 @@
                                 <td>{{ room.name }}</td>
                                 <td>{{ room.location }}</td>
                                 <td>{{ room.capacity }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger delete-room-btn" 
+                                            data-id="{{ room.id }}"
+                                            data-name="{{ room.name }}">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -316,14 +324,33 @@
                 addUserModal.style.display = 'none';
             };
         }
-        
-        // Add User Modal
+          // Add User Modal
         var addUserModal = document.getElementById('add-user-modal');
         var addUserBtn = document.getElementById('add-user-btn');
         
         addUserBtn.onclick = function() {
             addUserModal.style.display = 'block';
         };
+        
+        // Delete Room functionality
+        var deleteRoomButtons = document.querySelectorAll('.delete-room-btn');
+        
+        for (var i = 0; i < deleteRoomButtons.length; i++) {
+            deleteRoomButtons[i].onclick = function() {
+                var roomId = this.getAttribute('data-id');
+                var roomName = this.getAttribute('data-name');
+                
+                if (confirm('Are you sure you want to delete "' + roomName + '"? This action cannot be undone.')) {
+                    // Create form and submit
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/admin/delete_room/' + roomId;
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            };
+        }
         
         // Edit User Modal
         var editUserModal = document.getElementById('edit-user-modal');
