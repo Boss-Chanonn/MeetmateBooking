@@ -1579,15 +1579,17 @@ def add_user():
     email = request.form['email'].strip()
     firstname = request.form['firstname'].strip()
     lastname = request.form['lastname'].strip()
-    username = request.form['username'].strip()
     password = request.form['password']
     dob = request.form.get('dob', '').strip()
     address = request.form.get('address', '').strip()
     role = request.form['role']
     
+    # Generate username from email (part before @)
+    username = email.split('@')[0]
+    
     # Validate input
-    if not email or not firstname or not lastname or not username or not password:
-        flash('Email, first name, last name, username, and password are required', 'error')
+    if not email or not firstname or not lastname or not password:
+        flash('Email, first name, last name, and password are required', 'error')
         return redirect(url_for('admin'))
     
     # Check if email already exists
@@ -1595,10 +1597,14 @@ def add_user():
         flash('Email already exists. Please use a different email.', 'error')
         return redirect(url_for('admin'))
     
-    # Check if username already exists
+    # Check if username already exists (in case the auto-generated one conflicts)
     if get_user_by_username(username):
-        flash('Username already exists. Please use a different username.', 'error')
-        return redirect(url_for('admin'))
+        # If username conflicts, append a number
+        counter = 1
+        original_username = username
+        while get_user_by_username(f"{original_username}{counter}"):
+            counter += 1
+        username = f"{original_username}{counter}"
     
     # Validate role
     if role not in ['user', 'admin']:
