@@ -49,14 +49,10 @@
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" required min="{{ current_date }}">
                 </div>
-                
-                <div class="form-group">
+                  <div class="form-group">
                     <label for="time_start">Start Time</label>
                     <select id="time_start" name="time_start" required>
                         <option value="" disabled selected>-- Select start time --</option>
-                        {% for hour in range(8, 22) %}
-                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                        {% endfor %}
                     </select>
                 </div>
                 
@@ -64,9 +60,6 @@
                     <label for="time_end">End Time</label>
                     <select id="time_end" name="time_end" required>
                         <option value="" disabled selected>-- Select end time --</option>
-                        {% for hour in range(9, 23) %}
-                            <option value="{{ '%02d' % hour }}:00">{{ '%02d' % hour }}:00</option>
-                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -84,8 +77,48 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.getElementById('date');
     const timeStart = document.getElementById('time_start');
     const timeEnd = document.getElementById('time_end');
+    
+    function getCurrentTime() {
+        const now = new Date();
+        return {
+            date: now.toISOString().split('T')[0],
+            hour: now.getHours(),
+            minute: now.getMinutes()
+        };
+    }
+    
+    function updateStartTimeOptions() {
+        const selectedDate = dateInput.value;
+        if (!selectedDate) return;
+        
+        const currentTime = getCurrentTime();
+        const isToday = selectedDate === currentTime.date;
+        
+        // Clear start time options
+        timeStart.innerHTML = '<option value="" disabled selected>-- Select start time --</option>';
+        
+        let startHour = 8; // Default start hour (8 AM)
+        
+        if (isToday) {
+            // If today, start from next available hour
+            const nextHour = currentTime.minute >= 30 ? currentTime.hour + 2 : currentTime.hour + 1;
+            startHour = Math.max(8, Math.min(nextHour, 22));
+        }
+        
+        // Add available start time options
+        for (let hour = startHour; hour <= 22; hour++) {
+            const option = document.createElement('option');
+            option.value = String(hour).padStart(2, '0') + ':00';
+            option.textContent = String(hour).padStart(2, '0') + ':00';
+            timeStart.appendChild(option);
+        }
+        
+        // Clear end time when start time options change
+        timeEnd.innerHTML = '<option value="" disabled selected>-- Select end time --</option>';
+    }
     
     function updateEndTimeOptions() {
         const startTime = timeStart.value;
@@ -105,7 +138,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Event listeners
+    dateInput.addEventListener('change', updateStartTimeOptions);
     timeStart.addEventListener('change', updateEndTimeOptions);
+    
+    // Initialize start time options for current date if already selected
+    if (dateInput.value) {
+        updateStartTimeOptions();
+    }
     
     // Room type selection animation
     const roomTypeInputs = document.querySelectorAll('input[name="room_type"]');
